@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	
+	<persistence-unit name="Trabajo-Especial">
+		<description>Contexto de persistencia con Apache Derby, Hibernate y entidades JPA definidas mediante anotaciones</description>
+		
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<!-- <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider> -->
+		<!-- <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider> -->
+		
+		<class>ArqWeb.ArqWeb.PalabrasClave</class>
+		<class>ArqWeb.ArqWeb.TipoTrabajo</class>
+		<class>ArqWeb.ArqWeb.Trabajo</class>
+		<class>ArqWeb.ArqWeb.Usuario</class>
+
+		<properties>
+			
+			<!-- Propieadades de configuracion de JDBC para MySQL -->
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/SistemaDeCACIC" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="root" />
+			
+			<!-- Propiedad para la generacion automatica del esquema de base de datos -->
+			<property name="hibernate.hbm2ddl.auto" value="create" />
+			<!-- <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/> -->
+			<!-- <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)"/> -->
+		</properties>
+	</persistence-unit>
+
+</persistence>
