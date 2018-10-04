@@ -14,7 +14,7 @@
 		<class>ArqWeb.ArqWeb.TipoTrabajo</class>
 		<class>ArqWeb.ArqWeb.Trabajo</class>
 		<class>ArqWeb.ArqWeb.Usuario</class>
-		<class>ArqWeb.ArqWeb.Clasificacion</class>
+		<class>ArqWeb.ArqWeb.Calificacion</class>
 
 		<properties>
 			

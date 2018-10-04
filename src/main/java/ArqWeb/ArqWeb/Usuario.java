@@ -1,5 +1,6 @@
 package ArqWeb.ArqWeb;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -12,42 +13,58 @@ import javax.persistence.Table;
 @Entity
 @Table(name="usuario")
 public class Usuario {
-	
+
 	@Id @GeneratedValue
 	private int id;
 
 	@Column(nullable = false)
 	private String nombre;
-	
+
 	@Column(nullable = false)
 	private String apellido;
-	
+
 	@Column(nullable = false)
 	private boolean esAutor;
-	
+
 	@Column(nullable = false)
 	private boolean esEvaluador;
-	
+
 	@ManyToMany
 	private Set<PalabrasClave> palabrasClave;
-	
+
 	@ManyToMany
 	private Set<Trabajo> trabajosEnInvestigacion;
-	
+
 	@ManyToMany
 	private Set<Trabajo> trabajosEnEvaluacion;
 	
+	@ManyToMany
+	private Set<Trabajo> trabajosPendientes;
+
 	@Column(nullable = true)
 	private boolean esExperto;
 
 	//-----CONSTRUCTOR-----
-	
-	public Usuario() {
 
+	public Usuario() {
+		this.palabrasClave = new HashSet<PalabrasClave>();
+		this.trabajosEnInvestigacion = new HashSet<Trabajo>();
+		this.trabajosEnEvaluacion = new HashSet<Trabajo>();
+		this.trabajosPendientes = new HashSet<Trabajo>();
 	}
-	
+
+	public Usuario(String nombre, String apellido, Set<PalabrasClave> palabrasClave) {
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.palabrasClave = palabrasClave;
+		this.palabrasClave = new HashSet<PalabrasClave>();
+		this.trabajosEnInvestigacion = new HashSet<Trabajo>();
+		this.trabajosEnEvaluacion = new HashSet<Trabajo>();
+		this.trabajosPendientes = new HashSet<Trabajo>();
+	}
+
 	//-----GETTERS & SETTERS-----
-	
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -64,61 +81,83 @@ public class Usuario {
 		this.apellido = apellido;
 	}
 
-	public boolean isEsAutor() {
+	public boolean isAutor() {
 		return esAutor;
 	}
 
-	public void setEsAutor(boolean esAutor) {
-		this.esAutor = esAutor;
-	}
-
-	public boolean isEsEvaluador() {
+	public boolean isEvaluador() {
 		return esEvaluador;
-	}
-
-	public void setEsEvaluador(boolean esEvaluador) {
-		this.esEvaluador = esEvaluador;
 	}
 
 	public Set<PalabrasClave> getPalabrasClave() {
 		return palabrasClave;
 	}
 
-	public void setPalabrasClave(Set<PalabrasClave> palabrasClave) {
-		this.palabrasClave = palabrasClave;
+	public void setPalabraClave(PalabrasClave palabrasClave) {
+		this.palabrasClave.add(palabrasClave);
 	}
 
 	public Set<Trabajo> getTrabajosEnInvestigacion() {
 		return trabajosEnInvestigacion;
 	}
 
-	public void setTrabajosEnInvestigacion(Set<Trabajo> trabajosEnInvestigacion) {
-		this.trabajosEnInvestigacion = trabajosEnInvestigacion;
+	public void setTrabajoEnInvestigacion(Trabajo trabajo) {
+		this.trabajosEnInvestigacion.add(trabajo);
 	}
 
 	public Set<Trabajo> getTrabajosEnEvaluacion() {
 		return trabajosEnEvaluacion;
 	}
 
-	public void setTrabajosEnEvaluacion(Set<Trabajo> trabajosEnEvaluacion) {
-		this.trabajosEnEvaluacion = trabajosEnEvaluacion;
+	public void setTrabajoEnEvaluacion(Trabajo trabajo) {
+		this.trabajosEnEvaluacion.add(trabajo);
+	}
+	
+	public Set<Trabajo> getTrabajosPendientes() {
+		return trabajosPendientes;
 	}
 
-	public boolean isEsExperto() {
+	public void setTrabajoPendiente(Trabajo trabajo) {
+		this.trabajosPendientes.add(trabajo);
+	}
+
+	public boolean isExperto() {
 		return esExperto;
-	}
-
-	public void setEsExperto(boolean esExperto) {
-		this.esExperto = esExperto;
 	}
 
 	public int getId() {
 		return id;
 	}
 
-	public Usuario(String nombre, String apellido, Set<PalabrasClave> palabrasClave) {
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.palabrasClave = palabrasClave;
+	//---- BUSINESS LOGIC ----
+
+	public void addTrabajoInvestigacion(Trabajo trabajo) {
+		this.setTrabajoEnInvestigacion(trabajo);
+		this.esAutor = true;
 	}
+
+	private void addTrabajoEvaluacion(Trabajo trabajo) {
+		if(this.trabajosEnEvaluacion.size() <= 3 ) {
+			this.setTrabajoEnEvaluacion(trabajo);
+			this.esEvaluador = true;
+		}
+	}
+	
+	public void addTrabajoPendiente(Trabajo trabajo) {
+		this.trabajosPendientes.add(trabajo);
+	}
+	
+	public void aceptarTrabajo(Trabajo trabajo) {
+		if(this.trabajosPendientes.contains(trabajo)) {
+			this.trabajosPendientes.remove(trabajo);
+			this.addTrabajoEvaluacion(trabajo);
+		}
+	}
+	
+	public void rechazarTrabajo(Trabajo trabajo) {
+		this.trabajosPendientes.remove(trabajo);
+	}
+	
+	
+
 }
