@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -13,10 +15,12 @@ public class Calificacion {
 	@Id @GeneratedValue
 	private int id;
 	
-	@Column(nullable = false)
+	@OneToOne
+	@JoinColumn(nullable=false)
 	private Trabajo trabajo;
 	
-	@Column(nullable = false)
+	@OneToOne
+	@JoinColumn(nullable=false)
 	private Usuario evaluador;
 	
 	@Column(nullable = false)

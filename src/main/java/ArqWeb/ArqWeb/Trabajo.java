@@ -1,5 +1,6 @@
 package ArqWeb.ArqWeb;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -25,14 +26,22 @@ public class Trabajo {
 	
 	@ManyToMany
 	private Set<PalabrasClave> palabrasClave;
-	
+
 	@Column(nullable = false)
 	private boolean esExperto;
 	
+	//TODO - preguntar si esta bien la implementacion del equals
+	@Override
+	public boolean equals(Object t) {
+		return this.id == ((Trabajo) t).getId();
+	}
+
 	//-----CONSTRUCTOR-----
 	
 	public Trabajo() {
-		
+		this.autores = new HashSet<Usuario>();
+		this.evaluadores = new HashSet<Usuario>();
+		this.palabrasClave = new HashSet<PalabrasClave>();
 	}
 	
 	//-----GETTERS & SETTERS-----
@@ -45,23 +54,27 @@ public class Trabajo {
 		return autores;
 	}
 
-	public void setAutores(Set<Usuario> autores) {
-		this.autores = autores;
+	public void setAutores(Usuario autor) {
+		this.autores.add(autor);
 	}
 
 	public Set<Usuario> getEvaluadores() {
 		return evaluadores;
 	}
 
-	public void setEvaluadores(Set<Usuario> evaluadores) {
-		this.evaluadores = evaluadores;
+	public void setEvaluadores(Usuario evaluador) {
+		this.evaluadores.add(evaluador);
 	}
 
-	public boolean isEsExperto() {
+	public boolean isExperto() {
 		return esExperto;
 	}
+	
+	public Set<PalabrasClave> getPalabrasClave() {
+		return palabrasClave;
+	}
 
-	public void setEsExperto(boolean esExperto) {
-		this.esExperto = esExperto;
+	public void setPalabraClave(PalabrasClave palabraClave) {
+		this.palabrasClave.add(palabraClave);
 	}
 }

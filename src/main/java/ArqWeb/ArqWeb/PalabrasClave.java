@@ -1,5 +1,6 @@
 package ArqWeb.ArqWeb;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -29,7 +30,7 @@ public class PalabrasClave {
 	//-----CONSTRUCTOR-----
 	
 	public PalabrasClave() {
-		
+		this.usuarios = new HashSet<Usuario>();	
 	}
 	
 	public PalabrasClave(String palabra, boolean esExperto) {
@@ -47,7 +48,7 @@ public class PalabrasClave {
 		this.palabra = palabra;
 	}
 
-	public boolean isEsExperto() {
+	public boolean isExperto() {
 		return esExperto;
 	}
 
@@ -58,11 +59,7 @@ public class PalabrasClave {
 	public Set<Usuario> getUsuarios() {
 		return usuarios;
 	}
-
-	public void setUsuarios(Set<Usuario> usuarios) {
-		this.usuarios = usuarios;
-	}
-
+	
 	public int getId() {
 		return id;
 	}
