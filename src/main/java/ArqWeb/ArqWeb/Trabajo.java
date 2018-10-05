@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -18,10 +19,10 @@ public class Trabajo {
 	@Id @GeneratedValue
 	private int id;
 	
-	@ManyToMany(mappedBy="trabajosEnInvestigacion")
+	@ManyToMany(mappedBy="trabajosEnInvestigacion")	
 	private Set<Usuario> autores;
 	
-	@ManyToMany(mappedBy="trabajosEnEvaluacion")
+	@ManyToMany(mappedBy="trabajosEnEvaluacion")	
 	private Set<Usuario> evaluadores;
 	
 	@ManyToMany
@@ -54,7 +55,7 @@ public class Trabajo {
 		return autores;
 	}
 
-	public void setAutores(Usuario autor) {
+	public void setAutor(Usuario autor) {
 		this.autores.add(autor);
 	}
 
@@ -62,7 +63,7 @@ public class Trabajo {
 		return evaluadores;
 	}
 
-	public void setEvaluadores(Usuario evaluador) {
+	public void setEvaluador(Usuario evaluador) {
 		this.evaluadores.add(evaluador);
 	}
 

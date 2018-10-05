@@ -80,28 +80,38 @@ public class Main {
 		PalabrasClave pc1 = new PalabrasClave();
 		pc1.setPalabra("AI");
 		pc1.setEsExperto(true);
+		entitymanager.persist( pc1 );
 		PalabrasClave pc2 = new PalabrasClave();
 		pc2.setPalabra("BIGDATA");
 		pc2.setEsExperto(true);
+		entitymanager.persist( pc2 );
 		PalabrasClave pc3 = new PalabrasClave();
 		pc3.setPalabra("PHP");
+		entitymanager.persist( pc3 );
 		PalabrasClave pc4 = new PalabrasClave();
 		pc4.setPalabra("MONGODB");
+		entitymanager.persist( pc4 );
 		PalabrasClave pc5 = new PalabrasClave();
 		pc5.setPalabra("METAPROGRAMMING");
 		pc5.setEsExperto(true);
+		entitymanager.persist( pc5 );
 		PalabrasClave pc6 = new PalabrasClave();
 		pc6.setPalabra("OBJETS");
+		entitymanager.persist( pc6 );
 		PalabrasClave pc7 = new PalabrasClave();
 		pc7.setPalabra("DEEPLEARNING");
 		pc7.setEsExperto(true);
+		entitymanager.persist( pc7 );
 		PalabrasClave pc8 = new PalabrasClave();
 		pc8.setPalabra("SWIFT");
+		entitymanager.persist( pc8 );
 		PalabrasClave pc9 = new PalabrasClave();
 		pc9.setPalabra("MACHINELEARNING");
 		pc9.setEsExperto(true);
+		entitymanager.persist( pc9 );
 		PalabrasClave pc10 = new PalabrasClave();
 		pc10.setPalabra("FRAMEWORK");
+		entitymanager.persist( pc10 );
 
 		HashSet<PalabrasClave> gp = new HashSet<PalabrasClave>();
 		gp.add(pc1);
@@ -111,7 +121,9 @@ public class Main {
 		HashSet<Usuario> ga = new HashSet<Usuario>();
 
 		Trabajo t1 = new Trabajo();
-
+		user1.addTrabajoInvestigacion(t1);
+		entitymanager.persist( t1 );
+		entitymanager.persist( user1 );
 		/*
 		Equipo equipo = new Equipo( 2 , "Boca", null );
 		entitymanager.persist( equipo );
