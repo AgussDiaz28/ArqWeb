@@ -1,12 +1,9 @@
 package ArqWeb.ArqWeb;
 
 import java.util.HashSet;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-
-import org.hibernate.mapping.Set;
 
 public class Main {
 	public static void main(String[] args) {
@@ -67,7 +64,7 @@ public class Main {
 		//usuario 9
 		Usuario user9 = new Usuario();
 		user9.setApellido("Castle");
-		user9.setNombre("Frank	");
+		user9.setNombre("Frank");
 		entitymanager.persist( user9 );
 
 		//usuario 10
@@ -117,8 +114,6 @@ public class Main {
 		gp.add(pc1);
 		gp.add(pc2);
 		gp.add(pc4);
-
-		HashSet<Usuario> ga = new HashSet<Usuario>();
 
 		Trabajo t1 = new Trabajo();
 		user1.addTrabajoInvestigacion(t1);

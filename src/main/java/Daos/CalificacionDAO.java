@@ -1,4 +1,4 @@
-package ArqWeb.ArqWeb;
+package Daos;
 
 import java.util.List;
 
@@ -6,37 +6,39 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class UsuarioDAO implements DAO<Usuario,Integer>{
-	
-	private static UsuarioDAO daoUsuario;
-	
-	private UsuarioDAO(){}
+import ArqWeb.ArqWeb.Calificacion;
 
-	public static UsuarioDAO getInstance() {
-		if(daoUsuario == null)
-			daoUsuario = new UsuarioDAO();
-		return daoUsuario;
+public class CalificacionDAO implements DAO<Calificacion,Integer>{
+	
+	private static CalificacionDAO daoCalificacion;
+	
+	private CalificacionDAO(){}
+
+	public static CalificacionDAO getInstance() {
+		if(daoCalificacion == null)
+			daoCalificacion = new CalificacionDAO();
+		return daoCalificacion;
 	}
 
-	public Usuario findById(Integer id) {
+	public Calificacion findById(Integer id) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
 		EntityManager entityManager = emf.createEntityManager();
-		Usuario usuario = entityManager.find(Usuario.class, id);
+		Calificacion calificacion = entityManager.find(Calificacion.class, id);
 		entityManager.close();
-		return usuario;	
+		return calificacion;	
 	}
 
-	public Usuario persist(Usuario usuario) {
+	public Calificacion persist(Calificacion calificacion) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
 		EntityManager entityManager = emf.createEntityManager();
 		entityManager.getTransaction().begin();
-		entityManager.persist(usuario);
+		entityManager.persist(calificacion);
 		entityManager.getTransaction().commit();
 		entityManager.close();
-		return usuario;
+		return calificacion;
 	}
 
-	public List<Usuario> findAll() {
+	public List<Calificacion> findAll() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
 		EntityManager entityManager = emf.createEntityManager();
 		throw new UnsupportedOperationException();
@@ -48,7 +50,7 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 		throw new UnsupportedOperationException();
 	}
 
-	public Usuario update(Integer id, Usuario entity) {
+	public Calificacion update(Integer id, Calificacion entity) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
 		EntityManager entityManager = emf.createEntityManager();
 		throw new UnsupportedOperationException();

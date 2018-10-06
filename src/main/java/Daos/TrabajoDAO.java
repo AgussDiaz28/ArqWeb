@@ -1,4 +1,4 @@
-package ArqWeb.ArqWeb;
+package Daos;
 
 import java.util.List;
 
@@ -6,37 +6,39 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class TipoTrabajoDAO implements DAO<TipoTrabajo,Integer>{
-	
-	private static TipoTrabajoDAO daoTipoTrabajoDAO;
-	
-	private TipoTrabajoDAO(){}
+import ArqWeb.ArqWeb.Trabajo;
 
-	public static TipoTrabajoDAO getInstance() {
-		if(daoTipoTrabajoDAO == null)
-			daoTipoTrabajoDAO = new TipoTrabajoDAO();
-		return daoTipoTrabajoDAO;
+public class TrabajoDAO implements DAO<Trabajo,Integer>{
+	
+	private static TrabajoDAO daoTrabajo;
+	
+	private TrabajoDAO(){}
+
+	public static TrabajoDAO getInstance() {
+		if(daoTrabajo == null)
+			daoTrabajo = new TrabajoDAO();
+		return daoTrabajo;
 	}
 
-	public TipoTrabajo findById(Integer id) {
+	public Trabajo findById(Integer id) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
 		EntityManager entityManager = emf.createEntityManager();
-		TipoTrabajo tipoTrabajo = entityManager.find(TipoTrabajo.class, id);
+		Trabajo trabajo = entityManager.find(Trabajo.class, id);
 		entityManager.close();
-		return tipoTrabajo;	
+		return trabajo;	
 	}
 
-	public TipoTrabajo persist(TipoTrabajo tipoTrabajo) {
+	public Trabajo persist(Trabajo trabajo) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
 		EntityManager entityManager = emf.createEntityManager();
 		entityManager.getTransaction().begin();
-		entityManager.persist(tipoTrabajo);
+		entityManager.persist(trabajo);
 		entityManager.getTransaction().commit();
 		entityManager.close();
-		return tipoTrabajo;
+		return trabajo;
 	}
 
-	public List<TipoTrabajo> findAll() {
+	public List<Trabajo> findAll() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
 		EntityManager entityManager = emf.createEntityManager();
 		throw new UnsupportedOperationException();
@@ -48,7 +50,7 @@ public class TipoTrabajoDAO implements DAO<TipoTrabajo,Integer>{
 		throw new UnsupportedOperationException();
 	}
 
-	public TipoTrabajo update(Integer id, TipoTrabajo entity) {
+	public Trabajo update(Integer id, Trabajo entity) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
 		EntityManager entityManager = emf.createEntityManager();
 		throw new UnsupportedOperationException();

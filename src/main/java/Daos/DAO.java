@@ -1,4 +1,4 @@
-package ArqWeb.ArqWeb;
+package Daos;
 
 import java.io.Serializable;
 import java.util.List;

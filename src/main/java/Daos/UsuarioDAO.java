@@ -1,4 +1,4 @@
-package ArqWeb.ArqWeb;
+package Daos;
 
 import java.util.List;
 
@@ -6,37 +6,39 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class TrabajoDAO implements DAO<Trabajo,Integer>{
-	
-	private static TrabajoDAO daoTrabajo;
-	
-	private TrabajoDAO(){}
+import ArqWeb.ArqWeb.Usuario;
 
-	public static TrabajoDAO getInstance() {
-		if(daoTrabajo == null)
-			daoTrabajo = new TrabajoDAO();
-		return daoTrabajo;
+public class UsuarioDAO implements DAO<Usuario,Integer>{
+	
+	private static UsuarioDAO daoUsuario;
+	
+	private UsuarioDAO(){}
+
+	public static UsuarioDAO getInstance() {
+		if(daoUsuario == null)
+			daoUsuario = new UsuarioDAO();
+		return daoUsuario;
 	}
 
-	public Trabajo findById(Integer id) {
+	public Usuario findById(Integer id) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
 		EntityManager entityManager = emf.createEntityManager();
-		Trabajo trabajo = entityManager.find(Trabajo.class, id);
+		Usuario usuario = entityManager.find(Usuario.class, id);
 		entityManager.close();
-		return trabajo;	
+		return usuario;	
 	}
 
-	public Trabajo persist(Trabajo trabajo) {
+	public Usuario persist(Usuario usuario) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
 		EntityManager entityManager = emf.createEntityManager();
 		entityManager.getTransaction().begin();
-		entityManager.persist(trabajo);
+		entityManager.persist(usuario);
 		entityManager.getTransaction().commit();
 		entityManager.close();
-		return trabajo;
+		return usuario;
 	}
 
-	public List<Trabajo> findAll() {
+	public List<Usuario> findAll() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
 		EntityManager entityManager = emf.createEntityManager();
 		throw new UnsupportedOperationException();
@@ -48,7 +50,7 @@ public class TrabajoDAO implements DAO<Trabajo,Integer>{
 		throw new UnsupportedOperationException();
 	}
 
-	public Trabajo update(Integer id, Trabajo entity) {
+	public Usuario update(Integer id, Usuario entity) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
 		EntityManager entityManager = emf.createEntityManager();
 		throw new UnsupportedOperationException();
