@@ -1,4 +1,4 @@
-package Daos;
+package Dao;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import ArqWeb.ArqWeb.PalabrasClave;
+import Entity.PalabrasClave;
 
 public class PalabrasClaveDAO implements DAO<PalabrasClave,Integer>{
 	

@@ -10,11 +10,11 @@
 		<!-- <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider> -->
 		<!-- <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider> -->
 		
-		<class>ArqWeb.ArqWeb.PalabrasClave</class>
-		<class>ArqWeb.ArqWeb.TipoTrabajo</class>
-		<class>ArqWeb.ArqWeb.Trabajo</class>
-		<class>ArqWeb.ArqWeb.Usuario</class>
-		<class>ArqWeb.ArqWeb.Calificacion</class>
+		<class>Entity.PalabrasClave</class>
+		<class>Entity.TipoTrabajo</class>
+		<class>Entity.Trabajo</class>
+		<class>Entity.Usuario</class>
+		<class>Entity.Calificacion</class>
 
 		<properties>
 			

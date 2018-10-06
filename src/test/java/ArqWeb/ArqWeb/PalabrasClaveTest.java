@@ -13,6 +13,8 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import Entity.PalabrasClave;
+
 public class PalabrasClaveTest {
 	private PalabrasClave palabra; 
 	private String palabraKey = "METAPROGRAMMING";

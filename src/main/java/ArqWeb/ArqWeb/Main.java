@@ -5,6 +5,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import Entity.PalabrasClave;
+import Entity.Trabajo;
+import Entity.Usuario;
+
 public class Main {
 	public static void main(String[] args) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
