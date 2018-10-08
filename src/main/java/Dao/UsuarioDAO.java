@@ -1,5 +1,6 @@
 package Dao;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -46,15 +47,44 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 		Usuario user = this.findById(id);
 		if(user != null) {
 			if(user.isEvaluador()) {
-				Query query = entityManager.createQuery("SELECT * FROM evaluadores_trabajo WHERE evaluadores_id = id");
+				Query query = entityManager.createQuery("SELECT t.* FROM trabajo t JOIN evaluadores_trabajo et ON t.id = et.trabajo_id WHERE et.evaluadores_id = id");
 				List<Trabajo> trabajos = query.getResultList();
+				entityManager.close();
 				return trabajos;
 			}			
 		}
 		throw new UnsupportedOperationException();
 	}
 	
+	public List<Trabajo> findTrabajosEnEvaluacionEnRango(Integer id, Calendar inicio, Calendar fin){
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
+		EntityManager entityManager = emf.createEntityManager();
+		Usuario user = this.findById(id);
+		if(user != null) {
+			if(user.isEvaluador()) {
+				Query query = entityManager.createQuery("SELECT t.* FROM trabajo t JOIN evaluadores_trabajo et ON t.id = et.trabajo_id WHERE et.evaluadores_id = id HAVING t.fecha > inicio AND t.fecha < fin");
+				List<Trabajo> trabajos = query.getResultList();
+				entityManager.close();
+				return trabajos;
+			}			
+		}
+		throw new UnsupportedOperationException();
+	}
 	
+	public List<Trabajo> findAllTrabajosEnInvestigacion(Integer id){
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
+		EntityManager entityManager = emf.createEntityManager();
+		Usuario user = this.findById(id);
+		if(user != null) {
+			if(user.isEvaluador()) {
+				Query query = entityManager.createQuery("SELECT t.* FROM trabajo t JOIN autores_trabajo at ON t.id = at.trabajo_id WHERE at.autores_id = id");
+				List<Trabajo> trabajos = query.getResultList();
+				entityManager.close();
+				return trabajos;
+			}			
+		}
+		throw new UnsupportedOperationException();
+	}
 
 	public List<Usuario> findAll() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
