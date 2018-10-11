@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -37,6 +38,15 @@ public class Trabajo {
 	
 	@Column(nullable = false)
 	private boolean esExperto;
+	
+	@OneToOne
+	private TipoTrabajo tipoTrabajo;
+	
+	@Column
+	private String titulo;
+	
+	@Column
+	private String descripcion;
 	
 	//TODO - preguntar si esta bien la implementacion del equals
 	@Override

@@ -12,6 +12,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import Dao.CalificacionDAO;
+
 @Entity
 @Table(name="usuario")
 public class Usuario {
@@ -196,7 +198,7 @@ public class Usuario {
 	}
 	
 	public Calificacion calificarTrabajo(Trabajo trabajo, int nota) {
-		if(this.esEvaluador && nota >= 0) {
+		if(nota >= 0) {
 			Calificacion c = new Calificacion();
 			c.setEvaluador(this);
 			c.setTrabajo(trabajo);

@@ -1,5 +1,8 @@
 package Entity;
 
+import java.time.LocalDateTime;
+import java.util.Calendar;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name="calificacion")
@@ -23,6 +30,10 @@ public class Calificacion {
 	@JoinColumn(nullable=false)
 	private Usuario evaluador;
 	
+	@Column
+	@CreationTimestamp
+	private Calendar fecha;
+	
 	@Column(nullable = false)
 	private int nota;
 	
@@ -32,7 +43,6 @@ public class Calificacion {
 	//-----CONSTRUCTOR-----
 	
 	public Calificacion() {
-		
 	}
 	
 	//-----GETTERS & SETTERS-----
