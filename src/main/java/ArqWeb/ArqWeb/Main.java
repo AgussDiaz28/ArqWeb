@@ -114,29 +114,80 @@ public class Main {
 		pc10.setPalabra("FRAMEWORK");
 		entitymanager.persist( pc10 );
 
-		HashSet<PalabrasClave> gp = new HashSet<PalabrasClave>();
-		gp.add(pc1);
-		gp.add(pc2);
-		gp.add(pc4);
-
 		Trabajo t1 = new Trabajo();
-		user1.addTrabajoInvestigacion(t1);
 		entitymanager.persist( t1 );
-		entitymanager.persist( user1 );
-		/*
-		Equipo equipo = new Equipo( 2 , "Boca", null );
-		entitymanager.persist( equipo );
+		
+		Trabajo t2 = new Trabajo();
+		entitymanager.persist( t2 );
 
-		Jugador jugador = new Jugador(1, "Juan", "Perez", 28, equipo );
-		entitymanager.persist( jugador );
+		Trabajo t3 = new Trabajo();
+		entitymanager.persist( t3 );
 
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(2018,06,20);
+		Trabajo t4 = new Trabajo();
+		entitymanager.persist( t4 );
 
-		Torneo torneo = new Torneo(0, "Nacional", calendar);
-		entitymanager.persist( torneo );
+		Trabajo t5 = new Trabajo();
+		entitymanager.persist( t5 );
 
-		 */
+		Trabajo t6 = new Trabajo();
+		entitymanager.persist( t6 );
+
+		Trabajo t7 = new Trabajo();
+		entitymanager.persist( t7 );
+
+		Trabajo t8 = new Trabajo();
+		entitymanager.persist( t8 );
+
+		Trabajo t9 = new Trabajo();
+		entitymanager.persist( t9 );
+
+		Trabajo t10 = new Trabajo();
+		entitymanager.persist( t10 );
+		
+		
+		t1.setPalabraClave(pc3);
+		t1.setPalabraClave(pc7);
+		t1.setPalabraClave(pc5);
+		
+		t2.setPalabraClave(pc2);
+		t2.setPalabraClave(pc1);
+		t2.setPalabraClave(pc9);
+		
+		t3.setPalabraClave(pc5);
+		t3.setPalabraClave(pc6);
+		t3.setPalabraClave(pc3);
+		
+		//autores
+		user1.addTrabajoInvestigacion(t1);
+		user1.addTrabajoInvestigacion(t2);
+		user1.addTrabajoInvestigacion(t3);
+
+		user2.addTrabajoInvestigacion(t4);
+		user2.addTrabajoInvestigacion(t5);
+		user2.addTrabajoInvestigacion(t6);
+		user2.addTrabajoInvestigacion(t7);
+
+		user3.addTrabajoInvestigacion(t8);
+		user3.addTrabajoInvestigacion(t9);
+		user3.addTrabajoInvestigacion(t10);
+		
+		//evaluadores
+		user4.addTrabajoPendiente(t1);
+		user4.aceptarTrabajo(t1);
+		user5.addTrabajoPendiente(t1);
+		user5.aceptarTrabajo(t1);
+		user6.addTrabajoPendiente(t1);
+		user6.aceptarTrabajo(t1);
+		
+		user4.addTrabajoPendiente(t2);
+		user4.aceptarTrabajo(t2);
+		user5.addTrabajoPendiente(t2);
+		user5.aceptarTrabajo(t2);
+		user6.addTrabajoPendiente(t2);
+		user6.aceptarTrabajo(t2);
+		
+		user6.addTrabajoPendiente(t3);
+		user6.aceptarTrabajo(t3);
 
 		entitymanager.getTransaction( ).commit( );
 		entitymanager.close();

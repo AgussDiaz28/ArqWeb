@@ -47,7 +47,8 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 		Usuario user = this.findById(id);
 		if(user != null) {
 			if(user.isEvaluador()) {
-				Query query = entityManager.createQuery("SELECT t.* FROM trabajo t JOIN evaluador_trabajo et ON t.id = et.trabajo_id WHERE et.evaluador_id = id");
+				Query query = entityManager.createQuery("SELECT t.* FROM trabajo t JOIN evaluador_trabajo et ON t.id = et.trabajo_id WHERE et.evaluador_id = :id");
+				query.setParameter("id", id);
 				List<Trabajo> trabajos = query.getResultList();
 				entityManager.close();
 				return trabajos;
@@ -62,7 +63,10 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 		Usuario user = this.findById(id);
 		if(user != null) {
 			if(user.isEvaluador()) {
-				Query query = entityManager.createQuery("SELECT t.* FROM trabajo t JOIN evaluador_trabajo et ON t.id = et.trabajo_id WHERE et.evaluador_id = id HAVING t.fecha > inicio AND t.fecha < fin");
+				Query query = entityManager.createQuery("SELECT t.* FROM trabajo t JOIN evaluador_trabajo et ON t.id = et.trabajo_id WHERE et.evaluador_id = :id HAVING t.fecha > :inicio AND t.fecha < :fin");
+				query.setParameter("id", id);
+				query.setParameter("inicio", inicio);
+				query.setParameter("fin", fin);
 				List<Trabajo> trabajos = query.getResultList();
 				entityManager.close();
 				return trabajos;
@@ -77,7 +81,8 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 		Usuario user = this.findById(id);
 		if(user != null) {
 			if(user.isEvaluador()) {
-				Query query = entityManager.createQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id WHERE at.autor_id = id");
+				Query query = entityManager.createQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id WHERE at.autor_id = :id");
+				query.setParameter("id", id);
 				List<Trabajo> trabajos = query.getResultList();
 				entityManager.close();
 				return trabajos;
