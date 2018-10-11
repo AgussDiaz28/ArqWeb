@@ -33,7 +33,7 @@ public class PalabrasClaveTest {
 	@Test 
 	public void setNombre()
 	{
-		assertEquals(this.palabra.getPalabra(), 0);
+		assertEquals(this.palabra.getPalabra(), null);
 		this.palabra.setPalabra(this.palabraKey);
 	}
 	
@@ -53,11 +53,13 @@ public class PalabrasClaveTest {
 		assertEquals(this.palabra.isExperto(), p.isExperto());
 	}
 	
-	private boolean convertToBoolean(Integer num)
+	private boolean convertToBoolean(String num)
 	{
-		if	(num == 1) {
+		System.out.println(num.equals("1"));
+		System.out.println(num);
+		if	(num.equals("1")) {
 			return true;
-		}else if (num == 0) {
+		}else if (num.equals("0")) {
 			return false;
 		}else {
 			throw new IllegalArgumentException("El valor solo puede ser 0 o 1");
@@ -67,7 +69,7 @@ public class PalabrasClaveTest {
 	@DataProvider
 	  public Object[][] datosPalabras() {
 		  System.out.println("dp()");
-		  Object [][] ob=new Object[3][2];
+		  Object [][] ob = new Object[10][2];
 		  
 		  String csvFile = "src/resources/palabrasClaves.csv";
 		  String line = "";
@@ -76,17 +78,19 @@ public class PalabrasClaveTest {
 	      try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
 	             while ((line = br.readLine()) != null) {
 	               String[] items = line.split(cvsSplitBy);
-	               arreglo.add(items[0]);
+	               for (int i =0; i<items.length;i++) {
+	            	   System.out.println(items[i]);
+		               arreglo.add(items[i]);
+	               }
 	            }
 	       } 
 	        catch (IOException e) {
 	            e.printStackTrace();
 	       }	
-		  for(int i=0;i<20;i=i+2){
+		  for(int i=0;i<10;i++){
 			  PalabrasClave p2	= 	new PalabrasClave();
 			  p2.setPalabra(arreglo.get(i));
-			  Integer condicion =  new Integer (arreglo.get(i+1));
-			  p2.setEsExperto(this.convertToBoolean(condicion));
+			  p2.setEsExperto(this.convertToBoolean(arreglo.get(i+1)));
 			  ob[i][0]	=	new Integer(i);
 			  ob[i][1]	=	p2;
 		}  

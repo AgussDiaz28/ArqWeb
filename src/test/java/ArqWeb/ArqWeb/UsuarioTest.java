@@ -72,7 +72,7 @@ public class UsuarioTest {
 	@DataProvider
 	public Object[][] datosUsuarios() {
 		System.out.println("dp()");
-		Object [][] ob=new Object[3][2];
+		Object [][] ob=new Object[10][2];
 		  
 		String csvFile = "src/resources/usuarios.csv";
 		String line = "";
@@ -81,12 +81,15 @@ public class UsuarioTest {
 		try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
              while ((line = br.readLine()) != null) {
                String[] items = line.split(cvsSplitBy);
-               arreglo.add(items[0]);
+               for (int i = 0; i<items.length;i++) {
+            	   System.out.println(items[i]);
+	               arreglo.add(items[i]);
+               }
             }
 		} catch (IOException e) {
             e.printStackTrace();
        }	
-	   for(int i=0;i<20;i=i+2){
+	   for(int i=0;i<10;i++){
 		  Usuario u2	= 	new Usuario();
 		  u2.setNombre(arreglo.get(i));
 		  u2.setApellido(arreglo.get(i+1));
