@@ -39,19 +39,21 @@ public class TrabajoDAO implements DAO<Trabajo,Integer>{
 		return trabajo;	
 	}
 
-	public List<Trabajo> getTrabajoConPropiedades(Integer id) {
+	public List<Trabajo> getTrabajoConPropiedades(Integer trabajoId) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
 		EntityManager entityManager = emf.createEntityManager();
-		Query query = entityManager.createQuery("SELECT * FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id JOIN evaluador_trabajo et ON t.id = et.trabajo_id WHERE t.id = id");
+		Query query = entityManager.createQuery("SELECT * FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id JOIN evaluador_trabajo et ON t.id = et.trabajo_id WHERE t.id = :trabajoId");
+		query.setParameter("trabajoId", trabajoId);
 		List<Trabajo> trabajo = query.getResultList(); //lo deje asi porq tengo duda de si devuelve una tupla o varias por el tema del join. imagino q habra cosas duplicadas, probar DISTINCT
 		entityManager.close();
 		return trabajo;
 	}
 	
-	public List<Trabajo> getTrabajoConMismasPalabrasClave(Integer user_id) {
+	public List<Trabajo> getTrabajoConMismasPalabrasClave(Integer palabraClaveId) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
 		EntityManager entityManager = emf.createEntityManager();
-		Query query = entityManager.createQuery("SELECT * FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id JOIN evaluador_trabajo et ON t.id = et.trabajo_id WHERE t.id = id"); //matchear palabras clave
+		Query query = entityManager.createQuery("SELECT t.* FROM trabajo t JOIN trabajo_palabraClave tp ON t.id = tp.trabajo_id WHERE tp.palabraClave_id = :palabraClaveId");
+		query.setParameter("palabraClaveId", palabraClaveId);
 		List<Trabajo> trabajo = query.getResultList();
 		entityManager.close();
 		return trabajo;

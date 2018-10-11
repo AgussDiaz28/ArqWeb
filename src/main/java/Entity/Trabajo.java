@@ -7,7 +7,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -25,8 +28,13 @@ public class Trabajo {
 	private Set<Usuario> evaluadores;
 	
 	@ManyToMany
+	@JoinTable(
+			name = "trabajo_palabraClave",
+			joinColumns = { @JoinColumn(name = "trabajo_id") },
+			inverseJoinColumns = { @JoinColumn(name = "palabraClave_id") }
+		)
 	private Set<PalabrasClave> palabrasClave;
-
+	
 	@Column(nullable = false)
 	private boolean esExperto;
 	

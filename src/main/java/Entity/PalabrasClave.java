@@ -27,6 +27,9 @@ public class PalabrasClave {
 	@ManyToMany(mappedBy="palabrasClave")
 	private Set<Usuario> usuarios;
 	
+	@ManyToMany(mappedBy="palabrasClave")
+	private Set<Trabajo> trabajos;
+	
 	//-----CONSTRUCTOR-----
 	
 	public PalabrasClave() {

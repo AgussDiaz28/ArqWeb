@@ -32,6 +32,11 @@ public class Usuario {
 	private boolean esEvaluador;
 
 	@ManyToMany
+	@JoinTable(
+			name = "usuario_palabraClave",
+			joinColumns = { @JoinColumn(name = "usuario_id") },
+			inverseJoinColumns = { @JoinColumn(name = "palabraClave_id") }
+		)
 	private Set<PalabrasClave> palabrasClave;
 
 	/* Forma correcta de definir ManyToMany:
@@ -64,7 +69,12 @@ public class Usuario {
 	private Set<Trabajo> trabajosEnEvaluacion;
 
 	@ManyToMany
-	private Set<Trabajo> trabajosPendientes;
+	@JoinTable(
+			name = "evaluador_trabajoPendiente",
+			joinColumns = { @JoinColumn(name = "evaluador_id") },
+			inverseJoinColumns = { @JoinColumn(name = "trabajoPendiente_id") }
+		)
+	private Set<Trabajo> trabajosPendientes;	
 
 	@Column(nullable = true)
 	private boolean esExperto;
@@ -166,6 +176,7 @@ public class Usuario {
 		if(this.trabajosEnEvaluacion.size() <= 3 ) {
 			this.setTrabajoEnEvaluacion(trabajo);
 			this.esEvaluador = true;
+			trabajo.setEvaluador(this);
 		}
 	}
 
@@ -175,8 +186,7 @@ public class Usuario {
 
 	public void aceptarTrabajo(Trabajo trabajo) {
 		if(this.trabajosPendientes.contains(trabajo)) {
-			this.trabajosPendientes.remove(trabajo);
-			trabajo.setEvaluador(this);
+			this.trabajosPendientes.remove(trabajo);			
 			this.addTrabajoEvaluacion(trabajo);
 		}
 	}
@@ -184,7 +194,16 @@ public class Usuario {
 	public void rechazarTrabajo(Trabajo trabajo) {
 		this.trabajosPendientes.remove(trabajo);
 	}
-
-
-
+	
+	public Calificacion calificarTrabajo(Trabajo trabajo, int nota) {
+		if(this.esEvaluador && nota >= 0) {
+			Calificacion c = new Calificacion();
+			c.setEvaluador(this);
+			c.setTrabajo(trabajo);
+			c.setNota(nota);
+			//TODO persistir calificacion con CalificacionDAO
+			return c;
+		}
+		return null;
+	}
 }

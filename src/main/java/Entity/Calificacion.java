@@ -24,10 +24,10 @@ public class Calificacion {
 	private Usuario evaluador;
 	
 	@Column(nullable = false)
-	private int notaNumerica;
+	private int nota;
 	
 	@Column(nullable = true)
-	private String nota;
+	private String observacion;
 	
 	//-----CONSTRUCTOR-----
 	
@@ -53,20 +53,20 @@ public class Calificacion {
 		this.evaluador = evaluador;
 	}
 
-	public int getNotaNumerica() {
-		return notaNumerica;
-	}
-
-	public void setNotaNumerica(int notaNumerica) {
-		this.notaNumerica = notaNumerica;
-	}
-
-	public String getNota() {
+	public int getNota() {
 		return nota;
 	}
 
-	public void setNota(String nota) {
+	public void setNota(int nota) {
 		this.nota = nota;
+	}
+
+	public String getObservacion() {
+		return observacion;
+	}
+
+	public void setObservacion(String observacion) {
+		this.observacion = observacion;
 	}
 
 	public int getId() {
