@@ -13,6 +13,8 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import Entity.Usuario;
+
 public class UsuarioTest {
 	private Usuario user;
 	private String userName = "Agustin" ;

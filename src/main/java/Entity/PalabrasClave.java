@@ -1,4 +1,4 @@
-package ArqWeb.ArqWeb;
+package Entity;
 
 import java.util.HashSet;
 import java.util.Set;

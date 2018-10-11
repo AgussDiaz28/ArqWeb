@@ -1,4 +1,4 @@
-package Daos;
+package Dao;
 
 import java.util.List;
 
@@ -6,39 +6,39 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import ArqWeb.ArqWeb.PalabrasClave;
+import Entity.TipoTrabajo;
 
-public class PalabrasClaveDAO implements DAO<PalabrasClave,Integer>{
+public class TipoTrabajoDAO implements DAO<TipoTrabajo,Integer>{
 	
-	private static PalabrasClaveDAO daoPalabrasClave;
+	private static TipoTrabajoDAO daoTipoTrabajoDAO;
 	
-	private PalabrasClaveDAO(){}
+	private TipoTrabajoDAO(){}
 
-	public static PalabrasClaveDAO getInstance() {
-		if(daoPalabrasClave == null)
-			daoPalabrasClave = new PalabrasClaveDAO();
-		return daoPalabrasClave;
+	public static TipoTrabajoDAO getInstance() {
+		if(daoTipoTrabajoDAO == null)
+			daoTipoTrabajoDAO = new TipoTrabajoDAO();
+		return daoTipoTrabajoDAO;
 	}
 
-	public PalabrasClave findById(Integer id) {
+	public TipoTrabajo findById(Integer id) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
 		EntityManager entityManager = emf.createEntityManager();
-		PalabrasClave palabrasClave = entityManager.find(PalabrasClave.class, id);
+		TipoTrabajo tipoTrabajo = entityManager.find(TipoTrabajo.class, id);
 		entityManager.close();
-		return palabrasClave;	
+		return tipoTrabajo;	
 	}
 
-	public PalabrasClave persist(PalabrasClave palabrasClave) {
+	public TipoTrabajo persist(TipoTrabajo tipoTrabajo) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
 		EntityManager entityManager = emf.createEntityManager();
 		entityManager.getTransaction().begin();
-		entityManager.persist(palabrasClave);
+		entityManager.persist(tipoTrabajo);
 		entityManager.getTransaction().commit();
 		entityManager.close();
-		return palabrasClave;
+		return tipoTrabajo;
 	}
 
-	public List<PalabrasClave> findAll() {
+	public List<TipoTrabajo> findAll() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
 		EntityManager entityManager = emf.createEntityManager();
 		throw new UnsupportedOperationException();
@@ -50,7 +50,7 @@ public class PalabrasClaveDAO implements DAO<PalabrasClave,Integer>{
 		throw new UnsupportedOperationException();
 	}
 
-	public PalabrasClave update(Integer id, PalabrasClave entity) {
+	public TipoTrabajo update(Integer id, TipoTrabajo entity) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
 		EntityManager entityManager = emf.createEntityManager();
 		throw new UnsupportedOperationException();
