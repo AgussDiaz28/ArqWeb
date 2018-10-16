@@ -24,6 +24,7 @@ public class Main {
 		user1.setApellido("Strella");
 		user1.setNombre("Nicolas");
 		entitymanager.persist( user1 );
+		
 
 		//usuario 2
 		Usuario user2 = new Usuario();

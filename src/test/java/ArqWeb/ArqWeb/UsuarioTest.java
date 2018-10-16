@@ -88,18 +88,20 @@ public class UsuarioTest {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		}	
+		}
+		UsuarioDAO uDAO = UsuarioDAO.getInstance();	
 		for(int i=0;i<10;i++){
 			Usuario u2	= 	new Usuario();
 			u2.setNombre(arreglo.get(i));
 			u2.setApellido(arreglo.get(i+1));
 			ob[i][0]	=	new Integer(i);
 			ob[i][1]	=	u2;
-			UsuarioDAO uDAO = UsuarioDAO.getInstance();
+		
+			uDAO.persist(u2);
+			
 			System.out.println(u2.getId());
 			System.out.println(u2.getNombre());
 			System.out.println(u2.getApellido());
-			//uDAO.persist(u2);
 		}  
 		return ob;
 	}

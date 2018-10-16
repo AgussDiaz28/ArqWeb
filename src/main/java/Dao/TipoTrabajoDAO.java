@@ -21,16 +21,14 @@ public class TipoTrabajoDAO implements DAO<TipoTrabajo,Integer>{
 	}
 
 	public TipoTrabajo findById(Integer id) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		TipoTrabajo tipoTrabajo = entityManager.find(TipoTrabajo.class, id);
 		entityManager.close();
 		return tipoTrabajo;	
 	}
 
 	public TipoTrabajo persist(TipoTrabajo tipoTrabajo) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		entityManager.getTransaction().begin();
 		entityManager.persist(tipoTrabajo);
 		entityManager.getTransaction().commit();
@@ -39,20 +37,17 @@ public class TipoTrabajoDAO implements DAO<TipoTrabajo,Integer>{
 	}
 
 	public List<TipoTrabajo> findAll() {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		throw new UnsupportedOperationException();
 	}
 
 	public boolean delete(Integer id) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		throw new UnsupportedOperationException();
 	}
 
 	public TipoTrabajo update(Integer id, TipoTrabajo entity) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		throw new UnsupportedOperationException();
 	}
 

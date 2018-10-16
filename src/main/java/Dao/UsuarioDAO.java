@@ -4,8 +4,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import Entity.Trabajo;
@@ -24,8 +22,7 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	}
 
 	public Usuario persist(Usuario usuario) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		entityManager.getTransaction().begin();
 		entityManager.persist(usuario);
 		entityManager.getTransaction().commit();
@@ -34,16 +31,14 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	}
 
 	public Usuario findById(Integer id) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		Usuario usuario = entityManager.find(Usuario.class, id);
 		entityManager.close();
 		return usuario;	
 	}
 	
 	public List<Trabajo> findAllTrabajosEnEvaluacion(Integer id){
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		Usuario user = this.findById(id);
 		if(user != null) {
 			if(user.isEvaluador()) {
@@ -58,8 +53,7 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	}
 	
 	public List<Trabajo> findTrabajosEnEvaluacionEnRango(Integer id, Calendar inicio, Calendar fin){
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		Usuario user = this.findById(id);
 		if(user != null) {
 			if(user.isEvaluador()) {
@@ -76,8 +70,7 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	}
 	
 	public List<Trabajo> findAllTrabajosEnInvestigacion(Integer id){
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		Usuario user = this.findById(id);
 		if(user != null) {
 			if(user.isEvaluador()) {
@@ -92,20 +85,17 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	}
 
 	public List<Usuario> findAll() {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		throw new UnsupportedOperationException();
 	}
 
 	public Usuario update(Integer id, Usuario entity) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		throw new UnsupportedOperationException();
 	}
 
 	public boolean delete(Integer id) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 
 		Usuario usuario = this.findById(id);		
 		if(usuario != null) {

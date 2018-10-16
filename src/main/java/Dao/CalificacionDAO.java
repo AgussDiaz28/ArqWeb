@@ -21,16 +21,14 @@ public class CalificacionDAO implements DAO<Calificacion,Integer>{
 	}
 
 	public Calificacion findById(Integer id) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		Calificacion calificacion = entityManager.find(Calificacion.class, id);
 		entityManager.close();
 		return calificacion;	
 	}
 
 	public Calificacion persist(Calificacion calificacion) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		entityManager.getTransaction().begin();
 		entityManager.persist(calificacion);
 		entityManager.getTransaction().commit();
@@ -39,20 +37,17 @@ public class CalificacionDAO implements DAO<Calificacion,Integer>{
 	}
 
 	public List<Calificacion> findAll() {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		throw new UnsupportedOperationException();
 	}
 
 	public boolean delete(Integer id) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		throw new UnsupportedOperationException();
 	}
 
 	public Calificacion update(Integer id, Calificacion entity) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		throw new UnsupportedOperationException();
 	}
 

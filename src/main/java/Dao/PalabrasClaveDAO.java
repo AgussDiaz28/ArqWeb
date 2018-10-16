@@ -21,16 +21,14 @@ public class PalabrasClaveDAO implements DAO<PalabrasClave,Integer>{
 	}
 
 	public PalabrasClave findById(Integer id) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		PalabrasClave palabrasClave = entityManager.find(PalabrasClave.class, id);
 		entityManager.close();
 		return palabrasClave;	
 	}
 
 	public PalabrasClave persist(PalabrasClave palabrasClave) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		entityManager.getTransaction().begin();
 		entityManager.persist(palabrasClave);
 		entityManager.getTransaction().commit();
@@ -39,20 +37,17 @@ public class PalabrasClaveDAO implements DAO<PalabrasClave,Integer>{
 	}
 
 	public List<PalabrasClave> findAll() {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		throw new UnsupportedOperationException();
 	}
 
 	public boolean delete(Integer id) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		throw new UnsupportedOperationException();
 	}
 
 	public PalabrasClave update(Integer id, PalabrasClave entity) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Trabajo-Especial");
-		EntityManager entityManager = emf.createEntityManager();
+		EntityManager entityManager = EMF.createEntityManager();
 		throw new UnsupportedOperationException();
 	}
 
