@@ -208,4 +208,8 @@ public class Usuario {
 		}
 		return null;
 	}
+	
+	public String toString() {
+		return this.apellido+", "+this.nombre;
+	}
 }

@@ -1,6 +1,7 @@
 package Entity;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 
 
 @Entity
@@ -68,6 +70,22 @@ public class Trabajo {
 		return id;
 	}
 
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
 	public Set<Usuario> getAutores() {
 		return autores;
 	}
@@ -94,5 +112,22 @@ public class Trabajo {
 
 	public void setPalabraClave(PalabrasClave palabraClave) {
 		this.palabrasClave.add(palabraClave);
+	}
+	
+	public String toString() {
+		String result = "id: "+this.id+"; titulo: "+this.titulo+"; descripcion: "+this.descripcion+"; palabras clave: ";
+		Iterator<PalabrasClave> it = this.palabrasClave.iterator();
+		while(it.hasNext()) {
+			PalabrasClave pc = it.next();
+			result += pc.getPalabra()+" ";
+		}
+		
+		result += "; evaluadores: ";
+		Iterator<Usuario> us = this.evaluadores.iterator();
+		while(us.hasNext()) {
+			Usuario u = us.next();
+			result += u.toString()+" - ";
+		}
+		return result;
 	}
 }

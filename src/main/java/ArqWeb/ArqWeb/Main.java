@@ -6,6 +6,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import Dao.CalificacionDAO;
+import Dao.TrabajoDAO;
 import Entity.Calificacion;
 import Entity.PalabrasClave;
 import Entity.Trabajo;
@@ -118,6 +119,8 @@ public class Main {
 		entitymanager.persist( pc10 );
 
 		Trabajo t1 = new Trabajo();
+		t1.setTitulo("titulo");
+		t1.setDescripcion("lalalala");
 		entitymanager.persist( t1 );
 		
 		Trabajo t2 = new Trabajo();
@@ -193,10 +196,14 @@ public class Main {
 		user6.aceptarTrabajo(t3);
 		
 		Calificacion c = user4.calificarTrabajo(t1, 10);
-		CalificacionDAO.getInstance().persist(c);
-
+		CalificacionDAO.getInstance().persist(c);	
+		
+		System.out.println(t1.toString());
+		
 		entitymanager.getTransaction( ).commit( );
 		entitymanager.close();
 		emf.close();
+		
+		
 	}
 }
