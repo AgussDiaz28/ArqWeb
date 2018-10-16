@@ -121,11 +121,17 @@ public class Trabajo {
 			PalabrasClave pc = it.next();
 			result += pc.getPalabra()+" ";
 		}
+		result += "; autores: ";
+		Iterator<Usuario> usA = this.autores.iterator();
+		while(usA.hasNext()) {
+			Usuario u = usA.next();
+			result += u.toString()+" - ";
+		}
 		
 		result += "; evaluadores: ";
-		Iterator<Usuario> us = this.evaluadores.iterator();
-		while(us.hasNext()) {
-			Usuario u = us.next();
+		Iterator<Usuario> usE = this.evaluadores.iterator();
+		while(usE.hasNext()) {
+			Usuario u = usE.next();
 			result += u.toString()+" - ";
 		}
 		return result;
