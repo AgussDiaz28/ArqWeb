@@ -39,7 +39,7 @@ public class Usuario {
 			name = "usuario_palabraClave",
 			joinColumns = { @JoinColumn(name = "usuario_id") },
 			inverseJoinColumns = { @JoinColumn(name = "palabraClave_id") }
-		)
+			)
 	private Set<PalabrasClave> palabrasClave;
 
 	/* Forma correcta de definir ManyToMany:
@@ -57,18 +57,18 @@ public class Usuario {
 	 */
 	@ManyToMany 
 	@JoinTable(
-		name = "autor_trabajo",
-		joinColumns = { @JoinColumn(name = "autor_id") },
-		inverseJoinColumns = { @JoinColumn(name = "trabajo_id") }
-	)
+			name = "autor_trabajo",
+			joinColumns = { @JoinColumn(name = "autor_id") },
+			inverseJoinColumns = { @JoinColumn(name = "trabajo_id") }
+			)
 	private Set<Trabajo> trabajosEnInvestigacion;
 
 	@ManyToMany
 	@JoinTable(
-		name = "evaluador_trabajo",
-		joinColumns = { @JoinColumn(name = "evaluador_id") },
-		inverseJoinColumns = { @JoinColumn(name = "trabajo_id") }
-	)
+			name = "evaluador_trabajo",
+			joinColumns = { @JoinColumn(name = "evaluador_id") },
+			inverseJoinColumns = { @JoinColumn(name = "trabajo_id") }
+			)
 	private Set<Trabajo> trabajosEnEvaluacion;
 
 	@ManyToMany
@@ -76,7 +76,7 @@ public class Usuario {
 			name = "evaluador_trabajoPendiente",
 			joinColumns = { @JoinColumn(name = "evaluador_id") },
 			inverseJoinColumns = { @JoinColumn(name = "trabajoPendiente_id") }
-		)
+			)
 	private Set<Trabajo> trabajosPendientes;	
 
 	@Column(nullable = true)
@@ -139,13 +139,18 @@ public class Usuario {
 			this.esExperto = false;
 		}
 	}
-	
+
 	private boolean determinarExperto() {
-		for (Iterator<PalabrasClave> i = this.palabrasClave.iterator(); i.hasNext();) {
-		   if(i.next().isExperto()) {
-			  return true;
-		   }
+		for(PalabrasClave e: this.palabrasClave) {
+			if(e.isExperto()) {
+				return true;
+			}
 		}
+//		for (Iterator<PalabrasClave> i = this.palabrasClave.iterator(); i.hasNext();) {
+//			if(i.next().isExperto()) {
+//				return true;
+//			}
+//		}
 		return false;
 	}
 
@@ -198,7 +203,7 @@ public class Usuario {
 	}
 
 	public void addTrabajoPendiente(Trabajo trabajo) {
-		
+
 		this.trabajosPendientes.add(trabajo);
 	}
 
@@ -212,7 +217,7 @@ public class Usuario {
 	public void rechazarTrabajo(Trabajo trabajo) {
 		this.trabajosPendientes.remove(trabajo);
 	}
-	
+
 	public Calificacion calificarTrabajo(Trabajo trabajo, int nota) {
 		if(nota >= 0) {
 			Calificacion c = new Calificacion();
@@ -224,22 +229,27 @@ public class Usuario {
 		}
 		return null;
 	}
-	
+
 	public String toString() {
 		return this.apellido+", "+this.nombre;
 	}
-	
+
 	//TODO - checkear que ande
 	private boolean esEvaluadorApto(Trabajo t) {
 		Set<PalabrasClave> clavesTrabajo = t.getPalabrasClave();
 		if(t.getTipoTrabajo().isFullCheckNeeded()) {
 			return this.palabrasClave.containsAll(clavesTrabajo);
-		}else {			
-			for (Iterator<PalabrasClave> i = clavesTrabajo.iterator(); i.hasNext();) {
-			   if(this.palabrasClave.contains(i.next())) {
-				  return true; 
-			   }				 
+		}else {
+			for(PalabrasClave e: clavesTrabajo) {
+				if(this.palabrasClave.contains(e)) {
+					return true;
+				}
 			}
+//			for (Iterator<PalabrasClave> i = clavesTrabajo.iterator(); i.hasNext();) {
+//				if(this.palabrasClave.contains(i.next())) {
+//					return true; 
+//				}				 
+//			}
 		}
 		return false;
 	}
