@@ -61,6 +61,7 @@ public class Trabajo {
 		this.autores = new HashSet<Usuario>();
 		this.evaluadores = new HashSet<Usuario>();
 		this.palabrasClave = new HashSet<PalabrasClave>();
+		this.esExperto = false;
 	}
 	
 	//-----GETTERS & SETTERS-----
@@ -119,6 +120,10 @@ public class Trabajo {
 
 	public void setPalabraClave(PalabrasClave palabraClave) {
 		this.palabrasClave.add(palabraClave);
+		palabraClave.addTrabajo(this);
+		if(palabraClave.isExperto()) {
+			this.esExperto = true;
+		}
 	}
 	
 	public String toString() {

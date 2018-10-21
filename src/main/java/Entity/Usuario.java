@@ -37,7 +37,7 @@ public class Usuario {
 			name = "usuario_palabraClave",
 			joinColumns = { @JoinColumn(name = "usuario_id") },
 			inverseJoinColumns = { @JoinColumn(name = "palabraClave_id") }
-		)
+			)
 	private Set<PalabrasClave> palabrasClave;
 
 	/* Forma correcta de definir ManyToMany:
@@ -55,18 +55,18 @@ public class Usuario {
 	 */
 	@ManyToMany 
 	@JoinTable(
-		name = "autor_trabajo",
-		joinColumns = { @JoinColumn(name = "autor_id") },
-		inverseJoinColumns = { @JoinColumn(name = "trabajo_id") }
-	)
+			name = "autor_trabajo",
+			joinColumns = { @JoinColumn(name = "autor_id") },
+			inverseJoinColumns = { @JoinColumn(name = "trabajo_id") }
+			)
 	private Set<Trabajo> trabajosEnInvestigacion;
 
 	@ManyToMany
 	@JoinTable(
-		name = "evaluador_trabajo",
-		joinColumns = { @JoinColumn(name = "evaluador_id") },
-		inverseJoinColumns = { @JoinColumn(name = "trabajo_id") }
-	)
+			name = "evaluador_trabajo",
+			joinColumns = { @JoinColumn(name = "evaluador_id") },
+			inverseJoinColumns = { @JoinColumn(name = "trabajo_id") }
+			)
 	private Set<Trabajo> trabajosEnEvaluacion;
 
 	@ManyToMany
@@ -74,10 +74,10 @@ public class Usuario {
 			name = "evaluador_trabajoPendiente",
 			joinColumns = { @JoinColumn(name = "evaluador_id") },
 			inverseJoinColumns = { @JoinColumn(name = "trabajoPendiente_id") }
-		)
+			)
 	private Set<Trabajo> trabajosPendientes;	
 
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private boolean esExperto;
 
 	//-----CONSTRUCTOR-----
@@ -87,6 +87,7 @@ public class Usuario {
 		this.trabajosEnInvestigacion = new HashSet<Trabajo>();
 		this.trabajosEnEvaluacion = new HashSet<Trabajo>();
 		this.trabajosPendientes = new HashSet<Trabajo>();
+		this.esExperto = false;
 	}
 
 	public Usuario(String nombre, String apellido, Set<PalabrasClave> palabrasClave) {
@@ -131,6 +132,12 @@ public class Usuario {
 
 	public void setPalabraClave(PalabrasClave palabrasClave) {
 		this.palabrasClave.add(palabrasClave);
+		
+		if(palabrasClave.isExperto()) {
+			this.esExperto = true;
+		}
+		
+		palabrasClave.addUsuario(this);
 	}
 
 	public Set<Trabajo> getTrabajosEnInvestigacion() {
@@ -182,7 +189,7 @@ public class Usuario {
 	}
 
 	public void addTrabajoPendiente(Trabajo trabajo) {
-		
+
 		this.trabajosPendientes.add(trabajo);
 	}
 
@@ -196,7 +203,7 @@ public class Usuario {
 	public void rechazarTrabajo(Trabajo trabajo) {
 		this.trabajosPendientes.remove(trabajo);
 	}
-	
+
 	public Calificacion calificarTrabajo(Trabajo trabajo, int nota) {
 		if(nota >= 0) {
 			Calificacion c = new Calificacion();
@@ -208,22 +215,27 @@ public class Usuario {
 		}
 		return null;
 	}
-	
+
 	public String toString() {
 		return this.apellido+", "+this.nombre;
 	}
-	
+
 	//TODO - checkear que ande
 	private boolean esEvaluadorApto(Trabajo t) {
 		Set<PalabrasClave> clavesTrabajo = t.getPalabrasClave();
 		if(t.getTipoTrabajo().isFullCheckNeeded()) {
 			return this.palabrasClave.containsAll(clavesTrabajo);
-		}else {			
-			for (Iterator<PalabrasClave> i = clavesTrabajo.iterator(); i.hasNext();) {
-			   if(this.palabrasClave.contains(i)) {
-				  return true; 
-			   }				 
+		}else {
+			for(PalabrasClave e: clavesTrabajo) {
+				if(this.palabrasClave.contains(e)) {
+					return true;
+				}
 			}
+//			for (Iterator<PalabrasClave> i = clavesTrabajo.iterator(); i.hasNext();) {
+//				if(this.palabrasClave.contains(i.next())) {
+//					return true; 
+//				}				 
+//			}
 		}
 		return false;
 	}
