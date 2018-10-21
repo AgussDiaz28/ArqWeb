@@ -1,6 +1,7 @@
 package Entity;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -183,6 +184,7 @@ public class Usuario {
 	}
 
 	public void addTrabajoPendiente(Trabajo trabajo) {
+		
 		this.trabajosPendientes.add(trabajo);
 	}
 
@@ -211,5 +213,20 @@ public class Usuario {
 	
 	public String toString() {
 		return this.apellido+", "+this.nombre;
+	}
+	
+	//TODO - checkear que ande
+	private boolean esEvaluadorApto(Trabajo t) {
+		Set<PalabrasClave> clavesTrabajo = t.getPalabrasClave();
+		if(t.getTipoTrabajo().isFullCheckNeeded()) {
+			return this.palabrasClave.containsAll(clavesTrabajo);
+		}else {			
+			for (Iterator<PalabrasClave> i = clavesTrabajo.iterator(); i.hasNext();) {
+			   if(this.palabrasClave.contains(i)) {
+				  return true; 
+			   }				 
+			}
+		}
+		return false;
 	}
 }

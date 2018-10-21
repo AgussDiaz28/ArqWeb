@@ -17,12 +17,23 @@ public class TipoTrabajo {
 	@Column(nullable = false)
 	private String tipo;
 	
+	@Column
+	private boolean condEvaluacion; //si es 0 evalua todos, si es 1 evalua que contenga al menos una palabra clave
+	
 	//-----CONSTRUCTOR-----
 	
 	public TipoTrabajo() {
 		
 	}
 	
+	public boolean isFullCheckNeeded() {
+		return condEvaluacion;
+	}
+
+	public void setCondEvaluacion(boolean condEvaluacion) {
+		this.condEvaluacion = condEvaluacion;
+	}
+
 	public TipoTrabajo(String tipo) {
 		this.tipo = tipo;
 	}

@@ -89,6 +89,14 @@ public class Trabajo {
 	public Set<Usuario> getAutores() {
 		return autores;
 	}
+	
+	public TipoTrabajo getTipoTrabajo() {
+		return tipoTrabajo;
+	}
+
+	public void setTipoTrabajo(TipoTrabajo tipoTrabajo) {
+		this.tipoTrabajo = tipoTrabajo;
+	}
 
 	public void setAutor(Usuario autor) {
 		this.autores.add(autor);
