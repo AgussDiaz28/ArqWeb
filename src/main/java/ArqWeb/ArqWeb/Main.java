@@ -52,7 +52,7 @@ public class Main {
 			u2.setNombre(arreglo.get(i));
 			u2.setApellido(arreglo.get(i+1));
 			arregloU.add(u2);
-			uDAO.persist(u2);
+			//uDAO.persist(u2);
 		}  
 		return arregloU;
 	}
@@ -65,7 +65,7 @@ public class Main {
 			Trabajo t2	= 	new Trabajo();
 			t2.setDescripcion(arreglo.get(i));
 			arregloT.add(t2);
-			tDAO.persist(t2);
+			//tDAO.persist(t2);
 		}  
 		return arregloT;
 	}
@@ -79,7 +79,7 @@ public class Main {
 			p2.setPalabra(arreglo.get(i));
 			p2.setEsExperto(convertToBoolean(arreglo.get(i+1)));
 			arregloPC.add(p2);
-			pDAO.persist(p2);
+			//pDAO.persist(p2);
 		}  
 		return arregloPC;
 	}
@@ -93,7 +93,7 @@ public class Main {
 			tt2.setTipo(arreglo.get(i));
 			tt2.setCondEvaluacion(convertToBoolean(arreglo.get(i+1)));
 			arregloPC.add(tt2);
-			ttDAO.persist(tt2);
+			//ttDAO.persist(tt2);
 		}  
 		return arregloPC;
 	}
@@ -112,6 +112,20 @@ public class Main {
 		}
 	}
 	
+	public static void persistTipoTrabajos(ArrayList<TipoTrabajo> TipoTrabajos) {
+		TipoTrabajoDAO ttDAO = TipoTrabajoDAO.getInstance();
+		for (TipoTrabajo TT: TipoTrabajos) {
+			ttDAO.persist(TT);
+		}
+	}
+	
+	public static void persistPalabrasClave(ArrayList<PalabrasClave> PalabrasClave) {
+		PalabrasClaveDAO pcDAO = PalabrasClaveDAO.getInstance();
+		for (PalabrasClave PC: PalabrasClave) {
+			pcDAO.persist(PC);
+		}
+	}
+	
 	
 	public static void main(String[] args) {
 		ArrayList<Usuario> Usuarios = cargarUsuarios();
@@ -119,12 +133,11 @@ public class Main {
 		ArrayList<PalabrasClave> PalabrasClave = cargarPalabrasClaves();
 		ArrayList<TipoTrabajo> TipoTrabajos = cargarTipoTrabajos();
 		
+		Usuarios.get(1).setPalabraClave(PalabrasClave.get(0));
 		Usuarios.get(1).setPalabraClave(PalabrasClave.get(1));
 		Usuarios.get(1).setPalabraClave(PalabrasClave.get(2));
 		Usuarios.get(1).setPalabraClave(PalabrasClave.get(3));
 		Usuarios.get(1).setPalabraClave(PalabrasClave.get(4));
-		Usuarios.get(1).setPalabraClave(PalabrasClave.get(5));
-		
 		Trabajos.get(1).setPalabraClave(PalabrasClave.get(1));
 		Trabajos.get(1).setPalabraClave(PalabrasClave.get(2));
 		Trabajos.get(1).setPalabraClave(PalabrasClave.get(3));
@@ -137,18 +150,14 @@ public class Main {
 		Trabajos.get(3).setPalabraClave(PalabrasClave.get(5));
 		Trabajos.get(3).setTipoTrabajo(TipoTrabajos.get(2));
 		
-		Usuarios.get(1).setTrabajoEnInvestigacion(Trabajos.get(1));
-		Usuarios.get(2).setTrabajoEnInvestigacion(Trabajos.get(1));
-		Usuarios.get(3).setTrabajoEnInvestigacion(Trabajos.get(1));
-		
 		Usuarios.get(1).setTrabajoEnInvestigacion(Trabajos.get(2));
 		Usuarios.get(2).setTrabajoEnInvestigacion(Trabajos.get(2));
 		Usuarios.get(3).setTrabajoEnInvestigacion(Trabajos.get(2));
-		
-		UsuarioDAO uDAO = UsuarioDAO.getInstance();
-		uDAO.persist(Usuarios.get(1));
-		//persistTrabajos(Trabajos);
-		//persistUsers(Usuarios);
+
+		persistTipoTrabajos(TipoTrabajos);
+		persistPalabrasClave(PalabrasClave);
+		persistTrabajos(Trabajos);
+		persistUsers(Usuarios);
 
 	}
 }

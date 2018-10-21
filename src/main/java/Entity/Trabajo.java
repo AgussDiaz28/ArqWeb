@@ -120,7 +120,6 @@ public class Trabajo {
 
 	public void setPalabraClave(PalabrasClave palabraClave) {
 		this.palabrasClave.add(palabraClave);
-		palabraClave.addTrabajo(this);
 		if(palabraClave.isExperto()) {
 			this.esExperto = true;
 		}
