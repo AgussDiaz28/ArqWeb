@@ -79,7 +79,7 @@ public class Usuario {
 			)
 	private Set<Trabajo> trabajosPendientes;	
 
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private boolean esExperto;
 
 	//-----CONSTRUCTOR-----
@@ -89,6 +89,7 @@ public class Usuario {
 		this.trabajosEnInvestigacion = new HashSet<Trabajo>();
 		this.trabajosEnEvaluacion = new HashSet<Trabajo>();
 		this.trabajosPendientes = new HashSet<Trabajo>();
+		this.esExperto = false;
 	}
 
 	public Usuario(String nombre, String apellido, Set<PalabrasClave> palabrasClave) {
@@ -133,25 +134,12 @@ public class Usuario {
 
 	public void setPalabraClave(PalabrasClave palabrasClave) {
 		this.palabrasClave.add(palabrasClave);
-		if(determinarExperto()) {
+		
+		if(palabrasClave.isExperto()) {
 			this.esExperto = true;
-		}else {
-			this.esExperto = false;
 		}
-	}
-
-	private boolean determinarExperto() {
-		for(PalabrasClave e: this.palabrasClave) {
-			if(e.isExperto()) {
-				return true;
-			}
-		}
-//		for (Iterator<PalabrasClave> i = this.palabrasClave.iterator(); i.hasNext();) {
-//			if(i.next().isExperto()) {
-//				return true;
-//			}
-//		}
-		return false;
+		
+		palabrasClave.addUsuario(this);
 	}
 
 	public Set<Trabajo> getTrabajosEnInvestigacion() {

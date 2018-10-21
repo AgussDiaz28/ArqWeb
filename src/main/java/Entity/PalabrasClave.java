@@ -53,14 +53,26 @@ public class PalabrasClave {
 
 	public boolean isExperto() {
 		return esExperto;
+	}	
+	
+	public Set<Trabajo> getTrabajos() {
+		return trabajos;
+	}
+	
+	public Set<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	public void addTrabajo(Trabajo trabajo) {
+		this.trabajos.add(trabajo);
+	}
+
+	public void addUsuario(Usuario usuario) {
+		this.usuarios.add(usuario);
 	}
 
 	public void setEsExperto(boolean esExperto) {
 		this.esExperto = esExperto;
-	}
-
-	public Set<Usuario> getUsuarios() {
-		return usuarios;
 	}
 	
 	public int getId() {
