@@ -13,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import Dao.CalificacionDAO;
+
 @Entity
 @Table(name="usuario")
 public class Usuario {
@@ -144,16 +146,8 @@ public class Usuario {
 		return trabajosEnInvestigacion;
 	}
 
-	public void setTrabajoEnInvestigacion(Trabajo trabajo) {
-		this.trabajosEnInvestigacion.add(trabajo);
-	}
-
 	public Set<Trabajo> getTrabajosEnEvaluacion() {
 		return trabajosEnEvaluacion;
-	}
-
-	public void setTrabajoEnEvaluacion(Trabajo trabajo) {
-		this.trabajosEnEvaluacion.add(trabajo);
 	}
 
 	public Set<Trabajo> getTrabajosPendientes() {
@@ -176,21 +170,22 @@ public class Usuario {
 
 	public void addTrabajoInvestigacion(Trabajo trabajo) {
 		trabajo.setAutor(this);
-		this.setTrabajoEnInvestigacion(trabajo);
+		this.trabajosEnInvestigacion.add(trabajo);
 		this.esAutor = true;
 	}
 
 	private void addTrabajoEvaluacion(Trabajo trabajo) {
 		if(this.trabajosEnEvaluacion.size() <= 3 ) {
-			this.setTrabajoEnEvaluacion(trabajo);
+			this.trabajosEnEvaluacion.add(trabajo);
 			this.esEvaluador = true;
 			trabajo.setEvaluador(this);
 		}
 	}
 
 	public void addTrabajoPendiente(Trabajo trabajo) {
-
-		this.trabajosPendientes.add(trabajo);
+		if (this.esEvaluadorApto(trabajo)) {
+			this.trabajosPendientes.add(trabajo);
+		}
 	}
 
 	public void aceptarTrabajo(Trabajo trabajo) {
@@ -204,16 +199,17 @@ public class Usuario {
 		this.trabajosPendientes.remove(trabajo);
 	}
 
-	public Calificacion calificarTrabajo(Trabajo trabajo, int nota) {
-		if(nota >= 0) {
+	public boolean calificarTrabajo(Trabajo trabajo, int nota) {
+		if(nota >= 0 && this.trabajosEnEvaluacion.contains(trabajo)) {
 			Calificacion c = new Calificacion();
 			c.setEvaluador(this);
 			c.setTrabajo(trabajo);
 			c.setNota(nota);
-			//TODO persistir calificacion con CalificacionDAO
-			return c;
+			CalificacionDAO cDAO = CalificacionDAO.getInstance();
+			cDAO.persist(c);
+			return true;
 		}
-		return null;
+		return false;
 	}
 
 	public String toString() {
@@ -222,20 +218,17 @@ public class Usuario {
 
 	//TODO - checkear que ande
 	private boolean esEvaluadorApto(Trabajo t) {
-		Set<PalabrasClave> clavesTrabajo = t.getPalabrasClave();
-		if(t.getTipoTrabajo().isFullCheckNeeded()) {
-			return this.palabrasClave.containsAll(clavesTrabajo);
-		}else {
-			for(PalabrasClave e: clavesTrabajo) {
-				if(this.palabrasClave.contains(e)) {
-					return true;
+		if	(!this.trabajosEnInvestigacion.contains(t)) {
+			Set<PalabrasClave> clavesTrabajo = t.getPalabrasClave();
+			if(t.getTipoTrabajo().isFullCheckNeeded()) {
+				return this.palabrasClave.containsAll(clavesTrabajo);
+			}else {
+				for(PalabrasClave e: clavesTrabajo) {
+					if(this.palabrasClave.contains(e)) {
+						return true;
+					}
 				}
 			}
-//			for (Iterator<PalabrasClave> i = clavesTrabajo.iterator(); i.hasNext();) {
-//				if(this.palabrasClave.contains(i.next())) {
-//					return true; 
-//				}				 
-//			}
 		}
 		return false;
 	}

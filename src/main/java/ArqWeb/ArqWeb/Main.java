@@ -4,10 +4,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import Dao.CalificacionDAO;
 import Dao.PalabrasClaveDAO;
 import Dao.TipoTrabajoDAO;
 import Dao.TrabajoDAO;
 import Dao.UsuarioDAO;
+import Entity.Calificacion;
 import Entity.PalabrasClave;
 import Entity.TipoTrabajo;
 import Entity.Trabajo;
@@ -138,6 +141,7 @@ public class Main {
 		Usuarios.get(1).setPalabraClave(PalabrasClave.get(2));
 		Usuarios.get(1).setPalabraClave(PalabrasClave.get(3));
 		Usuarios.get(1).setPalabraClave(PalabrasClave.get(4));
+		
 		Trabajos.get(1).setPalabraClave(PalabrasClave.get(1));
 		Trabajos.get(1).setPalabraClave(PalabrasClave.get(2));
 		Trabajos.get(1).setPalabraClave(PalabrasClave.get(3));
@@ -150,10 +154,21 @@ public class Main {
 		Trabajos.get(3).setPalabraClave(PalabrasClave.get(5));
 		Trabajos.get(3).setTipoTrabajo(TipoTrabajos.get(2));
 		
-		Usuarios.get(1).setTrabajoEnInvestigacion(Trabajos.get(2));
-		Usuarios.get(2).setTrabajoEnInvestigacion(Trabajos.get(2));
-		Usuarios.get(3).setTrabajoEnInvestigacion(Trabajos.get(2));
-
+		Usuarios.get(2).addTrabajoInvestigacion(Trabajos.get(2));
+		Usuarios.get(3).addTrabajoInvestigacion(Trabajos.get(2));
+		
+		Usuarios.get(4).addTrabajoPendiente(Trabajos.get(1));
+		Usuarios.get(4).addTrabajoPendiente(Trabajos.get(2));
+		Usuarios.get(4).addTrabajoPendiente(Trabajos.get(3));
+		
+		Usuarios.get(1).addTrabajoPendiente(Trabajos.get(3));
+		Usuarios.get(1).addTrabajoPendiente(Trabajos.get(2));
+		Usuarios.get(1).addTrabajoPendiente(Trabajos.get(1));
+		
+		Usuarios.get(1).aceptarTrabajo(Trabajos.get(2));
+				
+		Usuarios.get(1).calificarTrabajo(Trabajos.get(2), 10);
+		
 		persistTipoTrabajos(TipoTrabajos);
 		persistPalabrasClave(PalabrasClave);
 		persistTrabajos(Trabajos);
