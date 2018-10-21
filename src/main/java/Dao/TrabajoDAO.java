@@ -39,7 +39,7 @@ public class TrabajoDAO implements DAO<Trabajo,Integer>{
 
 	public List<Trabajo> getTrabajoConPropiedades(Integer trabajoId) {
 		EntityManager entityManager = EMF.createEntityManager();
-		Query query = entityManager.createQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id JOIN evaluador_trabajo et ON t.id = et.trabajo_id WHERE t.id = :trabajoId");
+		Query query = entityManager.createQuery("SELECT * FROM trabajo WHERE id = :trabajoId");
 		query.setParameter("trabajoId", trabajoId);
 		List<Trabajo> trabajo = query.getResultList();
 		entityManager.close();

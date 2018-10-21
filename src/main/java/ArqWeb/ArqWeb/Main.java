@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import Dao.PalabrasClaveDAO;
 import Dao.TipoTrabajoDAO;
 import Dao.TrabajoDAO;
@@ -48,7 +47,7 @@ public class Main {
 		ArrayList<String> arreglo = readCSV("src/resources/usuarios.csv");
 		ArrayList<Usuario> arregloU = new ArrayList<Usuario>();
 		UsuarioDAO uDAO = UsuarioDAO.getInstance();	
-		for(int i=0;i<10;i++){
+		for(int i=0;i<arreglo.size();i+=2){
 			Usuario u2	= 	new Usuario();
 			u2.setNombre(arreglo.get(i));
 			u2.setApellido(arreglo.get(i+1));
@@ -62,9 +61,9 @@ public class Main {
 		ArrayList<String> arreglo = readCSV("src/resources/trabajos.csv");
 		ArrayList<Trabajo> arregloT = new ArrayList<Trabajo>();
 		TrabajoDAO tDAO = TrabajoDAO.getInstance();
-		for(int i=0;i<10;i++){
+		for(int i=0;i<arreglo.size();i++){
 			Trabajo t2	= 	new Trabajo();
-			t2.setDescription(arreglo.get(i));
+			t2.setDescripcion(arreglo.get(i));
 			arregloT.add(t2);
 			tDAO.persist(t2);
 		}  
@@ -75,7 +74,7 @@ public class Main {
 		ArrayList<String> arreglo = readCSV("src/resources/palabrasClaves.csv");
 		ArrayList<PalabrasClave> arregloPC = new ArrayList<PalabrasClave>();
 		PalabrasClaveDAO pDAO = PalabrasClaveDAO.getInstance();
-		for(int i=0;i<10;i++){
+		for(int i=0;i<arreglo.size();i+=2){
 			PalabrasClave p2	= 	new PalabrasClave();
 			p2.setPalabra(arreglo.get(i));
 			p2.setEsExperto(convertToBoolean(arreglo.get(i+1)));
@@ -86,25 +85,70 @@ public class Main {
 	}
 	
 	public static ArrayList<TipoTrabajo> cargarTipoTrabajos() {
-		ArrayList<String> arreglo = readCSV("src/resources/tiposTrabajos.csv");
+		ArrayList<String> arreglo = readCSV("src/resources/tipoTrabajo.csv");
 		ArrayList<TipoTrabajo> arregloPC = new ArrayList<TipoTrabajo>();
 		TipoTrabajoDAO ttDAO = TipoTrabajoDAO.getInstance();
-		for(int i=0;i<10;i++){
+		for(int i=0;i<arreglo.size();i+=2){
 			TipoTrabajo tt2	= 	new TipoTrabajo();
 			tt2.setTipo(arreglo.get(i));
-			
+			tt2.setCondEvaluacion(convertToBoolean(arreglo.get(i+1)));
 			arregloPC.add(tt2);
 			ttDAO.persist(tt2);
 		}  
 		return arregloPC;
 	}
 	
+	public static void persistUsers(ArrayList<Usuario> Usuarios) {
+		UsuarioDAO uDAO = UsuarioDAO.getInstance();
+		for (Usuario U: Usuarios) {
+			uDAO.persist(U);
+		}
+	}
+	
+	public static void persistTrabajos(ArrayList<Trabajo> Trabajos) {
+		TrabajoDAO tDAO = TrabajoDAO.getInstance();
+		for (Trabajo T: Trabajos) {
+			tDAO.persist(T);
+		}
+	}
+	
+	
 	public static void main(String[] args) {
-		
 		ArrayList<Usuario> Usuarios = cargarUsuarios();
 		ArrayList<Trabajo> Trabajos = cargarTrabajos();
 		ArrayList<PalabrasClave> PalabrasClave = cargarPalabrasClaves();
-
+		ArrayList<TipoTrabajo> TipoTrabajos = cargarTipoTrabajos();
 		
+		Usuarios.get(1).setPalabraClave(PalabrasClave.get(1));
+		Usuarios.get(1).setPalabraClave(PalabrasClave.get(2));
+		Usuarios.get(1).setPalabraClave(PalabrasClave.get(3));
+		Usuarios.get(1).setPalabraClave(PalabrasClave.get(4));
+		Usuarios.get(1).setPalabraClave(PalabrasClave.get(5));
+		
+		Trabajos.get(1).setPalabraClave(PalabrasClave.get(1));
+		Trabajos.get(1).setPalabraClave(PalabrasClave.get(2));
+		Trabajos.get(1).setPalabraClave(PalabrasClave.get(3));
+		Trabajos.get(1).setTipoTrabajo(TipoTrabajos.get(0));
+		
+		Trabajos.get(2).setPalabraClave(PalabrasClave.get(1));
+		Trabajos.get(2).setPalabraClave(PalabrasClave.get(2));
+		Trabajos.get(2).setTipoTrabajo(TipoTrabajos.get(1));
+		
+		Trabajos.get(3).setPalabraClave(PalabrasClave.get(5));
+		Trabajos.get(3).setTipoTrabajo(TipoTrabajos.get(2));
+		
+		Usuarios.get(1).setTrabajoEnInvestigacion(Trabajos.get(1));
+		Usuarios.get(2).setTrabajoEnInvestigacion(Trabajos.get(1));
+		Usuarios.get(3).setTrabajoEnInvestigacion(Trabajos.get(1));
+		
+		Usuarios.get(1).setTrabajoEnInvestigacion(Trabajos.get(2));
+		Usuarios.get(2).setTrabajoEnInvestigacion(Trabajos.get(2));
+		Usuarios.get(3).setTrabajoEnInvestigacion(Trabajos.get(2));
+		
+		UsuarioDAO uDAO = UsuarioDAO.getInstance();
+		uDAO.persist(Usuarios.get(1));
+		//persistTrabajos(Trabajos);
+		//persistUsers(Usuarios);
+
 	}
 }

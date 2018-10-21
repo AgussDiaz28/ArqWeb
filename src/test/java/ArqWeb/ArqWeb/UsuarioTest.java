@@ -96,12 +96,7 @@ public class UsuarioTest {
 			u2.setApellido(arreglo.get(i+1));
 			ob[i][0]	=	new Integer(i);
 			ob[i][1]	=	u2;
-		
 			uDAO.persist(u2);
-			
-			System.out.println(u2.getId());
-			System.out.println(u2.getNombre());
-			System.out.println(u2.getApellido());
 		}  
 		return ob;
 	}
