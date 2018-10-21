@@ -133,6 +133,20 @@ public class Usuario {
 
 	public void setPalabraClave(PalabrasClave palabrasClave) {
 		this.palabrasClave.add(palabrasClave);
+		if(determinarExperto()) {
+			this.esExperto = true;
+		}else {
+			this.esExperto = false;
+		}
+	}
+	
+	private boolean determinarExperto() {
+		for (Iterator<PalabrasClave> i = this.palabrasClave.iterator(); i.hasNext();) {
+		   if(i.next().isExperto()) {
+			  return true;
+		   }
+		}
+		return false;
 	}
 
 	public Set<Trabajo> getTrabajosEnInvestigacion() {
@@ -222,7 +236,7 @@ public class Usuario {
 			return this.palabrasClave.containsAll(clavesTrabajo);
 		}else {			
 			for (Iterator<PalabrasClave> i = clavesTrabajo.iterator(); i.hasNext();) {
-			   if(this.palabrasClave.contains(i)) {
+			   if(this.palabrasClave.contains(i.next())) {
 				  return true; 
 			   }				 
 			}
