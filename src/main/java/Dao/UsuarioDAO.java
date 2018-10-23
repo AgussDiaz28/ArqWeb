@@ -29,6 +29,15 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 		entityManager.close();
 		return usuario;
 	}
+	
+	public Usuario merge(Usuario usuario) {
+		EntityManager entityManager = EMF.createEntityManager();
+		entityManager.getTransaction().begin();
+		Usuario u = entityManager.merge(usuario);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return u;
+	}
 
 	public Usuario findById(Integer id) {
 		EntityManager entityManager = EMF.createEntityManager();

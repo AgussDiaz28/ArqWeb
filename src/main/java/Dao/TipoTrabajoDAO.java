@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import Entity.Calificacion;
 import Entity.TipoTrabajo;
 
 public class TipoTrabajoDAO implements DAO<TipoTrabajo,Integer>{
@@ -36,6 +37,15 @@ public class TipoTrabajoDAO implements DAO<TipoTrabajo,Integer>{
 		return tipoTrabajo;
 	}
 
+	public TipoTrabajo merge(TipoTrabajo tipoTrabajo) {
+		EntityManager entityManager = EMF.createEntityManager();
+		entityManager.getTransaction().begin();
+		TipoTrabajo tt = entityManager.merge(tipoTrabajo);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return tt;
+	}
+	
 	public List<TipoTrabajo> findAll() {
 		EntityManager entityManager = EMF.createEntityManager();
 		throw new UnsupportedOperationException();

@@ -34,6 +34,10 @@ public class Usuario {
 	@Column(nullable = false)
 	private boolean esEvaluador;
 
+	//temporal
+	@Column(nullable = true)
+	private int lugarTrabajo;
+
 	@ManyToMany
 	@JoinTable(
 			name = "usuario_palabraClave",
@@ -90,6 +94,8 @@ public class Usuario {
 		this.trabajosEnEvaluacion = new HashSet<Trabajo>();
 		this.trabajosPendientes = new HashSet<Trabajo>();
 		this.esExperto = false;
+		this.esEvaluador = false;
+		this.esAutor = false;
 	}
 
 	public Usuario(String nombre, String apellido, Set<PalabrasClave> palabrasClave) {
@@ -133,13 +139,12 @@ public class Usuario {
 	}
 
 	public void setPalabraClave(PalabrasClave palabrasClave) {
-		this.palabrasClave.add(palabrasClave);
-		
+		palabrasClave.addUsuario(this);
+		this.palabrasClave.add(palabrasClave);		
+
 		if(palabrasClave.isExperto()) {
 			this.esExperto = true;
 		}
-		
-		palabrasClave.addUsuario(this);
 	}
 
 	public Set<Trabajo> getTrabajosEnInvestigacion() {
@@ -166,33 +171,50 @@ public class Usuario {
 		return id;
 	}
 
-	//---- BUSINESS LOGIC ----
-
-	public void addTrabajoInvestigacion(Trabajo trabajo) {
-		trabajo.setAutor(this);
-		this.trabajosEnInvestigacion.add(trabajo);
-		this.esAutor = true;
+	public int getLugarTrabajo() {
+		return this.lugarTrabajo;
 	}
 
-	private void addTrabajoEvaluacion(Trabajo trabajo) {
+	public void setLugarTrabajo(int i) {
+		this.lugarTrabajo = i;
+	}
+
+	//---- BUSINESS LOGIC ----
+
+	public boolean addTrabajoInvestigacion(Trabajo trabajo) {
+		if(!this.trabajosPendientes.contains(trabajo) && !this.trabajosEnEvaluacion.contains(trabajo)) {
+			trabajo.setAutor(this);
+			this.trabajosEnInvestigacion.add(trabajo);
+			this.esAutor = true;
+			return true;
+		}
+		return false;
+	}
+
+	private boolean addTrabajoEvaluacion(Trabajo trabajo) {
 		if(this.trabajosEnEvaluacion.size() <= 3 ) {
 			this.trabajosEnEvaluacion.add(trabajo);
 			this.esEvaluador = true;
 			trabajo.setEvaluador(this);
+			return true;
 		}
+		return false;
 	}
 
-	public void addTrabajoPendiente(Trabajo trabajo) {
+	public boolean addTrabajoPendiente(Trabajo trabajo) {
 		if (this.esEvaluadorApto(trabajo)) {
 			this.trabajosPendientes.add(trabajo);
+			return true;
 		}
+		return false;
 	}
 
-	public void aceptarTrabajo(Trabajo trabajo) {
+	public boolean aceptarTrabajo(Trabajo trabajo) {
 		if(this.trabajosPendientes.contains(trabajo)) {
 			this.trabajosPendientes.remove(trabajo);			
-			this.addTrabajoEvaluacion(trabajo);
+			return this.addTrabajoEvaluacion(trabajo);
 		}
+		return false;
 	}
 
 	public void rechazarTrabajo(Trabajo trabajo) {
@@ -216,23 +238,35 @@ public class Usuario {
 		return this.apellido+", "+this.nombre;
 	}
 
+	public int countTrabajosEvaluacion() {
+		return this.trabajosEnEvaluacion.size();
+	}
+
 	//TODO - checkear que ande
 	private boolean esEvaluadorApto(Trabajo t) {
 		if	(!this.trabajosEnInvestigacion.contains(t)) {
-			Set<PalabrasClave> clavesTrabajo = t.getPalabrasClave();
-			if(t.getTipoTrabajo().isFullCheckNeeded()) {
-				return this.palabrasClave.containsAll(clavesTrabajo);
-			}else {
-				for(PalabrasClave e: clavesTrabajo) {
-					if(this.palabrasClave.contains(e)) {
-						return true;
+			boolean mismoLugarTrabajo = false;
+			for(Usuario u: t.getAutores()) {
+				if(u.getLugarTrabajo() == this.lugarTrabajo) {
+					mismoLugarTrabajo = true;
+				}
+			}
+			if(!mismoLugarTrabajo) {
+				Set<PalabrasClave> clavesTrabajo = t.getPalabrasClave();
+				if(t.getTipoTrabajo().isFullCheckNeeded()) {
+					return this.palabrasClave.containsAll(clavesTrabajo);
+				}else {
+					for(PalabrasClave e: clavesTrabajo) {
+						if(this.palabrasClave.contains(e)) {
+							return true;
+						}
 					}
 				}
 			}
 		}
 		return false;
 	}
-	
+
 	public boolean equals(Usuario u) {
 		return (this.id == u.getId() && this.nombre.equals(u.getNombre()) && this.apellido.equals(u.getApellido()));
 	}

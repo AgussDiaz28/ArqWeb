@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import Entity.Calificacion;
 import Entity.PalabrasClave;
 
 public class PalabrasClaveDAO implements DAO<PalabrasClave,Integer>{
@@ -34,6 +35,15 @@ public class PalabrasClaveDAO implements DAO<PalabrasClave,Integer>{
 		entityManager.getTransaction().commit();
 		entityManager.close();
 		return palabrasClave;
+	}
+	
+	public PalabrasClave merge(PalabrasClave palabrasClave) {
+		EntityManager entityManager = EMF.createEntityManager();
+		entityManager.getTransaction().begin();
+		PalabrasClave pc = entityManager.merge(palabrasClave);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return pc;
 	}
 
 	public List<PalabrasClave> findAll() {

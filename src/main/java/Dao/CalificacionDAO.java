@@ -35,6 +35,15 @@ public class CalificacionDAO implements DAO<Calificacion,Integer>{
 		entityManager.close();
 		return calificacion;
 	}
+	
+	public Calificacion merge(Calificacion calificacion) {
+		EntityManager entityManager = EMF.createEntityManager();
+		entityManager.getTransaction().begin();
+		Calificacion c = entityManager.merge(calificacion);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return c;
+	}
 
 	public List<Calificacion> findAll() {
 		EntityManager entityManager = EMF.createEntityManager();
@@ -50,5 +59,4 @@ public class CalificacionDAO implements DAO<Calificacion,Integer>{
 		EntityManager entityManager = EMF.createEntityManager();
 		throw new UnsupportedOperationException();
 	}
-
 }

@@ -13,6 +13,14 @@ public interface DAO<E, ID extends Serializable> {
 	 * @return the persisted entity or null if duplicate key
 	 */
 	public E persist(E entity);
+	
+	/**
+	 * Update an entity.
+	 * 
+	 * @param entity the entity to persist
+	 * @return the merged entity. Create a new entity if doesn't exist
+	 */
+	public E merge(E entity);
 
 	/**
 	 * Update entity given its id and an object with new values.

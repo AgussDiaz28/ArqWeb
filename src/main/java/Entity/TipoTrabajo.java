@@ -17,7 +17,7 @@ public class TipoTrabajo {
 	@Column(nullable = false)
 	private String tipo;
 	
-	@Column
+	@Column(nullable = false)
 	private boolean condEvaluacion; //si es 1 evalua todos, si es 0 evalua que contenga al menos una palabra clave
 	
 	//-----CONSTRUCTOR-----

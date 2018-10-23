@@ -7,6 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import Entity.TipoTrabajo;
 import Entity.Trabajo;
 
 public class TrabajoDAO implements DAO<Trabajo,Integer>{
@@ -28,6 +29,15 @@ public class TrabajoDAO implements DAO<Trabajo,Integer>{
 		entityManager.getTransaction().commit();
 		entityManager.close();
 		return trabajo;
+	}
+	
+	public Trabajo merge(Trabajo trabajo) {
+		EntityManager entityManager = EMF.createEntityManager();
+		entityManager.getTransaction().begin();
+		Trabajo t = entityManager.merge(trabajo);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return t;
 	}
 
 	public Trabajo findById(Integer id) {
