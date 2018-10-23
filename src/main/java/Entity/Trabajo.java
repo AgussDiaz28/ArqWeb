@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -20,7 +21,7 @@ import javax.persistence.Table;
 @Table(name="trabajo")
 public class Trabajo {
 	
-	@Id @GeneratedValue
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
 	@ManyToMany(mappedBy="trabajosEnInvestigacion")	
@@ -154,6 +155,6 @@ public class Trabajo {
 			return false;
 		}
 		Trabajo t = (Trabajo) o;
-		return (this.id == t.getId() && this.titulo.equals(t.getTitulo()));
+		return (this.id == t.getId() );
 	}
 }

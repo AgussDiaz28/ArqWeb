@@ -38,6 +38,10 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 		entityManager.close();
 		return u;
 	}
+	
+	public EntityManager getEntityManager() {
+		return EMF.createEntityManager();	
+	}
 
 	public Usuario findById(Integer id) {
 		EntityManager entityManager = EMF.createEntityManager();

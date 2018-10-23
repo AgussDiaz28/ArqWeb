@@ -4,127 +4,119 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
+import javax.persistence.EntityManager;
+
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import Dao.EMF;
 import Dao.PalabrasClaveDAO;
 import Dao.TipoTrabajoDAO;
 import Dao.TrabajoDAO;
 import Dao.UsuarioDAO;
+import Entity.LugarTrabajo;
 import Entity.PalabrasClave;
 import Entity.TipoTrabajo;
 import Entity.Trabajo;
 import Entity.Usuario;
 
 public class mainTest {
-
+	
+	private PalabrasClaveDAO pcDAO;
+	private UsuarioDAO uDAO;
+	private TrabajoDAO tDAO;
+	private TipoTrabajoDAO ttDAO;
+	private EntityManager EM;
+	
 	@BeforeSuite
-	public void crearYpersistirEntidades() 
-	{
-		TipoTrabajoDAO ttDAO = TipoTrabajoDAO.getInstance();
-		PalabrasClaveDAO pcDAO = PalabrasClaveDAO.getInstance();
-		TrabajoDAO tDAO = TrabajoDAO.getInstance();
-		UsuarioDAO uDAO = UsuarioDAO.getInstance();
-
-
-		//-----------TIPO TRABAJO-----------
+	public void init() {
+		this.pcDAO = PalabrasClaveDAO.getInstance();	
+		this.uDAO = UsuarioDAO.getInstance();
+		this.tDAO = TrabajoDAO.getInstance();
+		this.ttDAO = TipoTrabajoDAO.getInstance();
+		this.EM = EMF.createEntityManager();
+	}
+	
+	@Test
+	public void crearTipoTrabajos() {
 		TipoTrabajo typeT1 = new TipoTrabajo();
 		typeT1.setTipo("articulo");
 		typeT1.setCondEvaluacion(true);
 
 		TipoTrabajo typeT2 = new TipoTrabajo();
 		typeT2.setTipo("poster");
-		typeT2.setCondEvaluacion(false);		
-
-
-		//-----------PALABRAS CLAVE-----------
+		typeT2.setCondEvaluacion(false);	
+		
+		this.ttDAO.persist(typeT1);
+		this.ttDAO.persist(typeT2);
+		
+		assertEquals(typeT1,this.ttDAO.findById(typeT1.getId()));
+		assertEquals(typeT2,this.ttDAO.findById(typeT2.getId()));
+	}
+	
+	@Test
+	public void crearPalabrasClaves() {
 		PalabrasClave pc1 = new PalabrasClave();
 		pc1.setEsExperto(true);
 		pc1.setPalabra("mysql");
-
+		
 		PalabrasClave pc2 = new PalabrasClave();
 		pc2.setEsExperto(false);
 		pc2.setPalabra("database");
-
-
-		//-----------TRABAJOS-----------	
-		/* TRABAJOS:
-		 * 		id: 0; tipo: articulo; experto: true (mysql y database)
-		 *  	id: 1; tipo: articulo; experto: false
-		 *   	id: 2; tipo: poster; experto: true (mysql y database)
-		 *   	id: 3; tipo: poster; experto: false 
-		 */
+		
+		this.pcDAO.persist(pc1);
+		this.pcDAO.persist(pc2);
+		
+		assertEquals(pc1,this.pcDAO.findById(pc1.getId()));
+		assertEquals(pc2,this.pcDAO.findById(pc2.getId()));
+	}
+	
+	@Test
+	public void crearTrabajos() {
+		
 		Trabajo t1 = new Trabajo();
 		Trabajo t2 = new Trabajo();
 		Trabajo t3 = new Trabajo();
 		Trabajo t4 = new Trabajo();
-
-		t1.setTipoTrabajo(typeT1);
-		t2.setTipoTrabajo(typeT1);
-		t3.setTipoTrabajo(typeT2);
-		t4.setTipoTrabajo(typeT2);	
-
-		t1.setPalabraClave(pc1);
-		t1.setPalabraClave(pc2);
-		t2.setPalabraClave(pc2);
-		t3.setPalabraClave(pc1);
-		t3.setPalabraClave(pc2);
-		t4.setPalabraClave(pc2);
-
-
-		//-----------USUARIOS-----------
-		/* USUARIOS:
-		 * 		id: 0; experto: true (mysql)
-		 * 		id: 1; experto: true (mysql)
-		 *		id: 2; experto: true (mysql y database)
-		 * 		id: 3; experto: false (database)
-		 * 		id: 4; experto: false (database)
-		 * 		id: 5; experto: false (database)
-		 */	
-		Usuario u1 = new Usuario();
-		u1.setNombre("aaa");
-		u1.setApellido("111");
-		u1.setPalabraClave(pc1);
-
-		Usuario u2 = new Usuario();
-		u2.setNombre("bbb");
-		u2.setApellido("222");
-		u2.setPalabraClave(pc1);
-
-		Usuario u3 = new Usuario();
-		u3.setNombre("ccc");
-		u3.setApellido("333");
-		u3.setPalabraClave(pc1);
-		u3.setPalabraClave(pc2);
-
-		Usuario u4 = new Usuario();
-		u4.setNombre("ddd");
-		u4.setApellido("444");
-		u4.setPalabraClave(pc2);
-
-		Usuario u5 = new Usuario();
-		u5.setNombre("eee");
-		u5.setApellido("555");
-		u5.setPalabraClave(pc2);
-
-		Usuario u6 = new Usuario();
-		u6.setNombre("fff");
-		u6.setApellido("666");
-		u6.setPalabraClave(pc2);
-
-		//PERSISTIR		
-		pcDAO.persist(pc1);
-		pcDAO.persist(pc2);
 		
-		ttDAO.persist(typeT1);
-		ttDAO.persist(typeT2);		
-
 		tDAO.persist(t1);
 		tDAO.persist(t2);
 		tDAO.persist(t3);
 		tDAO.persist(t4);
+		
+		assertEquals(t1,tDAO.findById(t1.getId()));
+		assertEquals(t2,tDAO.findById(t2.getId()));
+		assertEquals(t3,tDAO.findById(t3.getId()));
+		assertEquals(t4,tDAO.findById(t4.getId()));
+	}
+	
+	@Test
+	public void crearUsuarios() {
+		Usuario u1 = new Usuario();
+		u1.setNombre("aaa");
+		u1.setApellido("111");
 
+		Usuario u2 = new Usuario();
+		u2.setNombre("bbb");
+		u2.setApellido("222");
+
+		Usuario u3 = new Usuario();
+		u3.setNombre("ccc");
+		u3.setApellido("333");
+
+		Usuario u4 = new Usuario();
+		u4.setNombre("ddd");
+		u4.setApellido("444");
+
+		Usuario u5 = new Usuario();
+		u5.setNombre("eee");
+		u5.setApellido("555");
+		
+		Usuario u6 = new Usuario();
+		u6.setNombre("fff");
+		u6.setApellido("666");
+		
 		uDAO.persist(u1);
 		uDAO.persist(u2);
 		uDAO.persist(u3);
@@ -132,62 +124,79 @@ public class mainTest {
 		uDAO.persist(u5);
 		uDAO.persist(u6);
 		
-		//test persistencia entidades
-		assertEquals(typeT1,ttDAO.findById(typeT1.getId()));
-		assertEquals(typeT2,ttDAO.findById(typeT2.getId()));
-
-		assertEquals(pc1,pcDAO.findById(pc1.getId()));
-		assertEquals(pc2,pcDAO.findById(pc2.getId()));
-
-		assertEquals(t1,tDAO.findById(t1.getId()));
-		assertEquals(t2,tDAO.findById(t2.getId()));
-		assertEquals(t3,tDAO.findById(t3.getId()));
-		assertEquals(t4,tDAO.findById(t4.getId()));
-
 		assertEquals(u1,uDAO.findById(u1.getId()));
 		assertEquals(u2,uDAO.findById(u2.getId()));
 		assertEquals(u3,uDAO.findById(u3.getId()));
 		assertEquals(u4,uDAO.findById(u4.getId()));
 		assertEquals(u5,uDAO.findById(u5.getId()));
 		assertEquals(u6,uDAO.findById(u6.getId()));
-
-		//test persistencia relaciones
-		assertEquals(tDAO.findById(0).getTipoTrabajo().getId(),ttDAO.findById(0));
-		assertEquals(tDAO.findById(1).getTipoTrabajo().getId(),ttDAO.findById(1));
-		assertEquals(tDAO.findById(2).getTipoTrabajo().getId(),ttDAO.findById(0));
-		assertEquals(tDAO.findById(3).getTipoTrabajo().getId(),ttDAO.findById(1));
-
-		//palabras clave de trabajos
-		for(int i = 0; i<4; i++) {
-			for(PalabrasClave pc: tDAO.findById(i).getPalabrasClave()) {
-				if(i%2 == 0) {
-					assertEquals(pc,pcDAO.findById(0));
-					assertEquals(pc,pcDAO.findById(1));
-				}else {
-					assertEquals(pc,pcDAO.findById(1));
-				}				
-			}
-		}
-
-		//palabras clave de usuarios
-		for(int i = 0; i<6; i++) {
-			for(PalabrasClave pc: uDAO.findById(i).getPalabrasClave()) {
-				if(i<2) {
-					assertEquals(pc,pcDAO.findById(0));
-				}else if(i>2) {
-					assertEquals(pc,pcDAO.findById(1));
-				}
-			}
-		}
-
-		//el usuario con id: 2 tiene dos palabras clave (mysql y database)
-		for(PalabrasClave pc: uDAO.findById(2).getPalabrasClave()) {
-			assertEquals(pc,pcDAO.findById(0));
-			assertEquals(pc,pcDAO.findById(1));
-		}
+		
 	}
-
-	@Test void checkEvaluadorApto() {
+	
+	@Test
+	public void setPalabrasClaveUsuarios() {
+		Usuario u1 = this.uDAO.findById(1);
+		Usuario u2 = this.uDAO.findById(2);
+		Usuario u3 = this.uDAO.findById(3);
+		Usuario u4 = this.uDAO.findById(4);
+		Usuario u5 = this.uDAO.findById(5);
+		Usuario u6 = this.uDAO.findById(6);
+		
+		PalabrasClave pc1 = this.pcDAO.findById(1);
+		PalabrasClave pc2  = this.pcDAO.findById(2);
+		
+		
+		u1.setPalabraClave(pc1);
+		u2.setPalabraClave(pc1);
+		u3.setPalabraClave(pc1);
+		u3.setPalabraClave(pc2);
+		u4.setPalabraClave(pc2);
+		u5.setPalabraClave(pc2);
+		u6.setPalabraClave(pc2);
+		
+	}
+	
+	@Test
+	public void setTipoTrabajos() {
+		Trabajo t1 = this.tDAO.findById(1);
+		Trabajo t2 = this.tDAO.findById(2);
+		Trabajo t3 = this.tDAO.findById(3);
+		Trabajo t4 = this.tDAO.findById(4);
+		
+		TipoTrabajo typeT1 = this.ttDAO.findById(1);
+		TipoTrabajo typeT2 = this.ttDAO.findById(2);
+		
+		t1.setTipoTrabajo(typeT1);
+		t2.setTipoTrabajo(typeT1);
+		t3.setTipoTrabajo(typeT2);
+		t4.setTipoTrabajo(typeT2);	
+	}
+	
+	@Test
+	public void setPalabrasClaveTrabajos() {
+		Trabajo t1 = this.tDAO.findById(1);
+		Trabajo t2 = this.tDAO.findById(2);
+		Trabajo t3 = this.tDAO.findById(3);
+		Trabajo t4 = this.tDAO.findById(4);
+		
+		PalabrasClave pc1 = this.pcDAO.findById(1);
+		PalabrasClave pc2  = this.pcDAO.findById(2);
+		
+		t1.setPalabraClave(pc1);
+		t1.setPalabraClave(pc2);
+		t2.setPalabraClave(pc2);
+		t3.setPalabraClave(pc1);
+		t3.setPalabraClave(pc2);
+		t4.setPalabraClave(pc2);
+		
+		assertEquals(this.tDAO.findById(0).getTipoTrabajo().getId(),this.ttDAO.findById(1));
+		assertEquals(this.tDAO.findById(1).getTipoTrabajo().getId(),this.ttDAO.findById(2));
+		assertEquals(this.tDAO.findById(2).getTipoTrabajo().getId(),this.ttDAO.findById(1));
+		assertEquals(this.tDAO.findById(3).getTipoTrabajo().getId(),this.ttDAO.findById(2));
+	}
+	
+	@Test 
+	public void checkEvaluadorApto() {
 		/* usuario:
 		 * 		id: 2; experto: true; palabras clave: mysql, database
 		 * 
@@ -207,8 +216,10 @@ public class mainTest {
 		assertTrue(u2.addTrabajoPendiente(t2)); //es apto
 		
 		u1.addTrabajoInvestigacion(t1);
-		u1.setLugarTrabajo(1);
-		u2.setLugarTrabajo(1);
+		LugarTrabajo lt = new LugarTrabajo();
+		lt.setNombre("qwavee");
+		u1.setLugarTrabajo(lt);
+		u2.setLugarTrabajo(lt);
 		assertFalse(u2.addTrabajoPendiente(t1)); //no es apto
 	}
 
