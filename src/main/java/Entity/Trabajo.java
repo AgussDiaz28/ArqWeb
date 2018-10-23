@@ -49,7 +49,6 @@ public class Trabajo {
 	@Column
 	private String descripcion;
 	
-	//TODO - preguntar si esta bien la implementacion del equals
 	@Override
 	public boolean equals(Object t) {
 		return this.id == ((Trabajo) t).getId();

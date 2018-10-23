@@ -20,9 +20,8 @@ import Entity.Usuario;
 public class mainTest {
 
 	@BeforeSuite
-	public void crearYpersistirEntidadesRelacionadas() 
+	public void crearYpersistirEntidades() 
 	{
-		//probar metodo MERGE y separar en creacion y persistencia(before suite) y relacion y merge(before test)
 		//preguntar si restriccion de evaluacion maximo de 3 articulos tambien lo es para poster y resumen o no
 
 		TipoTrabajoDAO ttDAO = TipoTrabajoDAO.getInstance();
@@ -188,7 +187,6 @@ public class mainTest {
 			assertEquals(pc.getId(),pcDAO.findById(0));
 			assertEquals(pc.getId(),pcDAO.findById(1));
 		}
-
 	}
 
 	@Test void checkEvaluadorApto() {

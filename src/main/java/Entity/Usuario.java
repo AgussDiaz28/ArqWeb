@@ -34,7 +34,7 @@ public class Usuario {
 	@Column(nullable = false)
 	private boolean esEvaluador;
 
-	//temporal
+	//temporal - hacer cambio
 	@Column(nullable = true)
 	private int lugarTrabajo;
 
@@ -266,8 +266,17 @@ public class Usuario {
 		}
 		return false;
 	}
-
-	public boolean equals(Usuario u) {
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o == null) {
+			return false;
+		}
+		if(!(o instanceof Usuario)) {
+			return false;
+		}
+		
+		Usuario u = (Usuario) o;
 		return (this.id == u.getId() && this.nombre.equals(u.getNombre()) && this.apellido.equals(u.getApellido()));
 	}
 }
