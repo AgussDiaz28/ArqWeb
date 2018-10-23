@@ -21,43 +21,32 @@ public class PalabrasClaveDAO implements DAO<PalabrasClave,Integer>{
 		return daoPalabrasClave;
 	}
 
-	public PalabrasClave findById(Integer id) {
-		EntityManager entityManager = EMF.createEntityManager();
-		PalabrasClave palabrasClave = entityManager.find(PalabrasClave.class, id);
-		entityManager.close();
-		return palabrasClave;	
+	public PalabrasClave findById(Integer id, EntityManager entityManager) {
+		return entityManager.find(PalabrasClave.class, id);
 	}
 
-	public PalabrasClave persist(PalabrasClave palabrasClave) {
-		EntityManager entityManager = EMF.createEntityManager();
-		entityManager.getTransaction().begin();
+	public PalabrasClave persist(PalabrasClave palabrasClave, EntityManager entityManager) {
 		entityManager.persist(palabrasClave);
-		entityManager.getTransaction().commit();
-		entityManager.close();
 		return palabrasClave;
 	}
 	
-	public PalabrasClave merge(PalabrasClave palabrasClave) {
-		EntityManager entityManager = EMF.createEntityManager();
-		entityManager.getTransaction().begin();
-		PalabrasClave pc = entityManager.merge(palabrasClave);
-		entityManager.getTransaction().commit();
-		entityManager.close();
-		return pc;
+	public EntityManager getEntityManager() {
+		return EMF.createEntityManager();	
+	}
+	
+	public PalabrasClave merge(PalabrasClave palabrasClave, EntityManager entityManager) {
+		return entityManager.merge(palabrasClave);
 	}
 
-	public List<PalabrasClave> findAll() {
-		EntityManager entityManager = EMF.createEntityManager();
+	public List<PalabrasClave> findAll( EntityManager entityManager) {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean delete(Integer id) {
-		EntityManager entityManager = EMF.createEntityManager();
+	public boolean delete(Integer id, EntityManager entityManager) {
 		throw new UnsupportedOperationException();
 	}
 
-	public PalabrasClave update(Integer id, PalabrasClave entity) {
-		EntityManager entityManager = EMF.createEntityManager();
+	public PalabrasClave update(Integer id, PalabrasClave entity, EntityManager entityManager) {
 		throw new UnsupportedOperationException();
 	}
 

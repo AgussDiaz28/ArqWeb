@@ -22,68 +22,47 @@ public class TrabajoDAO implements DAO<Trabajo,Integer>{
 		return daoTrabajo;
 	}
 
-	public Trabajo persist(Trabajo trabajo) {
-		EntityManager entityManager = EMF.createEntityManager();
-		entityManager.getTransaction().begin();
+	public Trabajo persist(Trabajo trabajo, EntityManager entityManager) {
 		entityManager.persist(trabajo);
-		entityManager.getTransaction().commit();
-		entityManager.close();
 		return trabajo;
 	}
 	
-	public Trabajo merge(Trabajo trabajo) {
-		EntityManager entityManager = EMF.createEntityManager();
-		entityManager.getTransaction().begin();
-		Trabajo t = entityManager.merge(trabajo);
-		entityManager.getTransaction().commit();
-		entityManager.close();
-		return t;
+	public EntityManager getEntityManager() {
+		return EMF.createEntityManager();	
+	}
+	
+	public Trabajo merge(Trabajo trabajo, EntityManager entityManager) {
+		return entityManager.merge(trabajo);
 	}
 
-	public Trabajo findById(Integer id) {
-		EntityManager entityManager = EMF.createEntityManager();
-		Trabajo trabajo = entityManager.find(Trabajo.class, id);
-		entityManager.close();
-		return trabajo;	
+	public Trabajo findById(Integer id, EntityManager entityManager) {
+		return entityManager.find(Trabajo.class, id);
 	}
 
-	public List<Trabajo> getTrabajoConPropiedades(Integer trabajoId) {
-		EntityManager entityManager = EMF.createEntityManager();
+	public List<Trabajo> getTrabajoConPropiedades(Integer trabajoId, EntityManager entityManager) {
 		Query query = entityManager.createQuery("SELECT * FROM trabajo WHERE id = :trabajoId");
 		query.setParameter("trabajoId", trabajoId);
-		List<Trabajo> trabajo = query.getResultList();
-		entityManager.close();
-		return trabajo;
+		return query.getResultList();
 	}
 	
-	public List<Trabajo> getTrabajoConMismasPalabrasClave(Integer palabraClaveId) {
-		EntityManager entityManager = EMF.createEntityManager();
+	public List<Trabajo> getTrabajoConMismasPalabrasClave(Integer palabraClaveId, EntityManager entityManager) {
 		Query query = entityManager.createQuery("SELECT t.* FROM trabajo t JOIN trabajo_palabraClave tp ON t.id = tp.trabajo_id WHERE tp.palabraClave_id = :palabraClaveId");
 		query.setParameter("palabraClaveId", palabraClaveId);
-		List<Trabajo> trabajo = query.getResultList();
-		entityManager.close();
-		return trabajo;
+		return query.getResultList();
 	}
 
-	public List<Trabajo> findAll() {
-		EntityManager entityManager = EMF.createEntityManager();
+	public List<Trabajo> findAll( EntityManager entityManager) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Trabajo update(Integer id, Trabajo entity) {
-		EntityManager entityManager = EMF.createEntityManager();
+	public Trabajo update(Integer id, Trabajo entity, EntityManager entityManager) {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean delete(Integer id) {
-		EntityManager entityManager = EMF.createEntityManager();
-
-		Trabajo trabajo = this.findById(id);		
+	public boolean delete(Integer id, EntityManager entityManager) {
+		Trabajo trabajo = this.findById(id, entityManager);		
 		if(trabajo != null) {
-			entityManager.getTransaction().begin();
 			entityManager.remove(trabajo);
-			entityManager.getTransaction().commit();
-			entityManager.close();
 			return true;
 		}
 		return false;

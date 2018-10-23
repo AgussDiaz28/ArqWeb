@@ -1,7 +1,6 @@
 package Entity;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -12,11 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import Dao.CalificacionDAO;
 
 @Entity
 @Table(name="usuario")
@@ -229,8 +226,6 @@ public class Usuario {
 			c.setEvaluador(this);
 			c.setTrabajo(trabajo);
 			c.setNota(nota);
-			CalificacionDAO cDAO = CalificacionDAO.getInstance();
-			cDAO.persist(c);
 			return true;
 		}
 		return false;
@@ -244,7 +239,6 @@ public class Usuario {
 		return this.trabajosEnEvaluacion.size();
 	}
 
-	//TODO - checkear que ande
 	private boolean esEvaluadorApto(Trabajo t) {
 		if	(!this.trabajosEnInvestigacion.contains(t)) {
 			boolean mismoLugarTrabajo = false;

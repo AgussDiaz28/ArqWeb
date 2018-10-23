@@ -20,43 +20,32 @@ public class CalificacionDAO implements DAO<Calificacion,Integer>{
 		return daoCalificacion;
 	}
 
-	public Calificacion findById(Integer id) {
-		EntityManager entityManager = EMF.createEntityManager();
-		Calificacion calificacion = entityManager.find(Calificacion.class, id);
-		entityManager.close();
-		return calificacion;	
+	public Calificacion findById(Integer id, EntityManager entityManager) {
+		return entityManager.find(Calificacion.class, id);	
 	}
 
-	public Calificacion persist(Calificacion calificacion) {
-		EntityManager entityManager = EMF.createEntityManager();
-		entityManager.getTransaction().begin();
+	public Calificacion persist(Calificacion calificacion, EntityManager entityManager) {
 		entityManager.persist(calificacion);
-		entityManager.getTransaction().commit();
-		entityManager.close();
 		return calificacion;
 	}
 	
-	public Calificacion merge(Calificacion calificacion) {
-		EntityManager entityManager = EMF.createEntityManager();
-		entityManager.getTransaction().begin();
-		Calificacion c = entityManager.merge(calificacion);
-		entityManager.getTransaction().commit();
-		entityManager.close();
-		return c;
+	public EntityManager getEntityManager() {
+		return EMF.createEntityManager();	
+	}
+	
+	public Calificacion merge(Calificacion calificacion, EntityManager entityManager) {
+		return entityManager.merge(calificacion);
 	}
 
-	public List<Calificacion> findAll() {
-		EntityManager entityManager = EMF.createEntityManager();
+	public List<Calificacion> findAll(EntityManager entityManager) {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean delete(Integer id) {
-		EntityManager entityManager = EMF.createEntityManager();
+	public boolean delete(Integer id, EntityManager entityManager) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Calificacion update(Integer id, Calificacion entity) {
-		EntityManager entityManager = EMF.createEntityManager();
+	public Calificacion update(Integer id, Calificacion entity, EntityManager entityManager) {
 		throw new UnsupportedOperationException();
 	}
 }

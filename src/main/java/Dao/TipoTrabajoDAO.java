@@ -21,43 +21,32 @@ public class TipoTrabajoDAO implements DAO<TipoTrabajo,Integer>{
 		return daoTipoTrabajoDAO;
 	}
 
-	public TipoTrabajo findById(Integer id) {
-		EntityManager entityManager = EMF.createEntityManager();
-		TipoTrabajo tipoTrabajo = entityManager.find(TipoTrabajo.class, id);
-		entityManager.close();
-		return tipoTrabajo;	
+	public TipoTrabajo findById(Integer id, EntityManager entityManager) {
+		return entityManager.find(TipoTrabajo.class, id);
 	}
 
-	public TipoTrabajo persist(TipoTrabajo tipoTrabajo) {
-		EntityManager entityManager = EMF.createEntityManager();
-		entityManager.getTransaction().begin();
+	public TipoTrabajo persist(TipoTrabajo tipoTrabajo, EntityManager entityManager) {
 		entityManager.persist(tipoTrabajo);
-		entityManager.getTransaction().commit();
-		entityManager.close();
 		return tipoTrabajo;
 	}
+	
+	public EntityManager getEntityManager() {
+		return EMF.createEntityManager();	
+	}
 
-	public TipoTrabajo merge(TipoTrabajo tipoTrabajo) {
-		EntityManager entityManager = EMF.createEntityManager();
-		entityManager.getTransaction().begin();
-		TipoTrabajo tt = entityManager.merge(tipoTrabajo);
-		entityManager.getTransaction().commit();
-		entityManager.close();
-		return tt;
+	public TipoTrabajo merge(TipoTrabajo tipoTrabajo, EntityManager entityManager) {
+		return entityManager.merge(tipoTrabajo);
 	}
 	
-	public List<TipoTrabajo> findAll() {
-		EntityManager entityManager = EMF.createEntityManager();
+	public List<TipoTrabajo> findAll( EntityManager entityManager) {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean delete(Integer id) {
-		EntityManager entityManager = EMF.createEntityManager();
+	public boolean delete(Integer id, EntityManager entityManager) {
 		throw new UnsupportedOperationException();
 	}
 
-	public TipoTrabajo update(Integer id, TipoTrabajo entity) {
-		EntityManager entityManager = EMF.createEntityManager();
+	public TipoTrabajo update(Integer id, TipoTrabajo entity, EntityManager entityManager) {
 		throw new UnsupportedOperationException();
 	}
 
