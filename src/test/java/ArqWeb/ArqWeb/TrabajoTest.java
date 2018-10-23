@@ -14,7 +14,7 @@ import Dao.TrabajoDAO;
 import Entity.Trabajo;
 import Entity.Usuario;
 
-public class trabajoTest {
+public class TrabajoTest {
 	
 	private Trabajo trabajo;
 	

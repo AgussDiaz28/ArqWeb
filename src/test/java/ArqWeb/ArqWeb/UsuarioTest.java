@@ -24,7 +24,7 @@ public class UsuarioTest {
 	@BeforeSuite
 	public static void setUpBeforeSuite() throws Exception 
 	{
-		System.out.println("Arranca el Test de Palabras Claves");
+		System.out.println("Arranca el Test de Usuario");
 	}
 
 	@Test

@@ -232,4 +232,8 @@ public class Usuario {
 		}
 		return false;
 	}
+	
+	public boolean equals(Usuario u) {
+		return (this.id == u.getId() && this.nombre.equals(u.getNombre()) && this.apellido.equals(u.getApellido()));
+	}
 }
