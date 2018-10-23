@@ -34,6 +34,7 @@ public class PalabrasClave {
 	
 	public PalabrasClave() {
 		this.usuarios = new HashSet<Usuario>();	
+		this.trabajos = new HashSet<Trabajo>();	
 	}
 	
 	public PalabrasClave(String palabra, boolean esExperto) {

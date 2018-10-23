@@ -133,25 +133,25 @@ public class mainTest {
 		uDAO.persist(u4);
 		uDAO.persist(u5);
 		uDAO.persist(u6);
-
+		
 		//test persistencia entidades
-		assertEquals(typeT1.getId(),ttDAO.findById(typeT1.getId()));
-		assertEquals(typeT2.getId(),ttDAO.findById(typeT2.getId()));
+		assertEquals(typeT1,ttDAO.findById(typeT1.getId()));
+		assertEquals(typeT2,ttDAO.findById(typeT2.getId()));
 
-		assertEquals(pc1.getId(),pcDAO.findById(pc1.getId()));
-		assertEquals(pc2.getId(),pcDAO.findById(pc2.getId()));
+		assertEquals(pc1,pcDAO.findById(pc1.getId()));
+		assertEquals(pc2,pcDAO.findById(pc2.getId()));
 
-		assertEquals(t1.getId(),tDAO.findById(t1.getId()));
-		assertEquals(t2.getId(),tDAO.findById(t2.getId()));
-		assertEquals(t3.getId(),tDAO.findById(t3.getId()));
-		assertEquals(t4.getId(),tDAO.findById(t4.getId()));
+		assertEquals(t1,tDAO.findById(t1.getId()));
+		assertEquals(t2,tDAO.findById(t2.getId()));
+		assertEquals(t3,tDAO.findById(t3.getId()));
+		assertEquals(t4,tDAO.findById(t4.getId()));
 
-		assertEquals(u1.getId(),uDAO.findById(u1.getId()));
-		assertEquals(u2.getId(),uDAO.findById(u2.getId()));
-		assertEquals(u3.getId(),uDAO.findById(u3.getId()));
-		assertEquals(u4.getId(),uDAO.findById(u4.getId()));
-		assertEquals(u5.getId(),uDAO.findById(u5.getId()));
-		assertEquals(u6.getId(),uDAO.findById(u6.getId()));
+		assertEquals(u1,uDAO.findById(u1.getId()));
+		assertEquals(u2,uDAO.findById(u2.getId()));
+		assertEquals(u3,uDAO.findById(u3.getId()));
+		assertEquals(u4,uDAO.findById(u4.getId()));
+		assertEquals(u5,uDAO.findById(u5.getId()));
+		assertEquals(u6,uDAO.findById(u6.getId()));
 
 		//test persistencia relaciones
 		assertEquals(tDAO.findById(0).getTipoTrabajo().getId(),ttDAO.findById(0));

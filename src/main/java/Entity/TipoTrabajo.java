@@ -49,5 +49,18 @@ public class TipoTrabajo {
 	public int getId() {
 		return id;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o == null) {
+			return false;
+		}
+		if(!(o instanceof TipoTrabajo)) {
+			return false;
+		}
+		
+		TipoTrabajo u = (TipoTrabajo) o;
+		return (this.id == u.getId() && this.tipo.equals(u.tipo));
+	}
 
 }
