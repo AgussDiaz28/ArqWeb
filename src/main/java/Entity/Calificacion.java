@@ -84,5 +84,15 @@ public class Calificacion {
 		return id;
 	}
 
-	
+	@Override
+	public boolean equals(Object o) {
+		if(o == null) {
+			return false;
+		}
+		if(!(o instanceof Calificacion)) {
+			return false;
+		}
+		Calificacion c = (Calificacion) o;
+		return (this.id == c.getId() && this.nota == c.getNota());
+	}
 }
