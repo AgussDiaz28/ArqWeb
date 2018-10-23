@@ -22,8 +22,6 @@ public class mainTest {
 	@BeforeSuite
 	public void crearYpersistirEntidades() 
 	{
-		//preguntar si restriccion de evaluacion maximo de 3 articulos tambien lo es para poster y resumen o no
-
 		TipoTrabajoDAO ttDAO = TipoTrabajoDAO.getInstance();
 		PalabrasClaveDAO pcDAO = PalabrasClaveDAO.getInstance();
 		TrabajoDAO tDAO = TrabajoDAO.getInstance();
@@ -116,11 +114,11 @@ public class mainTest {
 		u6.setPalabraClave(pc2);
 
 		//PERSISTIR		
-		ttDAO.persist(typeT1);
-		ttDAO.persist(typeT2);
-
 		pcDAO.persist(pc1);
 		pcDAO.persist(pc2);
+		
+		ttDAO.persist(typeT1);
+		ttDAO.persist(typeT2);		
 
 		tDAO.persist(t1);
 		tDAO.persist(t2);
@@ -135,23 +133,23 @@ public class mainTest {
 		uDAO.persist(u6);
 
 		//test persistencia entidades
-		assertEquals(typeT1.getId(),ttDAO.findById(typeT1.getId()));
-		assertEquals(typeT2.getId(),ttDAO.findById(typeT2.getId()));
+		assertEquals(typeT1,ttDAO.findById(typeT1.getId()));
+		assertEquals(typeT2,ttDAO.findById(typeT2.getId()));
 
-		assertEquals(pc1.getId(),pcDAO.findById(pc1.getId()));
-		assertEquals(pc2.getId(),pcDAO.findById(pc2.getId()));
+		assertEquals(pc1,pcDAO.findById(pc1.getId()));
+		assertEquals(pc2,pcDAO.findById(pc2.getId()));
 
-		assertEquals(t1.getId(),tDAO.findById(t1.getId()));
-		assertEquals(t2.getId(),tDAO.findById(t2.getId()));
-		assertEquals(t3.getId(),tDAO.findById(t3.getId()));
-		assertEquals(t4.getId(),tDAO.findById(t4.getId()));
+		assertEquals(t1,tDAO.findById(t1.getId()));
+		assertEquals(t2,tDAO.findById(t2.getId()));
+		assertEquals(t3,tDAO.findById(t3.getId()));
+		assertEquals(t4,tDAO.findById(t4.getId()));
 
-		assertEquals(u1.getId(),uDAO.findById(u1.getId()));
-		assertEquals(u2.getId(),uDAO.findById(u2.getId()));
-		assertEquals(u3.getId(),uDAO.findById(u3.getId()));
-		assertEquals(u4.getId(),uDAO.findById(u4.getId()));
-		assertEquals(u5.getId(),uDAO.findById(u5.getId()));
-		assertEquals(u6.getId(),uDAO.findById(u6.getId()));
+		assertEquals(u1,uDAO.findById(u1.getId()));
+		assertEquals(u2,uDAO.findById(u2.getId()));
+		assertEquals(u3,uDAO.findById(u3.getId()));
+		assertEquals(u4,uDAO.findById(u4.getId()));
+		assertEquals(u5,uDAO.findById(u5.getId()));
+		assertEquals(u6,uDAO.findById(u6.getId()));
 
 		//test persistencia relaciones
 		assertEquals(tDAO.findById(0).getTipoTrabajo().getId(),ttDAO.findById(0));
@@ -163,10 +161,10 @@ public class mainTest {
 		for(int i = 0; i<4; i++) {
 			for(PalabrasClave pc: tDAO.findById(i).getPalabrasClave()) {
 				if(i%2 == 0) {
-					assertEquals(pc.getId(),pcDAO.findById(0));
-					assertEquals(pc.getId(),pcDAO.findById(1));
+					assertEquals(pc,pcDAO.findById(0));
+					assertEquals(pc,pcDAO.findById(1));
 				}else {
-					assertEquals(pc.getId(),pcDAO.findById(1));
+					assertEquals(pc,pcDAO.findById(1));
 				}				
 			}
 		}
@@ -175,17 +173,17 @@ public class mainTest {
 		for(int i = 0; i<6; i++) {
 			for(PalabrasClave pc: uDAO.findById(i).getPalabrasClave()) {
 				if(i<2) {
-					assertEquals(pc.getId(),pcDAO.findById(0));
+					assertEquals(pc,pcDAO.findById(0));
 				}else if(i>2) {
-					assertEquals(pc.getId(),pcDAO.findById(1));
+					assertEquals(pc,pcDAO.findById(1));
 				}
 			}
 		}
 
 		//el usuario con id: 2 tiene dos palabras clave (mysql y database)
 		for(PalabrasClave pc: uDAO.findById(2).getPalabrasClave()) {
-			assertEquals(pc.getId(),pcDAO.findById(0));
-			assertEquals(pc.getId(),pcDAO.findById(1));
+			assertEquals(pc,pcDAO.findById(0));
+			assertEquals(pc,pcDAO.findById(1));
 		}
 	}
 

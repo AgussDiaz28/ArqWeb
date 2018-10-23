@@ -49,5 +49,4 @@ public class TipoTrabajo {
 	public int getId() {
 		return id;
 	}
-
 }

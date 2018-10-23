@@ -49,17 +49,12 @@ public class Trabajo {
 	@Column
 	private String descripcion;
 	
-	@Override
-	public boolean equals(Object t) {
-		return this.id == ((Trabajo) t).getId();
-	}
-
 	//-----CONSTRUCTOR-----
 	
 	public Trabajo() {
-		this.autores = new HashSet<Usuario>();
-		this.evaluadores = new HashSet<Usuario>();
-		this.palabrasClave = new HashSet<PalabrasClave>();
+		this.autores = new HashSet<>();
+		this.evaluadores = new HashSet<>();
+		this.palabrasClave = new HashSet<>();
 		this.esExperto = false;
 	}
 	
@@ -147,5 +142,18 @@ public class Trabajo {
 			result += u.toString()+" - ";
 		}
 		return result;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o == null) {
+			return false;
+		}
+		
+		if(!(o instanceof Trabajo)) {
+			return false;
+		}
+		Trabajo t = (Trabajo) o;
+		return (this.id == t.getId() && this.titulo.equals(t.getTitulo()));
 	}
 }

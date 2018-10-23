@@ -33,7 +33,8 @@ public class PalabrasClave {
 	//-----CONSTRUCTOR-----
 	
 	public PalabrasClave() {
-		this.usuarios = new HashSet<Usuario>();	
+		this.usuarios = new HashSet<>();
+		this.trabajos = new HashSet<>();	
 	}
 	
 	public PalabrasClave(String palabra, boolean esExperto) {
