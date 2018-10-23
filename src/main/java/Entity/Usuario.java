@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import Dao.CalificacionDAO;
@@ -34,9 +36,8 @@ public class Usuario {
 	@Column(nullable = false)
 	private boolean esEvaluador;
 
-	//temporal - hacer cambio
-	@Column(nullable = true)
-	private int lugarTrabajo;
+	@OneToOne
+	private LugarTrabajo lugarTrabajo;
 
 	@ManyToMany
 	@JoinTable(
@@ -171,12 +172,12 @@ public class Usuario {
 		return id;
 	}
 
-	public int getLugarTrabajo() {
+	public LugarTrabajo getLugarTrabajo() {
 		return this.lugarTrabajo;
 	}
 
-	public void setLugarTrabajo(int i) {
-		this.lugarTrabajo = i;
+	public void setLugarTrabajo(LugarTrabajo lt) {
+		this.lugarTrabajo = lt;
 	}
 
 	//---- BUSINESS LOGIC ----

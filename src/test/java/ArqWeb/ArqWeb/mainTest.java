@@ -22,8 +22,6 @@ public class mainTest {
 	@BeforeSuite
 	public void crearYpersistirEntidades() 
 	{
-		//preguntar si restriccion de evaluacion maximo de 3 articulos tambien lo es para poster y resumen o no
-
 		TipoTrabajoDAO ttDAO = TipoTrabajoDAO.getInstance();
 		PalabrasClaveDAO pcDAO = PalabrasClaveDAO.getInstance();
 		TrabajoDAO tDAO = TrabajoDAO.getInstance();
@@ -116,11 +114,11 @@ public class mainTest {
 		u6.setPalabraClave(pc2);
 
 		//PERSISTIR		
-		ttDAO.persist(typeT1);
-		ttDAO.persist(typeT2);
-
 		pcDAO.persist(pc1);
 		pcDAO.persist(pc2);
+		
+		ttDAO.persist(typeT1);
+		ttDAO.persist(typeT2);		
 
 		tDAO.persist(t1);
 		tDAO.persist(t2);
@@ -163,10 +161,10 @@ public class mainTest {
 		for(int i = 0; i<4; i++) {
 			for(PalabrasClave pc: tDAO.findById(i).getPalabrasClave()) {
 				if(i%2 == 0) {
-					assertEquals(pc.getId(),pcDAO.findById(0));
-					assertEquals(pc.getId(),pcDAO.findById(1));
+					assertEquals(pc,pcDAO.findById(0));
+					assertEquals(pc,pcDAO.findById(1));
 				}else {
-					assertEquals(pc.getId(),pcDAO.findById(1));
+					assertEquals(pc,pcDAO.findById(1));
 				}				
 			}
 		}
@@ -175,17 +173,17 @@ public class mainTest {
 		for(int i = 0; i<6; i++) {
 			for(PalabrasClave pc: uDAO.findById(i).getPalabrasClave()) {
 				if(i<2) {
-					assertEquals(pc.getId(),pcDAO.findById(0));
+					assertEquals(pc,pcDAO.findById(0));
 				}else if(i>2) {
-					assertEquals(pc.getId(),pcDAO.findById(1));
+					assertEquals(pc,pcDAO.findById(1));
 				}
 			}
 		}
 
 		//el usuario con id: 2 tiene dos palabras clave (mysql y database)
 		for(PalabrasClave pc: uDAO.findById(2).getPalabrasClave()) {
-			assertEquals(pc.getId(),pcDAO.findById(0));
-			assertEquals(pc.getId(),pcDAO.findById(1));
+			assertEquals(pc,pcDAO.findById(0));
+			assertEquals(pc,pcDAO.findById(1));
 		}
 	}
 
