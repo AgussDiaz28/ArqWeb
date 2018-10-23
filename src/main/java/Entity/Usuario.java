@@ -248,7 +248,7 @@ public class Usuario {
 		if	(!this.trabajosEnInvestigacion.contains(t)) {
 			boolean mismoLugarTrabajo = false;
 			for(Usuario u: t.getAutores()) {
-				if(u.getLugarTrabajo() == this.lugarTrabajo) {
+				if(u.getLugarTrabajo().equals(this.lugarTrabajo)) {
 					mismoLugarTrabajo = true;
 				}
 			}

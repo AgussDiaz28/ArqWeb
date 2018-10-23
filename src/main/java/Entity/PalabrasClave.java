@@ -82,7 +82,14 @@ public class PalabrasClave {
 	
 	@Override
 	public boolean equals(Object o) {
-		return this.id == ((PalabrasClave) o).getId();
+		if(o == null) {
+			return false;
+		}
+		if(!(o instanceof PalabrasClave)) {
+			return false;
+		}
+		PalabrasClave pc = (PalabrasClave) o;
+		return (this.id == pc.getId() && this.palabra.equals(pc.getPalabra()));
 	}
 	
 }

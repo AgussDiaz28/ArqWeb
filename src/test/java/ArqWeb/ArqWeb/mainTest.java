@@ -12,6 +12,7 @@ import Dao.PalabrasClaveDAO;
 import Dao.TipoTrabajoDAO;
 import Dao.TrabajoDAO;
 import Dao.UsuarioDAO;
+import Entity.LugarTrabajo;
 import Entity.PalabrasClave;
 import Entity.TipoTrabajo;
 import Entity.Trabajo;
@@ -207,8 +208,11 @@ public class mainTest {
 		assertTrue(u2.addTrabajoPendiente(t2)); //es apto
 		
 		u1.addTrabajoInvestigacion(t1);
-		u1.setLugarTrabajo(1);
-		u2.setLugarTrabajo(1);
+		
+		LugarTrabajo lt = new LugarTrabajo();
+		lt.setNombre("qwavee");
+		u1.setLugarTrabajo(lt);
+		u2.setLugarTrabajo(lt);
 		assertFalse(u2.addTrabajoPendiente(t1)); //no es apto
 	}
 
