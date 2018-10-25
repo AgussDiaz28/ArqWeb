@@ -475,9 +475,12 @@ public class mainTest {
 		
 		this.EM.getTransaction().commit();
 		
-		//Problemas: nos trae una lista de Objects. No permite castear a Entity.Trabajo. Queriamos probar el toString()
 		List<Trabajo> tListEnviados = uDAO.findAllTrabajosEnInvestigacionEnviados(u1.getId(), this.EM);
 		assertEquals(tListEnviados.size(), 2);
+		
+//		for(Trabajo t: tListEnviados) {
+//			System.out.println(t.toString());
+//		}
 	}
 	
 	/**
@@ -487,11 +490,9 @@ public class mainTest {
 	public void CheckTrabajoConPropiedades() {
 		Trabajo t = this.tDAO.getTrabajoConPropiedades(1, this.EM);
 		String data = t.toString();
-//		System.out.println(data);
 		
 		Usuario u1 = this.uDAO.findById(1,this.EM);
 		
-		//Problemas: nos trae una lista de Objects. No permite castear a Entity.Trabajo. Queriamos probar el toString()
 		assertNotNull(uDAO.findAllTrabajosEnInvestigacion(u1.getId(), this.EM));
 	}
 	
@@ -503,7 +504,8 @@ public class mainTest {
 	 */
 	@Test(priority=17)
 	public void getTrabajosInvestigacionByArea() {
-		/* usuario 1 tiene los trabajos: 1, 2, 4
+		/* 
+		 * usuario 1 tiene los trabajos: 1, 2, 4
 		 * trabajo1 tiene palabra clave 1 y 2
 		 * trabajo2 y trabajo4 tienen palabra clave 2 unicamente
 		 */

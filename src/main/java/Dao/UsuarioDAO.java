@@ -69,7 +69,7 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	public List<Trabajo> findAllTrabajosEnInvestigacion(Integer id, EntityManager entityManager){
 		Usuario user = this.findById(id,entityManager);
 		if(user != null) {
-			Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id WHERE at.autor_id = :id");
+			Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id WHERE at.autor_id = :id",Trabajo.class);
 			query.setParameter("id", id);
 			List<Trabajo> trabajos = query.getResultList();
 			return trabajos;
@@ -80,7 +80,7 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	public List<Trabajo> findAllTrabajosEnInvestigacionEnviados(Integer id, EntityManager entityManager){
 		Usuario user = this.findById(id,entityManager);
 		if(user != null) {
-			Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id JOIN evaluador_trabajoPendiente et ON t.id = et.trabajoPendiente_id WHERE at.autor_id = :id");
+			Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id JOIN evaluador_trabajoPendiente et ON t.id = et.trabajoPendiente_id WHERE at.autor_id = :id",Trabajo.class);
 			query.setParameter("id", id);
 			List<Trabajo> trabajos = query.getResultList();
 			return trabajos;	
@@ -91,7 +91,7 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	public List<Trabajo> findTrabajosInvestigacionByAreaInvestigacion(Integer id, Integer pc_id, EntityManager entityManager){
 		Usuario user = this.findById(id,entityManager);
 		if(user != null) {
-			Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id JOIN trabajo_palabraClave tpc ON tpc.palabraClave_id = :pc_id AND tpc.trabajo_id = t.id WHERE at.autor_id = :id");
+			Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id JOIN trabajo_palabraClave tpc ON tpc.palabraClave_id = :pc_id AND tpc.trabajo_id = t.id WHERE at.autor_id = :id",Trabajo.class);
 			query.setParameter("id", id);
 			query.setParameter("pc_id", pc_id);
 			List<Trabajo> trabajos = query.getResultList();
