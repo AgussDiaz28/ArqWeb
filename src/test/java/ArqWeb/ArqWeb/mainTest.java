@@ -522,5 +522,7 @@ public class mainTest {
 		
 		//el count es 1 para el caso de palabra clave 1 y sería 3 para el caso de palabra clave con id 2
 		assertEquals(count, tList.size());
+		
+		this.EM.close();
 	}
 }
