@@ -281,4 +281,11 @@ public class mainTest {
 		
 		assertFalse(u.aceptarTrabajo(t4));
 	}
+	
+	@Test
+	public void zzzzCheckTrabajoConPropiedades() {
+		Trabajo t = this.tDAO.getTrabajoConPropiedades(1, this.EM);
+		String data = t.toString();
+		System.out.println(data);
+	}
 }

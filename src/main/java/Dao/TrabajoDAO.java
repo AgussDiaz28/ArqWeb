@@ -39,14 +39,14 @@ public class TrabajoDAO implements DAO<Trabajo,Integer>{
 		return entityManager.find(Trabajo.class, id);
 	}
 
-	public List<Trabajo> getTrabajoConPropiedades(Integer trabajoId, EntityManager entityManager) {
-		Query query = entityManager.createQuery("SELECT * FROM trabajo WHERE id = :trabajoId");
+	public Trabajo getTrabajoConPropiedades(Integer trabajoId, EntityManager entityManager) {
+		Query query = entityManager.createNativeQuery("SELECT * FROM trabajo WHERE id = :trabajoId",Trabajo.class);
 		query.setParameter("trabajoId", trabajoId);
-		return query.getResultList();
+		return (Trabajo) query.getSingleResult();
 	}
 	
 	public List<Trabajo> getTrabajoConMismasPalabrasClave(Integer palabraClaveId, EntityManager entityManager) {
-		Query query = entityManager.createQuery("SELECT t.* FROM trabajo t JOIN trabajo_palabraClave tp ON t.id = tp.trabajo_id WHERE tp.palabraClave_id = :palabraClaveId");
+		Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN trabajo_palabraClave tp ON t.id = tp.trabajo_id WHERE tp.palabraClave_id = :palabraClaveId",Trabajo.class);
 		query.setParameter("palabraClaveId", palabraClaveId);
 		return query.getResultList();
 	}
