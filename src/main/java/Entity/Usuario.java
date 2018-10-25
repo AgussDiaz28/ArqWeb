@@ -191,7 +191,7 @@ public class Usuario {
 	}
 
 	private boolean addTrabajoEvaluacion(Trabajo trabajo) {
-		if(this.trabajosEnEvaluacion.size() <= 3 ) {
+		if(this.trabajosEnEvaluacion.size() < 3 ) {
 			this.trabajosEnEvaluacion.add(trabajo);
 			this.esEvaluador = true;
 			trabajo.setEvaluador(this);

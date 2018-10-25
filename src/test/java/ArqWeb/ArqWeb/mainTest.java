@@ -2,6 +2,8 @@ package ArqWeb.ArqWeb;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import javax.persistence.EntityManager;
@@ -57,6 +59,17 @@ public class mainTest {
 		
 		assertEquals(typeT1,this.ttDAO.findById(typeT1.getId(),this.EM));
 		assertEquals(typeT2,this.ttDAO.findById(typeT2.getId(),this.EM));
+	}
+	
+	@Test
+	public void crearLugarTrabajo() {
+		LugarTrabajo lt = new LugarTrabajo();
+		lt.setNombre("qwavee");
+		EM.getTransaction().begin();
+		this.ltDAO.persist(lt,this.EM);
+		EM.getTransaction().commit();
+		
+		assertEquals(lt,this.ltDAO.findById(lt.getId(),this.EM));
 	}
 	
 	@Test
@@ -210,90 +223,62 @@ public class mainTest {
 	}
 	
 	@Test 
-	public void checkEvaluadorApto() {
+	public void zcheckEvaluadorApto() {
 		Usuario u1 = this.uDAO.findById(1,this.EM);
-		Usuario u2 = this.uDAO.findById(2,this.EM);
+		Usuario u2 = this.uDAO.findById(3,this.EM);
+
+		Trabajo t1 = this.tDAO.findById(1,this.EM);
+		Trabajo t2 = this.tDAO.findById(3,this.EM);
+		
+		assertFalse(u1.addTrabajoPendiente(t1));
+		assertTrue(u2.addTrabajoPendiente(t1));
+		
+		assertTrue(u1.addTrabajoPendiente(t2));
+		assertTrue(u2.addTrabajoPendiente(t2));
+	}
+	
+	@Test 
+	public void zcheckEvaluadorApto2() {
+		Usuario u1 = this.uDAO.findById(1,this.EM);
+		Usuario u2 = this.uDAO.findById(3,this.EM);
+
+		Trabajo t1 = this.tDAO.findById(1,this.EM);
+		
+		LugarTrabajo lt = this.ltDAO.findById(1, this.EM);	
+		
+		u1.addTrabajoInvestigacion(t1);		
+		u1.setLugarTrabajo(lt);
+		u2.setLugarTrabajo(lt);
+		assertFalse(u2.addTrabajoPendiente(t1));
+	}
+
+	@Test
+	public void zzcheckAutorNoEvaluaSuTrabajo() {
+		Usuario u = this.uDAO.findById(1,this.EM);
+		Trabajo t = this.tDAO.findById(1,this.EM);
+		
+		u.addTrabajoInvestigacion(t);		
+		assertFalse(u.addTrabajoPendiente(t));
+	}
+
+	@Test
+	public void zzzcheckEvaluarMaximoTres() {
+		Usuario u = this.uDAO.findById(3,this.EM);
 
 		Trabajo t1 = this.tDAO.findById(1,this.EM);
 		Trabajo t2 = this.tDAO.findById(2,this.EM);
+		Trabajo t3 = this.tDAO.findById(3,this.EM);
+		Trabajo t4 = this.tDAO.findById(4,this.EM);
 		
-//		EM.getTransaction().begin();
-//		
-//		assertFalse(u1.addTrabajoPendiente(t1));
-//		assertTrue(u2.addTrabajoPendiente(t1));
-//		
-//		assertTrue(u1.addTrabajoPendiente(t2));
-//		assertTrue(u2.addTrabajoPendiente(t2));
-//		
-//		EM.getTransaction().commit();
+		u.addTrabajoPendiente(t1);
+		u.addTrabajoPendiente(t2);
+		u.addTrabajoPendiente(t3);
+		u.addTrabajoPendiente(t4);
 		
-		//quizas este pedazo hacerlo arriba en la creacion de tablas y relaciones
-		//de aca
-//		u1.addTrabajoInvestigacion(t1);
-//		LugarTrabajo lt = new LugarTrabajo();
-//		lt.setNombre("qwavee");
-//		
-//		//hasta aca
-//		
-//		EM.getTransaction().begin();
-//		
-//		u1.setLugarTrabajo(lt);
-//		u2.setLugarTrabajo(lt);
-//		assertFalse(u2.addTrabajoPendiente(t1));
-//		
-//		EM.getTransaction().commit();
+		assertTrue(u.aceptarTrabajo(t1));
+		assertTrue(u.aceptarTrabajo(t2));
+		assertTrue(u.aceptarTrabajo(t3));
+		
+		assertFalse(u.aceptarTrabajo(t4));
 	}
-
-//	@Test
-//	public void checkAutorNoEvaluaSuTrabajo() {
-//		Usuario u = this.uDAO.findById(0,this.EM);
-//		Trabajo t = this.tDAO.findById(0,this.EM);
-//
-//		EM.getTransaction().begin();
-//		
-//		u.addTrabajoInvestigacion(t);		
-//		assertFalse(u.addTrabajoPendiente(t));
-//		
-//		EM.getTransaction().commit();
-//	}
-//
-//	@Test
-//	public void checkEvaluadorNoEsAutor() {
-//		Usuario u = this.uDAO.findById(0,this.EM);
-//		Trabajo t = this.tDAO.findById(0,this.EM);
-//
-//		EM.getTransaction().begin();
-//		
-//		u.addTrabajoPendiente(t);		
-//		assertFalse(u.addTrabajoInvestigacion(t));		
-//
-//		u.aceptarTrabajo(t);
-//		assertFalse(u.addTrabajoInvestigacion(t));	
-//		
-//		EM.getTransaction().commit();
-//	}
-//
-//	@Test
-//	public void checkEvaluarMaximoTres() {
-//		Usuario u = this.uDAO.findById(2,this.EM);
-//
-//		Trabajo t1 = this.tDAO.findById(0,this.EM);
-//		Trabajo t2 = this.tDAO.findById(1,this.EM);
-//		Trabajo t3 = this.tDAO.findById(2,this.EM);
-//		Trabajo t4 = this.tDAO.findById(3,this.EM);
-//		
-//		EM.getTransaction().begin();
-//		u.addTrabajoPendiente(t1);
-//		u.addTrabajoPendiente(t2);
-//		u.addTrabajoPendiente(t3);
-//		u.addTrabajoPendiente(t4);
-//		
-//		assertTrue(u.aceptarTrabajo(t1));
-//		assertTrue(u.aceptarTrabajo(t2));
-//		assertTrue(u.aceptarTrabajo(t3));
-//		
-//		assertFalse(u.aceptarTrabajo(t4));
-//		
-//		EM.getTransaction().commit();
-//	}
 }
