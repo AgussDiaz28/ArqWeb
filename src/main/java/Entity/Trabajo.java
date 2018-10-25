@@ -1,5 +1,7 @@
 package Entity;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -50,6 +52,9 @@ public class Trabajo {
 	@Column
 	private String descripcion;
 	
+	@Column
+	private Calendar fecha;
+	
 	//-----CONSTRUCTOR-----
 	
 	public Trabajo() {
@@ -88,6 +93,14 @@ public class Trabajo {
 	public TipoTrabajo getTipoTrabajo() {
 		return tipoTrabajo;
 	}
+	
+	public Calendar getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Calendar fecha) {
+		this.fecha = fecha;
+	}
 
 	public void setTipoTrabajo(TipoTrabajo tipoTrabajo) {
 		this.tipoTrabajo = tipoTrabajo;
@@ -123,7 +136,14 @@ public class Trabajo {
 	}
 	
 	public String toString() {
-		String result = "id: "+this.id+"; titulo: "+this.titulo+"; descripcion: "+this.descripcion+"; palabras clave: ";
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+		String result = "id: "+this.id+"; titulo: "+this.titulo+"; descripcion: "+this.descripcion+"; fecha: ";
+		if(this.fecha != null) {
+			result += sdf.format(this.fecha.getTime());
+		}else {
+			result += "null";
+		}
+		result += "; palabras clave: ";
 		Iterator<PalabrasClave> it = this.palabrasClave.iterator();
 		while(it.hasNext()) {
 			PalabrasClave pc = it.next();

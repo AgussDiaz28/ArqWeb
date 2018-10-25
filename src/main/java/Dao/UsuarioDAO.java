@@ -44,7 +44,8 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 			if(user.isEvaluador()) {
 				Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN evaluador_trabajo et ON t.id = et.trabajo_id WHERE et.evaluador_id = :id",Trabajo.class);
 				query.setParameter("id", id);
-				return query.getResultList();
+				List<Trabajo> trabajos = query.getResultList();
+				return trabajos;
 			}			
 		}
 		throw new UnsupportedOperationException();
@@ -54,11 +55,12 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 		Usuario user = this.findById(id,entityManager);
 		if(user != null) {
 			if(user.isEvaluador()) {
-				Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN evaluador_trabajo et ON t.id = et.trabajo_id WHERE et.evaluador_id = :id HAVING t.fecha > :inicio AND t.fecha < :fin",Trabajo.class);
+				Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN evaluador_trabajo et ON t.id = et.trabajo_id WHERE et.evaluador_id = :id AND t.fecha >= :inicio AND t.fecha <= :fin",Trabajo.class);
 				query.setParameter("id", id);
 				query.setParameter("inicio", inicio);
 				query.setParameter("fin", fin);
-				return query.getResultList();
+				List<Trabajo> trabajos = query.getResultList();
+				return trabajos;
 			}			
 		}
 		throw new UnsupportedOperationException();
@@ -67,12 +69,33 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	public List<Trabajo> findAllTrabajosEnInvestigacion(Integer id, EntityManager entityManager){
 		Usuario user = this.findById(id,entityManager);
 		if(user != null) {
-			if(user.isEvaluador()) {
-				Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id WHERE at.autor_id = :id");
-				query.setParameter("id", id);
-				List<Trabajo> trabajos = query.getResultList();
-				return trabajos;
-			}			
+			Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id WHERE at.autor_id = :id");
+			query.setParameter("id", id);
+			List<Trabajo> trabajos = query.getResultList();
+			return trabajos;
+		}
+		throw new UnsupportedOperationException();
+	}
+	
+	public List<Trabajo> findAllTrabajosEnInvestigacionEnviados(Integer id, EntityManager entityManager){
+		Usuario user = this.findById(id,entityManager);
+		if(user != null) {
+			Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id JOIN evaluador_trabajoPendiente et ON t.id = et.trabajoPendiente_id WHERE at.autor_id = :id");
+			query.setParameter("id", id);
+			List<Trabajo> trabajos = query.getResultList();
+			return trabajos;	
+		}
+		throw new UnsupportedOperationException();
+	}
+	
+	public List<Trabajo> findTrabajosInvestigacionByAreaInvestigacion(Integer id, Integer pc_id, EntityManager entityManager){
+		Usuario user = this.findById(id,entityManager);
+		if(user != null) {
+			Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id JOIN trabajo_palabraClave tpc ON tpc.palabraClave_id = :pc_id AND tpc.trabajo_id = t.id WHERE at.autor_id = :id");
+			query.setParameter("id", id);
+			query.setParameter("pc_id", pc_id);
+			List<Trabajo> trabajos = query.getResultList();
+			return trabajos;	
 		}
 		throw new UnsupportedOperationException();
 	}

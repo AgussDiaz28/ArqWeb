@@ -52,7 +52,8 @@ public class TrabajoDAO implements DAO<Trabajo,Integer>{
 	}
 
 	public List<Trabajo> findAll( EntityManager entityManager) {
-		throw new UnsupportedOperationException();
+		Query query = entityManager.createNativeQuery("SELECT * FROM trabajo",Trabajo.class);
+		return query.getResultList();
 	}
 
 	public Trabajo update(Integer id, Trabajo entity, EntityManager entityManager) {
