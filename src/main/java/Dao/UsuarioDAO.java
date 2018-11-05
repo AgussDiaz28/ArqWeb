@@ -88,11 +88,13 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 		throw new UnsupportedOperationException();
 	}
 	
-	public List<Trabajo> findTrabajosInvestigacionByAreaInvestigacion(Integer id, Integer pc_id, EntityManager entityManager){
-		Usuario user = this.findById(id,entityManager);
-		if(user != null) {
-			Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id JOIN trabajo_palabraClave tpc ON tpc.palabraClave_id = :pc_id AND tpc.trabajo_id = t.id WHERE at.autor_id = :id",Trabajo.class);
-			query.setParameter("id", id);
+	public List<Trabajo> findTrabajosInvestigacionByAreaInvestigacion(Integer autor_id, Integer evaluador_id, Integer pc_id, EntityManager entityManager){
+		Usuario user1 = this.findById(autor_id,entityManager);
+		Usuario user2 = this.findById(evaluador_id,entityManager);
+		if(user1 != null && user2 != null) {
+			Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id JOIN evaluador_trabajo et ON et.trabajo_id = t.id JOIN trabajo_palabraClave tpc ON tpc.palabraClave_id = :pc_id AND tpc.trabajo_id = t.id WHERE at.autor_id = :autor_id AND et.evaluador_id = :evaluador_id",Trabajo.class);
+			query.setParameter("autor_id", autor_id);
+			query.setParameter("evaluador_id", evaluador_id);
 			query.setParameter("pc_id", pc_id);
 			List<Trabajo> trabajos = query.getResultList();
 			return trabajos;	
