@@ -21,32 +21,31 @@ public class PalabrasClaveDAO implements DAO<PalabrasClave,Integer>{
 		return daoPalabrasClave;
 	}
 
-	public PalabrasClave findById(Integer id, EntityManager entityManager) {
-		return entityManager.find(PalabrasClave.class, id);
+	public PalabrasClave findById(Integer id) {
+		EntityManager entityManager=EMF.createEntityManager();
+		PalabrasClave pc = entityManager.find(PalabrasClave.class, id);
+		entityManager.close();
+		return pc;
 	}
 
-	public PalabrasClave persist(PalabrasClave palabrasClave, EntityManager entityManager) {
+	public PalabrasClave persist(PalabrasClave palabrasClave) {
+		EntityManager entityManager=EMF.createEntityManager();
+		entityManager.getTransaction().begin();
 		entityManager.persist(palabrasClave);
+		entityManager.getTransaction().commit();
+		entityManager.close();
 		return palabrasClave;
 	}
-	
-	public EntityManager getEntityManager() {
-		return EMF.createEntityManager();	
-	}
-	
-	public PalabrasClave merge(PalabrasClave palabrasClave, EntityManager entityManager) {
-		return entityManager.merge(palabrasClave);
-	}
 
-	public List<PalabrasClave> findAll( EntityManager entityManager) {
+	public List<PalabrasClave> findAll() {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean delete(Integer id, EntityManager entityManager) {
+	public boolean delete(Integer id) {
 		throw new UnsupportedOperationException();
 	}
 
-	public PalabrasClave update(Integer id, PalabrasClave entity, EntityManager entityManager) {
+	public PalabrasClave update(Integer id, PalabrasClave entity) {
 		throw new UnsupportedOperationException();
 	}
 

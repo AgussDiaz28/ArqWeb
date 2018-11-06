@@ -138,8 +138,7 @@ public class Usuario {
 	}
 
 	public void setPalabraClave(PalabrasClave palabrasClave) {
-		palabrasClave.addUsuario(this);
-		this.palabrasClave.add(palabrasClave);		
+		this.palabrasClave.add(palabrasClave);
 
 		if(palabrasClave.isExperto()) {
 			this.esExperto = true;
@@ -194,7 +193,6 @@ public class Usuario {
 		if(this.trabajosEnEvaluacion.size() < 3 ) {
 			this.trabajosEnEvaluacion.add(trabajo);
 			this.esEvaluador = true;
-			trabajo.setEvaluador(this);
 			return true;
 		}
 		return false;
@@ -218,17 +216,6 @@ public class Usuario {
 
 	public void rechazarTrabajo(Trabajo trabajo) {
 		this.trabajosPendientes.remove(trabajo);
-	}
-
-	public boolean calificarTrabajo(Trabajo trabajo, int nota) {
-		if(nota >= 0 && this.trabajosEnEvaluacion.contains(trabajo)) {
-			Calificacion c = new Calificacion();
-			c.setEvaluador(this);
-			c.setTrabajo(trabajo);
-			c.setNota(nota);
-			return true;
-		}
-		return false;
 	}
 
 	public String toString() {

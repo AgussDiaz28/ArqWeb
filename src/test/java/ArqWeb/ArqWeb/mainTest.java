@@ -44,7 +44,6 @@ public class mainTest {
 		this.tDAO = TrabajoDAO.getInstance();
 		this.ttDAO = TipoTrabajoDAO.getInstance();
 		this.ltDAO = LugarTrabajoDAO.getInstance();
-		this.EM = EMF.createEntityManager();
 	}
 
 	@Test(priority=1)
@@ -57,24 +56,20 @@ public class mainTest {
 		typeT2.setTipo("poster");
 		typeT2.setCondEvaluacion(false);	
 
-		EM.getTransaction().begin();
-		this.ttDAO.persist(typeT1,this.EM);
-		this.ttDAO.persist(typeT2,this.EM);
-		EM.getTransaction().commit();
+		this.ttDAO.persist(typeT1);
+		this.ttDAO.persist(typeT2);
 
-		assertEquals(typeT1,this.ttDAO.findById(typeT1.getId(),this.EM));
-		assertEquals(typeT2,this.ttDAO.findById(typeT2.getId(),this.EM));
+		assertEquals(typeT1,this.ttDAO.findById(typeT1.getId()));
+		assertEquals(typeT2,this.ttDAO.findById(typeT2.getId()));
 	}
 
 	@Test(priority=2)
 	public void crearLugarTrabajo() {
 		LugarTrabajo lt = new LugarTrabajo();
 		lt.setNombre("qwavee");
-		EM.getTransaction().begin();
-		this.ltDAO.persist(lt,this.EM);
-		EM.getTransaction().commit();
+		this.ltDAO.persist(lt);
 
-		assertEquals(lt,this.ltDAO.findById(lt.getId(),this.EM));
+		assertEquals(lt,this.ltDAO.findById(lt.getId()));
 	}
 
 	@Test(priority=3)
@@ -87,13 +82,11 @@ public class mainTest {
 		pc2.setEsExperto(false);
 		pc2.setPalabra("database");
 
-		EM.getTransaction().begin();
-		this.pcDAO.persist(pc1,this.EM);
-		this.pcDAO.persist(pc2,this.EM);
-		EM.getTransaction().commit();
+		this.pcDAO.persist(pc1);
+		this.pcDAO.persist(pc2);
 
-		assertEquals(pc1,this.pcDAO.findById(pc1.getId(),this.EM));
-		assertEquals(pc2,this.pcDAO.findById(pc2.getId(),this.EM));
+		assertEquals(pc1,this.pcDAO.findById(pc1.getId()));
+		assertEquals(pc2,this.pcDAO.findById(pc2.getId()));
 	}
 
 	/**
@@ -147,29 +140,27 @@ public class mainTest {
 		u10.setNombre("jjj");
 		u10.setApellido("101010");
 
-		EM.getTransaction().begin();
-		uDAO.persist(u1,this.EM);
-		uDAO.persist(u2,this.EM);
-		uDAO.persist(u3,this.EM);
-		uDAO.persist(u4,this.EM);
-		uDAO.persist(u5,this.EM);
-		uDAO.persist(u6,this.EM);
-		uDAO.persist(u7,this.EM);
-		uDAO.persist(u8,this.EM);
-		uDAO.persist(u9,this.EM);
-		uDAO.persist(u10,this.EM);
-		EM.getTransaction().commit();
+		uDAO.persist(u1);
+		uDAO.persist(u2);
+		uDAO.persist(u3);
+		uDAO.persist(u4);
+		uDAO.persist(u5);
+		uDAO.persist(u6);
+		uDAO.persist(u7);
+		uDAO.persist(u8);
+		uDAO.persist(u9);
+		uDAO.persist(u10);
 
-		assertEquals(u1,uDAO.findById(u1.getId(),this.EM));
-		assertEquals(u2,uDAO.findById(u2.getId(),this.EM));
-		assertEquals(u3,uDAO.findById(u3.getId(),this.EM));
-		assertEquals(u4,uDAO.findById(u4.getId(),this.EM));
-		assertEquals(u5,uDAO.findById(u5.getId(),this.EM));
-		assertEquals(u6,uDAO.findById(u6.getId(),this.EM));
-		assertEquals(u7,uDAO.findById(u7.getId(),this.EM));
-		assertEquals(u8,uDAO.findById(u8.getId(),this.EM));
-		assertEquals(u9,uDAO.findById(u9.getId(),this.EM));
-		assertEquals(u10,uDAO.findById(u10.getId(),this.EM));
+		assertEquals(u1,uDAO.findById(u1.getId()));
+		assertEquals(u2,uDAO.findById(u2.getId()));
+		assertEquals(u3,uDAO.findById(u3.getId()));
+		assertEquals(u4,uDAO.findById(u4.getId()));
+		assertEquals(u5,uDAO.findById(u5.getId()));
+		assertEquals(u6,uDAO.findById(u6.getId()));
+		assertEquals(u7,uDAO.findById(u7.getId()));
+		assertEquals(u8,uDAO.findById(u8.getId()));
+		assertEquals(u9,uDAO.findById(u9.getId()));
+		assertEquals(u10,uDAO.findById(u10.getId()));
 	}
 
 	/**
@@ -189,121 +180,114 @@ public class mainTest {
 		Trabajo t9 = new Trabajo();
 		Trabajo t10 = new Trabajo();
 
-		EM.getTransaction().begin();
-		tDAO.persist(t1,this.EM);
-		tDAO.persist(t2,this.EM);
-		tDAO.persist(t3,this.EM);
-		tDAO.persist(t4,this.EM);
-		tDAO.persist(t5,this.EM);
-		tDAO.persist(t6,this.EM);
-		tDAO.persist(t7,this.EM);
-		tDAO.persist(t8,this.EM);
-		tDAO.persist(t9,this.EM);
-		tDAO.persist(t10,this.EM);
-		EM.getTransaction().commit();
+		tDAO.persist(t1);
+		tDAO.persist(t2);
+		tDAO.persist(t3);
+		tDAO.persist(t4);
+		tDAO.persist(t5);
+		tDAO.persist(t6);
+		tDAO.persist(t7);
+		tDAO.persist(t8);
+		tDAO.persist(t9);
+		tDAO.persist(t10);
 
-		assertEquals(t1,tDAO.findById(t1.getId(),this.EM));
-		assertEquals(t2,tDAO.findById(t2.getId(),this.EM));
-		assertEquals(t3,tDAO.findById(t3.getId(),this.EM));
-		assertEquals(t4,tDAO.findById(t4.getId(),this.EM));
-		assertEquals(t5,tDAO.findById(t5.getId(),this.EM));
-		assertEquals(t6,tDAO.findById(t6.getId(),this.EM));
-		assertEquals(t7,tDAO.findById(t7.getId(),this.EM));
-		assertEquals(t8,tDAO.findById(t8.getId(),this.EM));
-		assertEquals(t9,tDAO.findById(t9.getId(),this.EM));
-		assertEquals(t10,tDAO.findById(t10.getId(),this.EM));
+		assertEquals(t1,tDAO.findById(t1.getId()));
+		assertEquals(t2,tDAO.findById(t2.getId()));
+		assertEquals(t3,tDAO.findById(t3.getId()));
+		assertEquals(t4,tDAO.findById(t4.getId()));
+		assertEquals(t5,tDAO.findById(t5.getId()));
+		assertEquals(t6,tDAO.findById(t6.getId()));
+		assertEquals(t7,tDAO.findById(t7.getId()));
+		assertEquals(t8,tDAO.findById(t8.getId()));
+		assertEquals(t9,tDAO.findById(t9.getId()));
+		assertEquals(t10,tDAO.findById(t10.getId()));
 	}
-
+	
+	//a partir de aca falla el test - dice algo de session
 	@Test(priority=6)
 	public void setPalabrasClaveUsuarios() {
-		Usuario u1 = this.uDAO.findById(1,this.EM);
-		Usuario u2 = this.uDAO.findById(2,this.EM);
-		Usuario u3 = this.uDAO.findById(3,this.EM);
-		Usuario u4 = this.uDAO.findById(4,this.EM);
-		Usuario u5 = this.uDAO.findById(5,this.EM);
-		Usuario u6 = this.uDAO.findById(6,this.EM);
-		Usuario u7 = this.uDAO.findById(7,this.EM);
-		Usuario u8 = this.uDAO.findById(8,this.EM);
-		Usuario u9 = this.uDAO.findById(9,this.EM);
-		Usuario u10 = this.uDAO.findById(10,this.EM);
+		Usuario u1 = this.uDAO.findById(1);
+		Usuario u2 = this.uDAO.findById(2);
+		Usuario u3 = this.uDAO.findById(3);
+		Usuario u4 = this.uDAO.findById(4);
+		Usuario u5 = this.uDAO.findById(5);
+		Usuario u6 = this.uDAO.findById(6);
+		Usuario u7 = this.uDAO.findById(7);
+		Usuario u8 = this.uDAO.findById(8);
+		Usuario u9 = this.uDAO.findById(9);
+		Usuario u10 = this.uDAO.findById(10);
 
-		PalabrasClave pc1 = this.pcDAO.findById(1,this.EM);
-		PalabrasClave pc2  = this.pcDAO.findById(2,this.EM);
-
-		EM.getTransaction().begin();
-		u1.setPalabraClave(pc1);
-		u2.setPalabraClave(pc1);
-		u3.setPalabraClave(pc1);
-		u3.setPalabraClave(pc2);
-		u4.setPalabraClave(pc2);
-		u5.setPalabraClave(pc2);
-		u6.setPalabraClave(pc1);
-		u6.setPalabraClave(pc2);
-		u7.setPalabraClave(pc1);
-		u8.setPalabraClave(pc2);
-		u9.setPalabraClave(pc1);
-		u10.setPalabraClave(pc2);
-		EM.getTransaction().commit();
+		PalabrasClave pc1 = this.pcDAO.findById(1);
+		PalabrasClave pc2  = this.pcDAO.findById(2);
+		
+		this.uDAO.asignarPalabraClave(u1.getId(),pc1.getId());
+		this.uDAO.asignarPalabraClave(u2.getId(),pc1.getId());
+		this.uDAO.asignarPalabraClave(u3.getId(),pc1.getId());
+		this.uDAO.asignarPalabraClave(u4.getId(),pc2.getId());
+		this.uDAO.asignarPalabraClave(u5.getId(),pc2.getId());
+		this.uDAO.asignarPalabraClave(u6.getId(),pc2.getId());
+		this.uDAO.asignarPalabraClave(u7.getId(),pc1.getId());
+		this.uDAO.asignarPalabraClave(u8.getId(),pc2.getId());
+		this.uDAO.asignarPalabraClave(u9.getId(),pc1.getId());
+		this.uDAO.asignarPalabraClave(u10.getId(),pc2.getId());
 	}
 
 	@Test(priority=7)
 	public void setTipoTrabajos() {
-		Trabajo t1 = this.tDAO.findById(1,this.EM);
-		Trabajo t2 = this.tDAO.findById(2,this.EM);
-		Trabajo t3 = this.tDAO.findById(3,this.EM);
-		Trabajo t4 = this.tDAO.findById(4,this.EM);
-		Trabajo t5 = this.tDAO.findById(5,this.EM);
-		Trabajo t6 = this.tDAO.findById(6,this.EM);
-		Trabajo t7 = this.tDAO.findById(7,this.EM);
-		Trabajo t8 = this.tDAO.findById(8,this.EM);
-		Trabajo t9 = this.tDAO.findById(9,this.EM);
-		Trabajo t10 = this.tDAO.findById(10,this.EM);
+		Trabajo t1 = this.tDAO.findById(1);
+		Trabajo t2 = this.tDAO.findById(2);
+		Trabajo t3 = this.tDAO.findById(3);
+		Trabajo t4 = this.tDAO.findById(4);
+		Trabajo t5 = this.tDAO.findById(5);
+		Trabajo t6 = this.tDAO.findById(6);
+		Trabajo t7 = this.tDAO.findById(7);
+		Trabajo t8 = this.tDAO.findById(8);
+		Trabajo t9 = this.tDAO.findById(9);
+		Trabajo t10 = this.tDAO.findById(10);
 
-		TipoTrabajo typeT1 = this.ttDAO.findById(1,this.EM);
-		TipoTrabajo typeT2 = this.ttDAO.findById(2,this.EM);
+		TipoTrabajo typeT1 = this.ttDAO.findById(1);
+		TipoTrabajo typeT2 = this.ttDAO.findById(2);
 
-		EM.getTransaction().begin();
 		t1.setTipoTrabajo(typeT1);
 		t2.setTipoTrabajo(typeT1);
 		t3.setTipoTrabajo(typeT2);
 		t4.setTipoTrabajo(typeT2);
-		t5.setTipoTrabajo(typeT1);	
-		t6.setTipoTrabajo(typeT1);	
-		t7.setTipoTrabajo(typeT2);	
-		t8.setTipoTrabajo(typeT2);	
-		t9.setTipoTrabajo(typeT1);	
-		t10.setTipoTrabajo(typeT2);	
-		EM.getTransaction().commit();
+		t5.setTipoTrabajo(typeT1);
+		t6.setTipoTrabajo(typeT1);
+		t7.setTipoTrabajo(typeT2);
+		t8.setTipoTrabajo(typeT2);
+		t9.setTipoTrabajo(typeT1);
+		t10.setTipoTrabajo(typeT2);
 
-		assertEquals(this.tDAO.findById(1,this.EM).getTipoTrabajo(),this.ttDAO.findById(1,this.EM));
-		assertEquals(this.tDAO.findById(2,this.EM).getTipoTrabajo(),this.ttDAO.findById(1,this.EM));
-		assertEquals(this.tDAO.findById(3,this.EM).getTipoTrabajo(),this.ttDAO.findById(2,this.EM));
-		assertEquals(this.tDAO.findById(4,this.EM).getTipoTrabajo(),this.ttDAO.findById(2,this.EM));
-		assertEquals(this.tDAO.findById(5,this.EM).getTipoTrabajo(),this.ttDAO.findById(1,this.EM));
-		assertEquals(this.tDAO.findById(6,this.EM).getTipoTrabajo(),this.ttDAO.findById(1,this.EM));
-		assertEquals(this.tDAO.findById(7,this.EM).getTipoTrabajo(),this.ttDAO.findById(2,this.EM));
-		assertEquals(this.tDAO.findById(8,this.EM).getTipoTrabajo(),this.ttDAO.findById(2,this.EM));
-		assertEquals(this.tDAO.findById(9,this.EM).getTipoTrabajo(),this.ttDAO.findById(1,this.EM));
-		assertEquals(this.tDAO.findById(10,this.EM).getTipoTrabajo(),this.ttDAO.findById(2,this.EM));
+		assertEquals(this.tDAO.findById(1).getTipoTrabajo(),this.ttDAO.findById(1));
+		assertEquals(this.tDAO.findById(2).getTipoTrabajo(),this.ttDAO.findById(1));
+		assertEquals(this.tDAO.findById(3).getTipoTrabajo(),this.ttDAO.findById(2));
+		assertEquals(this.tDAO.findById(4).getTipoTrabajo(),this.ttDAO.findById(2));
+		assertEquals(this.tDAO.findById(5).getTipoTrabajo(),this.ttDAO.findById(1));
+		assertEquals(this.tDAO.findById(6).getTipoTrabajo(),this.ttDAO.findById(1));
+		assertEquals(this.tDAO.findById(7).getTipoTrabajo(),this.ttDAO.findById(2));
+		assertEquals(this.tDAO.findById(8).getTipoTrabajo(),this.ttDAO.findById(2));
+		assertEquals(this.tDAO.findById(9).getTipoTrabajo(),this.ttDAO.findById(1));
+		assertEquals(this.tDAO.findById(10).getTipoTrabajo(),this.ttDAO.findById(2));
 	}
 
 	@Test(priority=8)
 	public void setPalabrasClaveTrabajos() {
-		Trabajo t1 = this.tDAO.findById(1,this.EM);
-		Trabajo t2 = this.tDAO.findById(2,this.EM);
-		Trabajo t3 = this.tDAO.findById(3,this.EM);
-		Trabajo t4 = this.tDAO.findById(4,this.EM);
-		Trabajo t5 = this.tDAO.findById(5,this.EM);
-		Trabajo t6 = this.tDAO.findById(6,this.EM);
-		Trabajo t7 = this.tDAO.findById(7,this.EM);
-		Trabajo t8 = this.tDAO.findById(8,this.EM);
-		Trabajo t9 = this.tDAO.findById(9,this.EM);
-		Trabajo t10 = this.tDAO.findById(10,this.EM);
+		Trabajo t1 = this.tDAO.findById(1);
+		Trabajo t2 = this.tDAO.findById(2);
+		Trabajo t3 = this.tDAO.findById(3);
+		Trabajo t4 = this.tDAO.findById(4);
+		Trabajo t5 = this.tDAO.findById(5);
+		Trabajo t6 = this.tDAO.findById(6);
+		Trabajo t7 = this.tDAO.findById(7);
+		Trabajo t8 = this.tDAO.findById(8);
+		Trabajo t9 = this.tDAO.findById(9);
+		Trabajo t10 = this.tDAO.findById(10);
 
-		PalabrasClave pc1 = this.pcDAO.findById(1,this.EM);
-		PalabrasClave pc2  = this.pcDAO.findById(2,this.EM);
+		PalabrasClave pc1 = this.pcDAO.findById(1);
+		PalabrasClave pc2  = this.pcDAO.findById(2);
 
-		EM.getTransaction().begin();
+		
 		t1.setPalabraClave(pc1);
 		t1.setPalabraClave(pc2);
 		t2.setPalabraClave(pc2);
@@ -317,16 +301,15 @@ public class mainTest {
 		t8.setPalabraClave(pc2);
 		t9.setPalabraClave(pc1);
 		t10.setPalabraClave(pc2);
-		EM.getTransaction().commit();
 	}
 
 	@Test(priority=9)
 	public void checkEvaluadorApto() {
-		Usuario u1 = this.uDAO.findById(1,this.EM);
-		Usuario u2 = this.uDAO.findById(3,this.EM);
+		Usuario u1 = this.uDAO.findById(1);
+		Usuario u2 = this.uDAO.findById(3);
 
-		Trabajo t1 = this.tDAO.findById(1,this.EM);
-		Trabajo t2 = this.tDAO.findById(3,this.EM);
+		Trabajo t1 = this.tDAO.findById(1);
+		Trabajo t2 = this.tDAO.findById(3);
 
 		assertFalse(u1.addTrabajoPendiente(t1));
 		assertTrue(u2.addTrabajoPendiente(t1));
@@ -337,23 +320,24 @@ public class mainTest {
 
 	@Test(priority=10)
 	public void checkEvaluadorApto2() {
-		Usuario u1 = this.uDAO.findById(1,this.EM);
-		Usuario u2 = this.uDAO.findById(3,this.EM);
+		Usuario u1 = this.uDAO.findById(1);
+		Usuario u2 = this.uDAO.findById(3);
 
-		Trabajo t1 = this.tDAO.findById(1,this.EM);
+		Trabajo t1 = this.tDAO.findById(1);
 
-		LugarTrabajo lt = this.ltDAO.findById(1, this.EM);	
+		LugarTrabajo lt = this.ltDAO.findById(1);	
 
 		u1.addTrabajoInvestigacion(t1);		
 		u1.setLugarTrabajo(lt);
 		u2.setLugarTrabajo(lt);
+		
 		assertFalse(u2.addTrabajoPendiente(t1));
 	}
 
 	@Test(priority=11)
 	public void checkAutorNoEvaluaSuTrabajo() {
-		Usuario u = this.uDAO.findById(1,this.EM);
-		Trabajo t = this.tDAO.findById(1,this.EM);
+		Usuario u = this.uDAO.findById(1);
+		Trabajo t = this.tDAO.findById(1);
 
 		u.addTrabajoInvestigacion(t);		
 		assertFalse(u.addTrabajoPendiente(t));
@@ -361,15 +345,13 @@ public class mainTest {
 
 	@Test(priority=12)
 	public void checkEvaluarMaximoTres() {
-		Usuario u = this.uDAO.findById(3,this.EM);
+		Usuario u = this.uDAO.findById(3);
 
-		Trabajo t1 = this.tDAO.findById(1,this.EM);
-		Trabajo t2 = this.tDAO.findById(2,this.EM);
-		Trabajo t3 = this.tDAO.findById(3,this.EM);
-		Trabajo t4 = this.tDAO.findById(4,this.EM);
+		Trabajo t1 = this.tDAO.findById(1);
+		Trabajo t2 = this.tDAO.findById(2);
+		Trabajo t3 = this.tDAO.findById(3);
+		Trabajo t4 = this.tDAO.findById(4);
 
-
-		this.EM.getTransaction().begin();
 		u.addTrabajoPendiente(t1);
 		u.addTrabajoPendiente(t2);
 		u.addTrabajoPendiente(t3);
@@ -380,7 +362,7 @@ public class mainTest {
 		assertTrue(u.aceptarTrabajo(t3));
 
 		assertFalse(u.aceptarTrabajo(t4));
-		this.EM.getTransaction().commit();
+		
 	}
 
 	/**
@@ -390,8 +372,8 @@ public class mainTest {
 	 */
 	@Test(priority=13)
 	public void getAllTrabajosEvaluacion() {
-		Usuario u = this.uDAO.findById(3, this.EM);
-		List<Trabajo> tList = uDAO.findAllTrabajosEnEvaluacion(u.getId(), this.EM);
+		Usuario u = this.uDAO.findById(3);
+		List<Trabajo> tList = uDAO.findAllTrabajosEnEvaluacion(u.getId());
 
 		assertEquals(tList.size(),u.getTrabajosEnEvaluacion().size());
 
@@ -408,11 +390,11 @@ public class mainTest {
 	 */
 	@Test(priority=14)
 	public void getAllTrabajosEnRangoFecha() {
-		Usuario u = this.uDAO.findById(3,this.EM);
+		Usuario u = this.uDAO.findById(3);
 
-		Trabajo t1 = this.tDAO.findById(1,this.EM);
-		Trabajo t2 = this.tDAO.findById(2,this.EM);
-		Trabajo t3 = this.tDAO.findById(3,this.EM);
+		Trabajo t1 = this.tDAO.findById(1);
+		Trabajo t2 = this.tDAO.findById(2);
+		Trabajo t3 = this.tDAO.findById(3);
 
 		Calendar c1 = Calendar.getInstance();
 		Calendar c2 = Calendar.getInstance();
@@ -421,13 +403,9 @@ public class mainTest {
 		c2.set(2018, 0, 1);
 		c3.set(2018, 9, 1);
 
-		this.EM.getTransaction().begin();
-
 		t1.setFecha(c1);
 		t2.setFecha(c2);
 		t3.setFecha(c3);
-
-		this.EM.getTransaction().commit();
 
 		Calendar inicio = Calendar.getInstance();
 		Calendar fin = Calendar.getInstance();
@@ -435,7 +413,7 @@ public class mainTest {
 		inicio.set(2018, 7, 5);
 		fin.set(2018, 11, 28);
 
-		List<Trabajo> tList = uDAO.findTrabajosEnEvaluacionEnRango(u.getId(), inicio, fin, this.EM);
+		List<Trabajo> tList = uDAO.findTrabajosEnEvaluacionEnRango(u.getId(), inicio, fin);
 
 		assertEquals(tList.size(), 2);
 
@@ -450,40 +428,28 @@ public class mainTest {
 	 */
 	@Test(priority=15)
 	public void getAllTrabajosEnviados() {
-		Usuario u1 = this.uDAO.findById(1,this.EM);
-		Usuario u2 = this.uDAO.findById(6,this.EM);
+		Usuario u1 = this.uDAO.findById(1);
+		Usuario u2 = this.uDAO.findById(6);
 
-		Trabajo t1 = this.tDAO.findById(1, this.EM);
-		Trabajo t2 = this.tDAO.findById(2, this.EM);
-		Trabajo t3 = this.tDAO.findById(4, this.EM);
-
-		this.EM.getTransaction().begin();
+		Trabajo t1 = this.tDAO.findById(1);
+		Trabajo t2 = this.tDAO.findById(2);
+		Trabajo t3 = this.tDAO.findById(4);
 
 		assertTrue(u1.addTrabajoInvestigacion(t1));
 		assertTrue(u1.addTrabajoInvestigacion(t2));
 		assertTrue(u1.addTrabajoInvestigacion(t3));
 
-		this.EM.getTransaction().commit();
-
-		List<Trabajo> tList = uDAO.findAllTrabajosEnInvestigacion(u1.getId(), this.EM);
+		List<Trabajo> tList = uDAO.findAllTrabajosEnInvestigacion(u1.getId());
 		assertEquals(tList.size(), 3);
-
-		this.EM.getTransaction().begin();
 
 		assertTrue(u2.addTrabajoPendiente(t1));
 		assertTrue(u2.addTrabajoPendiente(t3));
 
-		this.EM.getTransaction().commit();
-
-		List<Trabajo> tListEnviados = uDAO.findAllTrabajosEnInvestigacionEnviados(u1.getId(), this.EM);
+		List<Trabajo> tListEnviados = uDAO.findAllTrabajosEnInvestigacionEnviados(u1.getId());
 		assertEquals(tListEnviados.size(), 2);
-
-		this.EM.getTransaction().begin();
 
 		assertTrue(u2.aceptarTrabajo(t1));
 		assertTrue(u2.aceptarTrabajo(t3));
-
-		this.EM.getTransaction().commit();
 
 		//		for(Trabajo t: tListEnviados) {
 		//			System.out.println(t.toString());
@@ -495,12 +461,12 @@ public class mainTest {
 	 */
 	@Test(priority=16)
 	public void CheckTrabajoConPropiedades() {
-		Trabajo t = this.tDAO.getTrabajoConPropiedades(1, this.EM);
+		Trabajo t = this.tDAO.getTrabajoConPropiedades(1);
 		String data = t.toString();
 
-		Usuario u1 = this.uDAO.findById(1,this.EM);
+		Usuario u1 = this.uDAO.findById(1);
 
-		assertNotNull(uDAO.findAllTrabajosEnInvestigacion(u1.getId(), this.EM));
+		assertNotNull(uDAO.findAllTrabajosEnInvestigacion(u1.getId()));
 	}
 
 	/**
@@ -517,12 +483,12 @@ public class mainTest {
 		 * trabajo1 tiene palabra clave 1 y 2
 		 * trabajo2 y trabajo4 tienen palabra clave 2 unicamente
 		 */
-		Usuario u1 = this.uDAO.findById(1,this.EM);
-		Usuario u2 = this.uDAO.findById(6,this.EM);
+		Usuario u1 = this.uDAO.findById(1);
+		Usuario u2 = this.uDAO.findById(6);
 
-		PalabrasClave pc = this.pcDAO.findById(1, this.EM);
+		PalabrasClave pc = this.pcDAO.findById(1);
 
-		List<Trabajo> tList = uDAO.findTrabajosInvestigacionByAreaInvestigacion(u1.getId(), u2.getId(), pc.getId(), this.EM);
+		List<Trabajo> tList = uDAO.findTrabajosInvestigacionByAreaInvestigacion(u1.getId(), u2.getId(), pc.getId());
 
 
 		//el resultado del size sera = 1 para el caso de palabra clave 1 (primer parametro) y sería = 2 para el caso de palabra clave con id 2
