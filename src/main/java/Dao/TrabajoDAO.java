@@ -1,5 +1,6 @@
 package Dao;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -7,8 +8,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import Entity.PalabrasClave;
 import Entity.TipoTrabajo;
 import Entity.Trabajo;
+import Entity.Usuario;
 
 public class TrabajoDAO implements DAO<Trabajo,Integer>{
 
@@ -37,19 +40,55 @@ public class TrabajoDAO implements DAO<Trabajo,Integer>{
 		entityManager.close();
 		return t;
 	}
+
+	public boolean asignarTipoTrabajo(Integer id_trabajo, Integer id_tipoTrabajo) {
+		TipoTrabajo tipoTrabajo = TipoTrabajoDAO.getInstance().findById(id_tipoTrabajo);
+		if(tipoTrabajo == null) 
+			throw new IllegalArgumentException("el tipo de trabajo no existe");
+
+		EntityManager entityManager=EMF.createEntityManager();
+		Trabajo trabajo = entityManager.find(Trabajo.class, id_trabajo);
+		if(trabajo == null) {
+			entityManager.close();
+			throw new IllegalArgumentException("el trabajo no existe");			
+		}
+		entityManager.getTransaction().begin();
+		trabajo.setTipoTrabajo(tipoTrabajo);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return true;
+	}
+
+	public boolean asignarPalabraClave(Integer id_trabajo, Integer id_palabraClave) {
+		PalabrasClave palabrasClave = PalabrasClaveDAO.getInstance().findById(id_palabraClave);
+		if(palabrasClave == null) 
+			throw new IllegalArgumentException("la palabra clave no existe");
+
+		EntityManager entityManager=EMF.createEntityManager();
+		Trabajo trabajo = entityManager.find(Trabajo.class, id_trabajo);
+		if(trabajo == null) {
+			entityManager.close();
+			throw new IllegalArgumentException("el trabajo no existe");			
+		}
+		entityManager.getTransaction().begin();
+		trabajo.setPalabraClave(palabrasClave);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return true;
+	}
 	
-	public void asignarTipoTrabajo(Integer id_trabajo, Integer id_tipoTrabajo) {
-		/* mirar UsuarioDAO asignar palabraClave
-		 * 
-		 * no usar el findById();
-		 * 
-		 * usar esto: Trabajo t = entityManager.find(Trabajo.class, id);
-		 * 
-		 * recordar cerrar EM con close() antes del throw exception si trajo null
-		 * 
-		 * hacer el begin luego
-		 * 
-		 * */
+	public boolean setFecha(Integer id_trabajo, Calendar fecha) {
+		EntityManager entityManager=EMF.createEntityManager();
+		Trabajo trabajo = entityManager.find(Trabajo.class, id_trabajo);
+		if(trabajo == null) {
+			entityManager.close();
+			throw new IllegalArgumentException("el trabajo no existe");			
+		}
+		entityManager.getTransaction().begin();
+		trabajo.setFecha(fecha);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return true;		
 	}
 
 	public Trabajo getTrabajoConPropiedades(Integer trabajoId) {
@@ -59,7 +98,7 @@ public class TrabajoDAO implements DAO<Trabajo,Integer>{
 		entityManager.close();
 		return (Trabajo) query.getSingleResult();
 	}
-	
+
 	public List<Trabajo> getTrabajoConMismasPalabrasClave(Integer palabraClaveId) {
 		EntityManager entityManager=EMF.createEntityManager();
 		Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN trabajo_palabraClave tp ON t.id = tp.trabajo_id WHERE tp.palabraClave_id = :palabraClaveId",Trabajo.class);
@@ -80,15 +119,17 @@ public class TrabajoDAO implements DAO<Trabajo,Integer>{
 	}
 
 	public boolean delete(Integer id) {
-		Trabajo trabajo = this.findById(id);		
-		if(trabajo != null) {
-			EntityManager entityManager=EMF.createEntityManager();
-			entityManager.getTransaction().begin();
-			entityManager.remove(trabajo);
-			entityManager.getTransaction().commit();
+		EntityManager entityManager=EMF.createEntityManager();
+		Trabajo trabajo = entityManager.find(Trabajo.class, id);
+		if(trabajo == null) {
 			entityManager.close();
-			return true;
+			throw new IllegalArgumentException("el trabajo no existe");			
 		}
-		return false;
+		
+		entityManager.getTransaction().begin();
+		entityManager.remove(trabajo);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return true;
 	}
 }

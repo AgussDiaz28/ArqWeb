@@ -203,7 +203,6 @@ public class mainTest {
 		assertEquals(t10,tDAO.findById(t10.getId()));
 	}
 	
-	//a partir de aca falla el test - dice algo de session
 	@Test(priority=6)
 	public void setPalabrasClaveUsuarios() {
 		Usuario u1 = this.uDAO.findById(1);
@@ -220,18 +219,20 @@ public class mainTest {
 		PalabrasClave pc1 = this.pcDAO.findById(1);
 		PalabrasClave pc2  = this.pcDAO.findById(2);
 		
-		this.uDAO.asignarPalabraClave(u1.getId(),pc1.getId());
-		this.uDAO.asignarPalabraClave(u2.getId(),pc1.getId());
-		this.uDAO.asignarPalabraClave(u3.getId(),pc1.getId());
-		this.uDAO.asignarPalabraClave(u4.getId(),pc2.getId());
-		this.uDAO.asignarPalabraClave(u5.getId(),pc2.getId());
-		this.uDAO.asignarPalabraClave(u6.getId(),pc2.getId());
-		this.uDAO.asignarPalabraClave(u7.getId(),pc1.getId());
-		this.uDAO.asignarPalabraClave(u8.getId(),pc2.getId());
-		this.uDAO.asignarPalabraClave(u9.getId(),pc1.getId());
-		this.uDAO.asignarPalabraClave(u10.getId(),pc2.getId());
+		assertTrue(this.uDAO.asignarPalabraClave(u1.getId(),pc1.getId()));
+		assertTrue(this.uDAO.asignarPalabraClave(u2.getId(),pc1.getId()));
+		assertTrue(this.uDAO.asignarPalabraClave(u3.getId(),pc1.getId()));
+		assertTrue(this.uDAO.asignarPalabraClave(u4.getId(),pc2.getId()));
+		assertTrue(this.uDAO.asignarPalabraClave(u5.getId(),pc2.getId()));
+		assertTrue(this.uDAO.asignarPalabraClave(u6.getId(),pc2.getId()));
+		assertTrue(this.uDAO.asignarPalabraClave(u7.getId(),pc1.getId()));
+		assertTrue(this.uDAO.asignarPalabraClave(u8.getId(),pc2.getId()));
+		assertTrue(this.uDAO.asignarPalabraClave(u9.getId(),pc1.getId()));
+		assertTrue(this.uDAO.asignarPalabraClave(u10.getId(),pc2.getId()));
 	}
-
+	
+	
+	//a partir fallaba - aun no testeado luego de los cambios
 	@Test(priority=7)
 	public void setTipoTrabajos() {
 		Trabajo t1 = this.tDAO.findById(1);
@@ -247,17 +248,17 @@ public class mainTest {
 
 		TipoTrabajo typeT1 = this.ttDAO.findById(1);
 		TipoTrabajo typeT2 = this.ttDAO.findById(2);
-
-		t1.setTipoTrabajo(typeT1);
-		t2.setTipoTrabajo(typeT1);
-		t3.setTipoTrabajo(typeT2);
-		t4.setTipoTrabajo(typeT2);
-		t5.setTipoTrabajo(typeT1);
-		t6.setTipoTrabajo(typeT1);
-		t7.setTipoTrabajo(typeT2);
-		t8.setTipoTrabajo(typeT2);
-		t9.setTipoTrabajo(typeT1);
-		t10.setTipoTrabajo(typeT2);
+		
+		this.tDAO.asignarTipoTrabajo(t1.getId(), typeT1.getId());
+		this.tDAO.asignarTipoTrabajo(t2.getId(), typeT1.getId());
+		this.tDAO.asignarTipoTrabajo(t3.getId(), typeT2.getId());
+		this.tDAO.asignarTipoTrabajo(t4.getId(), typeT2.getId());
+		this.tDAO.asignarTipoTrabajo(t5.getId(), typeT1.getId());
+		this.tDAO.asignarTipoTrabajo(t6.getId(), typeT1.getId());
+		this.tDAO.asignarTipoTrabajo(t7.getId(), typeT2.getId());
+		this.tDAO.asignarTipoTrabajo(t8.getId(), typeT2.getId());
+		this.tDAO.asignarTipoTrabajo(t9.getId(), typeT1.getId());
+		this.tDAO.asignarTipoTrabajo(t10.getId(), typeT2.getId());
 
 		assertEquals(this.tDAO.findById(1).getTipoTrabajo(),this.ttDAO.findById(1));
 		assertEquals(this.tDAO.findById(2).getTipoTrabajo(),this.ttDAO.findById(1));
@@ -285,24 +286,24 @@ public class mainTest {
 		Trabajo t10 = this.tDAO.findById(10);
 
 		PalabrasClave pc1 = this.pcDAO.findById(1);
-		PalabrasClave pc2  = this.pcDAO.findById(2);
-
+		PalabrasClave pc2  = this.pcDAO.findById(2);		
 		
-		t1.setPalabraClave(pc1);
-		t1.setPalabraClave(pc2);
-		t2.setPalabraClave(pc2);
-		t3.setPalabraClave(pc1);
-		t3.setPalabraClave(pc2);
-		t4.setPalabraClave(pc2);
-		t5.setPalabraClave(pc2);
-		t6.setPalabraClave(pc1);
-		t6.setPalabraClave(pc2);
-		t7.setPalabraClave(pc1);
-		t8.setPalabraClave(pc2);
-		t9.setPalabraClave(pc1);
-		t10.setPalabraClave(pc2);
+		assertTrue(this.tDAO.asignarPalabraClave(t1.getId(), pc1.getId()));
+		assertTrue(this.tDAO.asignarPalabraClave(t1.getId(), pc2.getId()));
+		assertTrue(this.tDAO.asignarPalabraClave(t2.getId(), pc2.getId()));
+		assertTrue(this.tDAO.asignarPalabraClave(t3.getId(), pc1.getId()));
+		assertTrue(this.tDAO.asignarPalabraClave(t3.getId(), pc2.getId()));
+		assertTrue(this.tDAO.asignarPalabraClave(t4.getId(), pc2.getId()));
+		assertTrue(this.tDAO.asignarPalabraClave(t5.getId(), pc2.getId()));
+		assertTrue(this.tDAO.asignarPalabraClave(t6.getId(), pc1.getId()));
+		assertTrue(this.tDAO.asignarPalabraClave(t6.getId(), pc2.getId()));
+		assertTrue(this.tDAO.asignarPalabraClave(t7.getId(), pc1.getId()));
+		assertTrue(this.tDAO.asignarPalabraClave(t8.getId(), pc2.getId()));
+		assertTrue(this.tDAO.asignarPalabraClave(t9.getId(), pc1.getId()));
+		assertTrue(this.tDAO.asignarPalabraClave(t10.getId(), pc2.getId()));
 	}
 
+	//fallara por el assertFalse debido a que solo retorna true o exception
 	@Test(priority=9)
 	public void checkEvaluadorApto() {
 		Usuario u1 = this.uDAO.findById(1);
@@ -311,13 +312,17 @@ public class mainTest {
 		Trabajo t1 = this.tDAO.findById(1);
 		Trabajo t2 = this.tDAO.findById(3);
 
-		assertFalse(u1.addTrabajoPendiente(t1));
-		assertTrue(u2.addTrabajoPendiente(t1));
+		/* hacer test particular para cada exception. Ejemplo:
+		* @Test(expectedExceptions = {IllegalArgumentException.class, UnsupportedOperationException.class})
+		*/
+		assertFalse(this.uDAO.addTrabajoPendiente(u1.getId(),t1.getId()));
+		assertTrue(this.uDAO.addTrabajoPendiente(u2.getId(),t1.getId()));
 
-		assertTrue(u1.addTrabajoPendiente(t2));
-		assertTrue(u2.addTrabajoPendiente(t2));
+		assertTrue(this.uDAO.addTrabajoPendiente(u1.getId(),t2.getId()));
+		assertTrue(this.uDAO.addTrabajoPendiente(u2.getId(),t2.getId()));
 	}
 
+	//fallara por el assertFalse debido a que solo retorna true o exception
 	@Test(priority=10)
 	public void checkEvaluadorApto2() {
 		Usuario u1 = this.uDAO.findById(1);
@@ -327,22 +332,24 @@ public class mainTest {
 
 		LugarTrabajo lt = this.ltDAO.findById(1);	
 
-		u1.addTrabajoInvestigacion(t1);		
-		u1.setLugarTrabajo(lt);
-		u2.setLugarTrabajo(lt);
+		this.uDAO.addTrabajoInvestigacion(u1.getId(),t1.getId());		
+		this.uDAO.setLugarTrabajo(u1.getId(), lt.getId());
+		this.uDAO.setLugarTrabajo(u2.getId(), lt.getId());
 		
-		assertFalse(u2.addTrabajoPendiente(t1));
+		assertFalse(this.uDAO.addTrabajoPendiente(u2.getId(),t1.getId()));
 	}
 
+	//fallara por el assertFalse debido a que solo retorna true o exception
 	@Test(priority=11)
 	public void checkAutorNoEvaluaSuTrabajo() {
 		Usuario u = this.uDAO.findById(1);
 		Trabajo t = this.tDAO.findById(1);
 
-		u.addTrabajoInvestigacion(t);		
-		assertFalse(u.addTrabajoPendiente(t));
+		this.uDAO.addTrabajoInvestigacion(u.getId(), t.getId());
+		assertFalse(this.uDAO.addTrabajoPendiente(u.getId(),t.getId()));
 	}
-
+	
+	//fallara por el assertFalse debido a que solo retorna true o exception
 	@Test(priority=12)
 	public void checkEvaluarMaximoTres() {
 		Usuario u = this.uDAO.findById(3);
@@ -351,17 +358,19 @@ public class mainTest {
 		Trabajo t2 = this.tDAO.findById(2);
 		Trabajo t3 = this.tDAO.findById(3);
 		Trabajo t4 = this.tDAO.findById(4);
+		
+		this.uDAO.addTrabajoPendiente(u.getId(),t1.getId());
+		this.uDAO.addTrabajoPendiente(u.getId(),t2.getId());
+		this.uDAO.addTrabajoPendiente(u.getId(),t3.getId());
+		this.uDAO.addTrabajoPendiente(u.getId(),t4.getId());
+		
+		
 
-		u.addTrabajoPendiente(t1);
-		u.addTrabajoPendiente(t2);
-		u.addTrabajoPendiente(t3);
-		u.addTrabajoPendiente(t4);
+		assertTrue(this.uDAO.aceptarTrabajo(u.getId(), t1.getId()));
+		assertTrue(this.uDAO.aceptarTrabajo(u.getId(), t2.getId()));
+		assertTrue(this.uDAO.aceptarTrabajo(u.getId(), t3.getId()));
 
-		assertTrue(u.aceptarTrabajo(t1));
-		assertTrue(u.aceptarTrabajo(t2));
-		assertTrue(u.aceptarTrabajo(t3));
-
-		assertFalse(u.aceptarTrabajo(t4));
+		assertFalse(this.uDAO.aceptarTrabajo(u.getId(), t4.getId()));
 		
 	}
 
@@ -402,10 +411,10 @@ public class mainTest {
 		c1.set(2018, 11, 1);
 		c2.set(2018, 0, 1);
 		c3.set(2018, 9, 1);
-
-		t1.setFecha(c1);
-		t2.setFecha(c2);
-		t3.setFecha(c3);
+		
+		this.tDAO.setFecha(t1.getId(), c1);
+		this.tDAO.setFecha(t2.getId(), c2);
+		this.tDAO.setFecha(t3.getId(), c3);
 
 		Calendar inicio = Calendar.getInstance();
 		Calendar fin = Calendar.getInstance();
@@ -413,7 +422,7 @@ public class mainTest {
 		inicio.set(2018, 7, 5);
 		fin.set(2018, 11, 28);
 
-		List<Trabajo> tList = uDAO.findTrabajosEnEvaluacionEnRango(u.getId(), inicio, fin);
+		List<Trabajo> tList = this.uDAO.findTrabajosEnEvaluacionEnRango(u.getId(), inicio, fin);
 
 		assertEquals(tList.size(), 2);
 
@@ -434,22 +443,22 @@ public class mainTest {
 		Trabajo t1 = this.tDAO.findById(1);
 		Trabajo t2 = this.tDAO.findById(2);
 		Trabajo t3 = this.tDAO.findById(4);
+		
+		assertTrue(this.uDAO.addTrabajoInvestigacion(u1.getId(), t1.getId()));
+		assertTrue(this.uDAO.addTrabajoInvestigacion(u1.getId(), t2.getId()));
+		assertTrue(this.uDAO.addTrabajoInvestigacion(u1.getId(), t3.getId()));
 
-		assertTrue(u1.addTrabajoInvestigacion(t1));
-		assertTrue(u1.addTrabajoInvestigacion(t2));
-		assertTrue(u1.addTrabajoInvestigacion(t3));
-
-		List<Trabajo> tList = uDAO.findAllTrabajosEnInvestigacion(u1.getId());
+		List<Trabajo> tList = this.uDAO.findAllTrabajosEnInvestigacion(u1.getId());
 		assertEquals(tList.size(), 3);
 
-		assertTrue(u2.addTrabajoPendiente(t1));
-		assertTrue(u2.addTrabajoPendiente(t3));
+		assertTrue(this.uDAO.addTrabajoPendiente(u2.getId(),t1.getId()));
+		assertTrue(this.uDAO.addTrabajoPendiente(u2.getId(),t3.getId()));
 
-		List<Trabajo> tListEnviados = uDAO.findAllTrabajosEnInvestigacionEnviados(u1.getId());
+		List<Trabajo> tListEnviados = this.uDAO.findAllTrabajosEnInvestigacionEnviados(u1.getId());
 		assertEquals(tListEnviados.size(), 2);
 
-		assertTrue(u2.aceptarTrabajo(t1));
-		assertTrue(u2.aceptarTrabajo(t3));
+		assertTrue(this.uDAO.aceptarTrabajo(u2.getId(), t1.getId()));
+		assertTrue(this.uDAO.aceptarTrabajo(u2.getId(), t3.getId()));
 
 		//		for(Trabajo t: tListEnviados) {
 		//			System.out.println(t.toString());
@@ -466,7 +475,7 @@ public class mainTest {
 
 		Usuario u1 = this.uDAO.findById(1);
 
-		assertNotNull(uDAO.findAllTrabajosEnInvestigacion(u1.getId()));
+		assertNotNull(this.uDAO.findAllTrabajosEnInvestigacion(u1.getId()));
 	}
 
 	/**
@@ -488,7 +497,7 @@ public class mainTest {
 
 		PalabrasClave pc = this.pcDAO.findById(1);
 
-		List<Trabajo> tList = uDAO.findTrabajosInvestigacionByAreaInvestigacion(u1.getId(), u2.getId(), pc.getId());
+		List<Trabajo> tList = this.uDAO.findTrabajosInvestigacionByAreaInvestigacion(u1.getId(), u2.getId(), pc.getId());
 
 
 		//el resultado del size sera = 1 para el caso de palabra clave 1 (primer parametro) y sería = 2 para el caso de palabra clave con id 2

@@ -2,11 +2,13 @@ package Dao;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import Entity.Calificacion;
+import Entity.LugarTrabajo;
 import Entity.PalabrasClave;
 import Entity.Trabajo;
 import Entity.Usuario;
@@ -32,11 +34,11 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 		return usuario;
 	}
 
-	public void asignarPalabraClave(Integer id_usuario, Integer id_palabraClave) {
+	public boolean asignarPalabraClave(Integer id_usuario, Integer id_palabraClave) {
 		PalabrasClave palabraClave = PalabrasClaveDAO.getInstance().findById(id_palabraClave);
 		if(palabraClave == null) 
 			throw new IllegalArgumentException("la palabra clave no existe");
-		
+
 		EntityManager entityManager=EMF.createEntityManager();
 		Usuario user = entityManager.find(Usuario.class, id_usuario);
 		if(user == null) {
@@ -47,6 +49,7 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 		user.setPalabraClave(palabraClave);
 		entityManager.getTransaction().commit();
 		entityManager.close();
+		return true;
 	}
 
 	public Usuario findById(Integer id) {
@@ -57,77 +60,102 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	}
 
 	public List<Trabajo> findAllTrabajosEnEvaluacion(Integer id){
-		Usuario user = this.findById(id);
-		if(user != null) {
-			if(user.isEvaluador()) {
-				EntityManager entityManager=EMF.createEntityManager();
-				Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN evaluador_trabajo et ON t.id = et.trabajo_id WHERE et.evaluador_id = :id",Trabajo.class);
-				query.setParameter("id", id);
-				List<Trabajo> trabajos = query.getResultList();
-				entityManager.close();
-				return trabajos;
-			}			
+		EntityManager entityManager=EMF.createEntityManager();
+		Usuario user = entityManager.find(Usuario.class, id);
+
+		if(user == null) {
+			entityManager.close();
+			throw new IllegalArgumentException("el autor no existe");
 		}
-		throw new UnsupportedOperationException();
+
+		if(!user.isEvaluador()) {
+			entityManager.close();
+			throw new IllegalArgumentException("el usuario no es evaluador");
+		}
+
+		Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN evaluador_trabajo et ON t.id = et.trabajo_id WHERE et.evaluador_id = :id",Trabajo.class);
+		query.setParameter("id", id);
+		List<Trabajo> trabajos = query.getResultList();
+		entityManager.close();
+		return trabajos;
 	}
 
 	public List<Trabajo> findTrabajosEnEvaluacionEnRango(Integer id, Calendar inicio, Calendar fin){
-		Usuario user = this.findById(id);
-		if(user != null) {
-			if(user.isEvaluador()) {
-				EntityManager entityManager=EMF.createEntityManager();
-				Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN evaluador_trabajo et ON t.id = et.trabajo_id WHERE et.evaluador_id = :id AND t.fecha >= :inicio AND t.fecha <= :fin",Trabajo.class);
-				query.setParameter("id", id);
-				query.setParameter("inicio", inicio);
-				query.setParameter("fin", fin);
-				List<Trabajo> trabajos = query.getResultList();
-				entityManager.close();
-				return trabajos;
-			}			
+		EntityManager entityManager=EMF.createEntityManager();
+		Usuario user = entityManager.find(Usuario.class, id);
+
+		if(user == null) {
+			entityManager.close();
+			throw new IllegalArgumentException("el autor no existe");
 		}
-		throw new UnsupportedOperationException();
+
+		if(!user.isEvaluador()) {
+			entityManager.close();
+			throw new IllegalArgumentException("el usuario no es evaluador");
+		}
+
+		Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN evaluador_trabajo et ON t.id = et.trabajo_id WHERE et.evaluador_id = :id AND t.fecha >= :inicio AND t.fecha <= :fin",Trabajo.class);
+		query.setParameter("id", id);
+		query.setParameter("inicio", inicio);
+		query.setParameter("fin", fin);
+		List<Trabajo> trabajos = query.getResultList();
+		entityManager.close();
+		return trabajos;
 	}
 
 	public List<Trabajo> findAllTrabajosEnInvestigacion(Integer id){
-		Usuario user = this.findById(id);
-		if(user != null) {
-			EntityManager entityManager=EMF.createEntityManager();
-			Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id WHERE at.autor_id = :id",Trabajo.class);
-			query.setParameter("id", id);
-			List<Trabajo> trabajos = query.getResultList();
+		EntityManager entityManager=EMF.createEntityManager();
+		Usuario user = entityManager.find(Usuario.class, id);
+		if(user == null) {
 			entityManager.close();
-			return trabajos;
+			throw new IllegalArgumentException("el autor no existe");
 		}
-		throw new UnsupportedOperationException();
+		Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id WHERE at.autor_id = :id",Trabajo.class);
+		query.setParameter("id", id);
+		List<Trabajo> trabajos = query.getResultList();
+		entityManager.close();
+		return trabajos;
 	}
 
 	public List<Trabajo> findAllTrabajosEnInvestigacionEnviados(Integer id){
-		Usuario user = this.findById(id);
-		if(user != null) {
-			EntityManager entityManager=EMF.createEntityManager();
-			Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id JOIN evaluador_trabajoPendiente et ON t.id = et.trabajoPendiente_id WHERE at.autor_id = :id",Trabajo.class);
-			query.setParameter("id", id);
-			List<Trabajo> trabajos = query.getResultList();
+		EntityManager entityManager=EMF.createEntityManager();
+		Usuario user = entityManager.find(Usuario.class, id);
+
+		if(user == null) {
 			entityManager.close();
-			return trabajos;	
+			throw new IllegalArgumentException("el autor no existe");
 		}
-		throw new UnsupportedOperationException();
+
+		Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id JOIN evaluador_trabajoPendiente et ON t.id = et.trabajoPendiente_id WHERE at.autor_id = :id",Trabajo.class);
+		query.setParameter("id", id);
+		List<Trabajo> trabajos = query.getResultList();
+		entityManager.close();
+		return trabajos;	
+
 	}
 
 	public List<Trabajo> findTrabajosInvestigacionByAreaInvestigacion(Integer autor_id, Integer evaluador_id, Integer pc_id){
-		Usuario user1 = this.findById(autor_id);
-		Usuario user2 = this.findById(evaluador_id);
-		if(user1 != null && user2 != null) {
-			EntityManager entityManager=EMF.createEntityManager();
-			Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id JOIN evaluador_trabajo et ON et.trabajo_id = t.id JOIN trabajo_palabraClave tpc ON tpc.palabraClave_id = :pc_id AND tpc.trabajo_id = t.id WHERE at.autor_id = :autor_id AND et.evaluador_id = :evaluador_id",Trabajo.class);
-			query.setParameter("autor_id", autor_id);
-			query.setParameter("evaluador_id", evaluador_id);
-			query.setParameter("pc_id", pc_id);
-			List<Trabajo> trabajos = query.getResultList();
+		EntityManager entityManager=EMF.createEntityManager();
+		Usuario user1 = entityManager.find(Usuario.class, autor_id);
+		Usuario user2 = entityManager.find(Usuario.class, evaluador_id);
+
+		if(user1 == null) {
 			entityManager.close();
-			return trabajos;	
+			throw new IllegalArgumentException("el autor no existe");
 		}
-		throw new UnsupportedOperationException();
+
+		if(user2 == null) {
+			entityManager.close();
+			throw new IllegalArgumentException("el evaluador no existe");
+		}
+
+		Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN autor_trabajo at ON t.id = at.trabajo_id JOIN evaluador_trabajo et ON et.trabajo_id = t.id JOIN trabajo_palabraClave tpc ON tpc.palabraClave_id = :pc_id AND tpc.trabajo_id = t.id WHERE at.autor_id = :autor_id AND et.evaluador_id = :evaluador_id",Trabajo.class);
+		query.setParameter("autor_id", autor_id);
+		query.setParameter("evaluador_id", evaluador_id);
+		query.setParameter("pc_id", pc_id);
+		List<Trabajo> trabajos = query.getResultList();
+		entityManager.close();
+		return trabajos;
 	}
 
 	public List<Usuario> findAll() {
@@ -138,17 +166,159 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean delete(Integer id) {
-		Usuario usuario = this.findById(id);		
-		if(usuario != null) {
-			EntityManager entityManager=EMF.createEntityManager();
-			entityManager.getTransaction().begin();
-			entityManager.remove(usuario);
-			entityManager.getTransaction().commit();
+	public boolean delete(Integer id_usuario) {
+		EntityManager entityManager=EMF.createEntityManager();
+		Usuario usuario = entityManager.find(Usuario.class, id_usuario);	
+		if(usuario == null) {
 			entityManager.close();
-			return true;
+			throw new IllegalArgumentException("el usuario no existe");
 		}
-		return false;
+		entityManager.getTransaction().begin();
+		entityManager.remove(usuario);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return true;
 	}
+
+	public boolean setLugarTrabajo(Integer id_usuario, Integer id_lugarTrabajo) {
+		LugarTrabajo lugarTrabajo = LugarTrabajoDAO.getInstance().findById(id_lugarTrabajo);
+
+		if(lugarTrabajo == null) {
+			throw new IllegalArgumentException("el lugar de trabajo no existe");
+		}	
+
+		EntityManager entityManager=EMF.createEntityManager();
+		Usuario usuario = entityManager.find(Usuario.class, id_usuario);
+
+		if(usuario == null) {
+			entityManager.close();
+			throw new IllegalArgumentException("el usuario no existe");
+		}		
+
+		entityManager.getTransaction().begin();
+		usuario.setLugarTrabajo(lugarTrabajo);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+
+		return true;
+	}
+
+	public boolean addTrabajoInvestigacion(Integer id_usuario, Integer id_trabajo) {
+		Trabajo trabajo = TrabajoDAO.getInstance().findById(id_trabajo);
+
+		if(trabajo == null) {
+			throw new IllegalArgumentException("el trabajo no existe");
+		}	
+
+		EntityManager entityManager=EMF.createEntityManager();
+		Usuario usuario = entityManager.find(Usuario.class, id_usuario);
+
+		if(usuario == null) {
+			entityManager.close();
+			throw new IllegalArgumentException("el usuario no existe");	
+		}
+
+		if(usuario.getTrabajosPendientes().contains(trabajo) || usuario.getTrabajosEnEvaluacion().contains(trabajo)) {
+			entityManager.close();
+			throw new UnsupportedOperationException("el usuario es revisor de este trabajo");			
+		}
+
+		entityManager.getTransaction().begin();		
+		usuario.setTrabajoEnInvestigacion(trabajo);
+		usuario.setEsAutor(true);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return true;
+	}	
+
+	public boolean addTrabajoPendiente(Integer id_usuario, Integer id_trabajo) {
+		Trabajo trabajo = TrabajoDAO.getInstance().findById(id_trabajo);
+
+		if(trabajo == null) {
+			throw new IllegalArgumentException("el trabajo no existe");
+		}	
+
+		EntityManager entityManager=EMF.createEntityManager();
+		Usuario usuario = entityManager.find(Usuario.class, id_usuario);
+
+		if(usuario == null) {
+			entityManager.close();
+			throw new IllegalArgumentException("el usuario no existe");	
+		}
+
+		if (!usuario.esEvaluadorApto(trabajo)) {
+			entityManager.close();
+			throw new UnsupportedOperationException("el revisor no es apto");	
+		}
+
+		entityManager.getTransaction().begin();
+		usuario.setTrabajoPendiente(trabajo);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return true;
+	}
+
+	private boolean addTrabajoEvaluacion(Usuario usuario, Trabajo trabajo, EntityManager entityManager) {
+
+		if(usuario.getTrabajosEnEvaluacion().size() >= 3 ) {			
+			entityManager.close();
+			throw new UnsupportedOperationException("el revisor no puede aceptar mas trabajos");	
+		}
+
+		entityManager.getTransaction().begin();
+		usuario.removeTrabajoPendiente(trabajo);
+		usuario.setTrabajoEnEvaluacion(trabajo);
+		usuario.setEsEvaluador(true);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return true;
+	}
+
+	public boolean aceptarTrabajo(Integer id_usuario, Integer id_trabajo) {
+		Trabajo trabajo = TrabajoDAO.getInstance().findById(id_trabajo);
+
+		if(trabajo == null) {
+			throw new IllegalArgumentException("el trabajo no existe");
+		}	
+
+		EntityManager entityManager=EMF.createEntityManager();
+		Usuario usuario = entityManager.find(Usuario.class, id_usuario);
+
+		if(usuario == null) {
+			entityManager.close();
+			throw new IllegalArgumentException("el usuario no existe");	
+		}
+
+		if(!usuario.getTrabajosPendientes().contains(trabajo)) {
+			entityManager.close();
+			throw new UnsupportedOperationException("el revisor no posee este trabajo en su lista de trabajos pendientes");	
+		}		
+
+		return this.addTrabajoEvaluacion(usuario, trabajo, entityManager);
+	}
+
+	public boolean rechazarTrabajo(Integer id_usuario, Integer id_trabajo) {
+		Trabajo trabajo = TrabajoDAO.getInstance().findById(id_trabajo);
+
+		if(trabajo == null) {
+			throw new IllegalArgumentException("el trabajo no existe");
+		}	
+
+		EntityManager entityManager=EMF.createEntityManager();
+		Usuario usuario = entityManager.find(Usuario.class, id_usuario);
+
+		if(usuario == null) {
+			entityManager.close();
+			throw new IllegalArgumentException("el usuario no existe");	
+		}		
+
+		entityManager.getTransaction().begin();
+		usuario.removeTrabajoPendiente(trabajo);
+		entityManager.getTransaction().commit();
+		entityManager.close();		
+		return true;
+	}
+
+
 
 }

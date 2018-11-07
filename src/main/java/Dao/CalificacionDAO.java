@@ -46,10 +46,10 @@ public class CalificacionDAO implements DAO<Calificacion,Integer>{
 			throw new IllegalArgumentException("Usuario_id no existe");
 
 		if (!(nota >= 0 && nota <= 10))
-			throw new IllegalArgumentException("Nota debe ser entre 0 a 10");
+			throw new UnsupportedOperationException("Nota debe ser entre 0 a 10");
 		
 		if(!user.getTrabajosEnEvaluacion().contains(trabajo)) 
-			throw new IllegalArgumentException("El usuario no es revisor de ese trabajo");
+			throw new UnsupportedOperationException("El usuario no es revisor de ese trabajo");
 
 		Calificacion c = new Calificacion();
 		c.setEvaluador(user);

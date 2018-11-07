@@ -58,9 +58,9 @@ public class Trabajo {
 	//-----CONSTRUCTOR-----
 	
 	public Trabajo() {
-		this.autores = new HashSet<>();
-		this.evaluadores = new HashSet<>();
-		this.palabrasClave = new HashSet<>();
+		this.autores = new HashSet<Usuario>();
+		this.evaluadores = new HashSet<Usuario>();
+		this.palabrasClave = new HashSet<PalabrasClave>();
 		this.esExperto = false;
 	}
 	

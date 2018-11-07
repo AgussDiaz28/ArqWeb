@@ -176,57 +176,32 @@ public class Usuario {
 	public void setLugarTrabajo(LugarTrabajo lt) {
 		this.lugarTrabajo = lt;
 	}
-
-	//---- BUSINESS LOGIC ----
-
-	public boolean addTrabajoInvestigacion(Trabajo trabajo) {
-		if(!this.trabajosPendientes.contains(trabajo) && !this.trabajosEnEvaluacion.contains(trabajo)) {
-			trabajo.setAutor(this);
-			this.trabajosEnInvestigacion.add(trabajo);
-			this.esAutor = true;
-			return true;
-		}
-		return false;
+	
+	public void setTrabajoEnInvestigacion(Trabajo trabajo){
+		this.trabajosEnInvestigacion.add(trabajo);
 	}
-
-	private boolean addTrabajoEvaluacion(Trabajo trabajo) {
-		if(this.trabajosEnEvaluacion.size() < 3 ) {
-			this.trabajosEnEvaluacion.add(trabajo);
-			this.esEvaluador = true;
-			return true;
-		}
-		return false;
+	
+	public void setTrabajoEnEvaluacion(Trabajo trabajo) {
+		this.trabajosEnEvaluacion.add(trabajo);
 	}
-
-	public boolean addTrabajoPendiente(Trabajo trabajo) {
-		if (this.esEvaluadorApto(trabajo)) {
-			this.trabajosPendientes.add(trabajo);
-			return true;
-		}
-		return false;
+	
+	public void setEsEvaluador(boolean valor) {
+		this.esEvaluador = valor;
 	}
-
-	public boolean aceptarTrabajo(Trabajo trabajo) {
-		if(this.trabajosPendientes.contains(trabajo)) {
-			this.trabajosPendientes.remove(trabajo);			
-			return this.addTrabajoEvaluacion(trabajo);
-		}
-		return false;
+	
+	public void setEsAutor(boolean valor) {
+		this.esAutor = valor;
 	}
-
-	public void rechazarTrabajo(Trabajo trabajo) {
+	
+	public void removeTrabajoPendiente(Trabajo trabajo) {
 		this.trabajosPendientes.remove(trabajo);
 	}
-
+	
 	public String toString() {
 		return this.apellido+", "+this.nombre;
 	}
-
-	public int countTrabajosEvaluacion() {
-		return this.trabajosEnEvaluacion.size();
-	}
-
-	private boolean esEvaluadorApto(Trabajo t) {
+	
+	public boolean esEvaluadorApto(Trabajo t) {
 		if	(!this.trabajosEnInvestigacion.contains(t)) {
 			boolean mismoLugarTrabajo = false;
 			for(Usuario u: t.getAutores()) {
