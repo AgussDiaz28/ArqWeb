@@ -220,12 +220,8 @@ public class Usuario {
 						}
 					}
 				}
-			}else {
-				System.out.println("trabajan en el mismo lugar");
 			}			
-		}else {
-			System.out.println("es autor del trabajo a evaluar");
-		}		
+		}
 		return false;
 	}
 	

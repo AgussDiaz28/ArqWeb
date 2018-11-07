@@ -1,22 +1,13 @@
 package ArqWeb.ArqWeb;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
-import Dao.EMF;
 import Dao.LugarTrabajoDAO;
 import Dao.PalabrasClaveDAO;
 import Dao.TipoTrabajoDAO;
@@ -35,8 +26,13 @@ public class mainTest {
 	private TrabajoDAO tDAO;
 	private TipoTrabajoDAO ttDAO;
 	private LugarTrabajoDAO ltDAO;
-	private EntityManager EM;
 
+	/* Bugs:
+	 * 	Hay que ejecutar los test 2 veces
+	 * 	1- para crear el schema
+	 * 	2- para cargar los datos
+	 * 	3- funciona a partir dela tercera ejecucion 
+	 */
 	@BeforeSuite
 	public void init() {
 		this.pcDAO = PalabrasClaveDAO.getInstance();	
@@ -202,7 +198,7 @@ public class mainTest {
 		assertEquals(t9,tDAO.findById(t9.getId()));
 		assertEquals(t10,tDAO.findById(t10.getId()));
 	}
-	
+
 	@Test(priority=6)
 	public void setPalabrasClaveUsuarios() {
 		Usuario u1 = this.uDAO.findById(1);
@@ -218,19 +214,21 @@ public class mainTest {
 
 		PalabrasClave pc1 = this.pcDAO.findById(1);
 		PalabrasClave pc2  = this.pcDAO.findById(2);
-		
+
 		assertTrue(this.uDAO.asignarPalabraClave(u1.getId(),pc1.getId()));
 		assertTrue(this.uDAO.asignarPalabraClave(u2.getId(),pc1.getId()));
 		assertTrue(this.uDAO.asignarPalabraClave(u3.getId(),pc1.getId()));
+		assertTrue(this.uDAO.asignarPalabraClave(u3.getId(),pc2.getId()));
 		assertTrue(this.uDAO.asignarPalabraClave(u4.getId(),pc2.getId()));
 		assertTrue(this.uDAO.asignarPalabraClave(u5.getId(),pc2.getId()));
+		assertTrue(this.uDAO.asignarPalabraClave(u6.getId(),pc1.getId()));
 		assertTrue(this.uDAO.asignarPalabraClave(u6.getId(),pc2.getId()));
 		assertTrue(this.uDAO.asignarPalabraClave(u7.getId(),pc1.getId()));
 		assertTrue(this.uDAO.asignarPalabraClave(u8.getId(),pc2.getId()));
 		assertTrue(this.uDAO.asignarPalabraClave(u9.getId(),pc1.getId()));
 		assertTrue(this.uDAO.asignarPalabraClave(u10.getId(),pc2.getId()));
 	}
-	
+
 	@Test(priority=7)
 	public void setTipoTrabajos() {
 		Trabajo t1 = this.tDAO.findById(1);
@@ -246,7 +244,7 @@ public class mainTest {
 
 		TipoTrabajo typeT1 = this.ttDAO.findById(1);
 		TipoTrabajo typeT2 = this.ttDAO.findById(2);
-		
+
 		this.tDAO.asignarTipoTrabajo(t1.getId(), typeT1.getId());
 		this.tDAO.asignarTipoTrabajo(t2.getId(), typeT1.getId());
 		this.tDAO.asignarTipoTrabajo(t3.getId(), typeT2.getId());
@@ -285,7 +283,7 @@ public class mainTest {
 
 		PalabrasClave pc1 = this.pcDAO.findById(1);
 		PalabrasClave pc2  = this.pcDAO.findById(2);		
-		
+
 		assertTrue(this.tDAO.asignarPalabraClave(t1.getId(), pc1.getId()));
 		assertTrue(this.tDAO.asignarPalabraClave(t1.getId(), pc2.getId()));
 		assertTrue(this.tDAO.asignarPalabraClave(t2.getId(), pc2.getId()));
@@ -301,208 +299,200 @@ public class mainTest {
 		assertTrue(this.tDAO.asignarPalabraClave(t10.getId(), pc2.getId()));
 	}
 
-	//fallara por el assertFalse debido a que solo retorna true o exception
-	@Test(priority=9)
-	public void checkEvaluadorApto() {
-		Usuario u1 = this.uDAO.findById(1);
-		Usuario u2 = this.uDAO.findById(3);
-		Usuario u3 = this.uDAO.findById(6);
-
-		Trabajo t1 = this.tDAO.findById(1);
-		Trabajo t2 = this.tDAO.findById(3);
-
-		/* hacer test particular para cada exception. Ejemplo:
-		* @Test(expectedExceptions = {IllegalArgumentException.class, UnsupportedOperationException.class})
-		*  los dos comentados se rompen porque falla el test ya q no devuelve un false, devuelve una excepcion
-		*/
-//		assertFalse(this.uDAO.addTrabajoPendiente(u1.getId(),t1.getId()));
-//		assertFalse(this.uDAO.addTrabajoPendiente(u2.getId(),t1.getId()));
-
-		assertTrue(this.uDAO.addTrabajoPendiente(u1.getId(),t2.getId()));
-		assertTrue(this.uDAO.addTrabajoPendiente(u2.getId(),t2.getId()));
-	}
-
-	//fallara por el assertFalse debido a que solo retorna true o exception
-	@Test(priority=10)
-	public void checkEvaluadorApto2() {
+	//no evalua trabajos con compañeros en mismo lugar de trabajo
+	@Test(priority=9, expectedExceptions = {IllegalArgumentException.class, UnsupportedOperationException.class})
+	public void checkEvaluadorNoApto() {
 		Usuario u1 = this.uDAO.findById(1);
 		Usuario u2 = this.uDAO.findById(3);
 
 		Trabajo t1 = this.tDAO.findById(1);
-
+		
 		LugarTrabajo lt = this.ltDAO.findById(1);	
 
 		this.uDAO.addTrabajoInvestigacion(u1.getId(),t1.getId());		
 		this.uDAO.setLugarTrabajo(u1.getId(), lt.getId());
 		this.uDAO.setLugarTrabajo(u2.getId(), lt.getId());
-		
-		assertFalse(this.uDAO.addTrabajoPendiente(u2.getId(),t1.getId()));
-	}
 
-	//fallara por el assertFalse debido a que solo retorna true o exception
-	@Test(priority=11)
+		this.uDAO.addTrabajoPendiente(u2.getId(),t1.getId());
+	}
+	
+	@Test(priority=10)
+	public void checkEvaluadorApto() {
+		Usuario u1 = this.uDAO.findById(1);
+		Usuario u2 = this.uDAO.findById(3);
+
+		Trabajo t1 = this.tDAO.findById(3);
+
+		assertTrue(this.uDAO.addTrabajoPendiente(u1.getId(),t1.getId()));
+		assertTrue(this.uDAO.addTrabajoPendiente(u2.getId(),t1.getId()));
+	}
+	
+	@Test(priority=11, expectedExceptions = {IllegalArgumentException.class, UnsupportedOperationException.class})
 	public void checkAutorNoEvaluaSuTrabajo() {
 		Usuario u = this.uDAO.findById(1);
 		Trabajo t = this.tDAO.findById(1);
 
 		this.uDAO.addTrabajoInvestigacion(u.getId(), t.getId());
-		assertFalse(this.uDAO.addTrabajoPendiente(u.getId(),t.getId()));
+		this.uDAO.addTrabajoPendiente(u.getId(),t.getId());
 	}
 	
-	//fallara por el assertFalse debido a que solo retorna true o exception
 	@Test(priority=12)
 	public void checkEvaluarMaximoTres() {
-		Usuario u = this.uDAO.findById(3);
+		Usuario u = this.uDAO.findById(6);
 
 		Trabajo t1 = this.tDAO.findById(1);
 		Trabajo t2 = this.tDAO.findById(2);
 		Trabajo t3 = this.tDAO.findById(3);
-		Trabajo t4 = this.tDAO.findById(4);
 		
 		this.uDAO.addTrabajoPendiente(u.getId(),t1.getId());
 		this.uDAO.addTrabajoPendiente(u.getId(),t2.getId());
 		this.uDAO.addTrabajoPendiente(u.getId(),t3.getId());
-		this.uDAO.addTrabajoPendiente(u.getId(),t4.getId());
 		
-		
-
 		assertTrue(this.uDAO.aceptarTrabajo(u.getId(), t1.getId()));
 		assertTrue(this.uDAO.aceptarTrabajo(u.getId(), t2.getId()));
 		assertTrue(this.uDAO.aceptarTrabajo(u.getId(), t3.getId()));
+	}
 
-		assertFalse(this.uDAO.aceptarTrabajo(u.getId(), t4.getId()));
+	@Test(priority=13, expectedExceptions = {IllegalArgumentException.class, UnsupportedOperationException.class})
+	public void checkEvaluarCuartoTrabajo() {
+		Usuario u = this.uDAO.findById(6);
 		
-	}
-
-	/**
-	 * d-ii) devuelve todos los trabajos asignados de un revisor
-	 * 
-	 * en el test anterior se asignaron 4 trabajos al usuario con id: 3 y acepto 3 de estos (el maximo que puede aceptar)
-	 */
-	@Test(priority=13)
-	public void getAllTrabajosEvaluacion() {
-		Usuario u = this.uDAO.findById(3);
-		List<Trabajo> tList = uDAO.findAllTrabajosEnEvaluacion(u.getId());
-
-		assertEquals(tList.size(),u.getTrabajosEnEvaluacion().size());
-
-		//		for(Trabajo t: tList) {
-		//			System.out.println(t.toString());
-		//		}
-	}
-
-
-	/**
-	 * d-iii) devuelve todos los trabajos asignados a un revisor que estan en un rango de fecha
-	 * 
-	 * devuelve solo el trabajo 1 y 3
-	 */
-	@Test(priority=14)
-	public void getAllTrabajosEnRangoFecha() {
-		Usuario u = this.uDAO.findById(3);
-
-		Trabajo t1 = this.tDAO.findById(1);
-		Trabajo t2 = this.tDAO.findById(2);
-		Trabajo t3 = this.tDAO.findById(3);
-
-		Calendar c1 = Calendar.getInstance();
-		Calendar c2 = Calendar.getInstance();
-		Calendar c3 = Calendar.getInstance();
-		c1.set(2018, 11, 1);
-		c2.set(2018, 0, 1);
-		c3.set(2018, 9, 1);
+		Trabajo t4 = this.tDAO.findById(4);
 		
-		this.tDAO.setFecha(t1.getId(), c1);
-		this.tDAO.setFecha(t2.getId(), c2);
-		this.tDAO.setFecha(t3.getId(), c3);
+		this.uDAO.addTrabajoPendiente(u.getId(),t4.getId());
 
-		Calendar inicio = Calendar.getInstance();
-		Calendar fin = Calendar.getInstance();
-
-		inicio.set(2018, 7, 5);
-		fin.set(2018, 11, 28);
-
-		List<Trabajo> tList = this.uDAO.findTrabajosEnEvaluacionEnRango(u.getId(), inicio, fin);
-
-		assertEquals(tList.size(), 2);
-
-		//		for(Trabajo t: tList) {
-		//			System.out.println(t.toString());
-		//		}
+		this.uDAO.aceptarTrabajo(u.getId(), t4.getId());
 	}
-
-	/**
-	 * d-iv) devuelve los trabajos de investigacion enviados. Puede ser autor de muchos trabajos pero solo haber enviado
-	 * algunos para revision. ESOS son los trabajos que devuelve
-	 */
-	@Test(priority=15)
-	public void getAllTrabajosEnviados() {
-		Usuario u1 = this.uDAO.findById(1);
-		Usuario u2 = this.uDAO.findById(6);
-
-		Trabajo t1 = this.tDAO.findById(1);
-		Trabajo t2 = this.tDAO.findById(2);
-		Trabajo t3 = this.tDAO.findById(4);
-		
-		assertTrue(this.uDAO.addTrabajoInvestigacion(u1.getId(), t1.getId()));
-		assertTrue(this.uDAO.addTrabajoInvestigacion(u1.getId(), t2.getId()));
-		assertTrue(this.uDAO.addTrabajoInvestigacion(u1.getId(), t3.getId()));
-
-		List<Trabajo> tList = this.uDAO.findAllTrabajosEnInvestigacion(u1.getId());
-		assertEquals(tList.size(), 3);
-
-		assertTrue(this.uDAO.addTrabajoPendiente(u2.getId(),t1.getId()));
-		assertTrue(this.uDAO.addTrabajoPendiente(u2.getId(),t3.getId()));
-
-		List<Trabajo> tListEnviados = this.uDAO.findAllTrabajosEnInvestigacionEnviados(u1.getId());
-		assertEquals(tListEnviados.size(), 2);
-
-		assertTrue(this.uDAO.aceptarTrabajo(u2.getId(), t1.getId()));
-		assertTrue(this.uDAO.aceptarTrabajo(u2.getId(), t3.getId()));
-
-		//		for(Trabajo t: tListEnviados) {
-		//			System.out.println(t.toString());
-		//		}
-	}
-
-	/**
-	 * e) consultar trabajos de investigacion y sus propiedades
-	 */
-	@Test(priority=16)
-	public void CheckTrabajoConPropiedades() {
-		Trabajo t = this.tDAO.getTrabajoConPropiedades(1);
-		String data = t.toString();
-
-		Usuario u1 = this.uDAO.findById(1);
-
-		assertNotNull(this.uDAO.findAllTrabajosEnInvestigacion(u1.getId()));
-	}
-
-	/**
-	 * f) Dado un autor y un revisor, devuelve trabajos de investigacion (ya enviados y aceptados) en una determinada area de investigacion dada por la palabra clave del trabajo
-	 * basicamente, un filtro de trabajos por palabra clave.
-	 * 
-	 * g) la base de datos se dropea y re-crea en cada inicializacion (especificado en el persistence.xml)
-	 */
-	@Test(priority=17)
-	public void getTrabajosInvestigacionByArea() {
-		/* 
-		 * usuario 1 tiene los trabajos: 1, 2, 4
-		 * usuario 2 revisa los trabajos 1 y 4
-		 * trabajo1 tiene palabra clave 1 y 2
-		 * trabajo2 y trabajo4 tienen palabra clave 2 unicamente
-		 */
-		Usuario u1 = this.uDAO.findById(1);
-		Usuario u2 = this.uDAO.findById(6);
-
-		PalabrasClave pc = this.pcDAO.findById(1);
-
-		List<Trabajo> tList = this.uDAO.findTrabajosInvestigacionByAreaInvestigacion(u1.getId(), u2.getId(), pc.getId());
-
-
-		//el resultado del size sera = 1 para el caso de palabra clave 1 (primer parametro) y sería = 2 para el caso de palabra clave con id 2
-		assertEquals(1, tList.size());
-
-		this.EM.close();
-	}
+//
+//	/**
+//	 * d-ii) devuelve todos los trabajos asignados de un revisor
+//	 * 
+//	 * en el test anterior se asignaron 4 trabajos al usuario con id: 3 y acepto 3 de estos (el maximo que puede aceptar)
+//	 */
+//	@Test(priority=13)
+//	public void getAllTrabajosEvaluacion() {
+//		Usuario u = this.uDAO.findById(3);
+//		List<Trabajo> tList = uDAO.findAllTrabajosEnEvaluacion(u.getId());
+//
+//		assertEquals(tList.size(),u.getTrabajosEnEvaluacion().size());
+//
+//		//		for(Trabajo t: tList) {
+//		//			System.out.println(t.toString());
+//		//		}
+//	}
+//
+//
+//	/**
+//	 * d-iii) devuelve todos los trabajos asignados a un revisor que estan en un rango de fecha
+//	 * 
+//	 * devuelve solo el trabajo 1 y 3
+//	 */
+//	@Test(priority=14)
+//	public void getAllTrabajosEnRangoFecha() {
+//		Usuario u = this.uDAO.findById(3);
+//
+//		Trabajo t1 = this.tDAO.findById(1);
+//		Trabajo t2 = this.tDAO.findById(2);
+//		Trabajo t3 = this.tDAO.findById(3);
+//
+//		Calendar c1 = Calendar.getInstance();
+//		Calendar c2 = Calendar.getInstance();
+//		Calendar c3 = Calendar.getInstance();
+//		c1.set(2018, 11, 1);
+//		c2.set(2018, 0, 1);
+//		c3.set(2018, 9, 1);
+//
+//		this.tDAO.setFecha(t1.getId(), c1);
+//		this.tDAO.setFecha(t2.getId(), c2);
+//		this.tDAO.setFecha(t3.getId(), c3);
+//
+//		Calendar inicio = Calendar.getInstance();
+//		Calendar fin = Calendar.getInstance();
+//
+//		inicio.set(2018, 7, 5);
+//		fin.set(2018, 11, 28);
+//
+//		List<Trabajo> tList = this.uDAO.findTrabajosEnEvaluacionEnRango(u.getId(), inicio, fin);
+//
+//		assertEquals(tList.size(), 2);
+//
+//		//		for(Trabajo t: tList) {
+//		//			System.out.println(t.toString());
+//		//		}
+//	}
+//
+//	/**
+//	 * d-iv) devuelve los trabajos de investigacion enviados. Puede ser autor de muchos trabajos pero solo haber enviado
+//	 * algunos para revision. ESOS son los trabajos que devuelve
+//	 */
+//	@Test(priority=15)
+//	public void getAllTrabajosEnviados() {
+//		Usuario u1 = this.uDAO.findById(1);
+//		Usuario u2 = this.uDAO.findById(6);
+//
+//		Trabajo t1 = this.tDAO.findById(1);
+//		Trabajo t2 = this.tDAO.findById(2);
+//		Trabajo t3 = this.tDAO.findById(4);
+//
+//		assertTrue(this.uDAO.addTrabajoInvestigacion(u1.getId(), t1.getId()));
+//		assertTrue(this.uDAO.addTrabajoInvestigacion(u1.getId(), t2.getId()));
+//		assertTrue(this.uDAO.addTrabajoInvestigacion(u1.getId(), t3.getId()));
+//
+//		List<Trabajo> tList = this.uDAO.findAllTrabajosEnInvestigacion(u1.getId());
+//		assertEquals(tList.size(), 3);
+//
+//		assertTrue(this.uDAO.addTrabajoPendiente(u2.getId(),t1.getId()));
+//		assertTrue(this.uDAO.addTrabajoPendiente(u2.getId(),t3.getId()));
+//
+//		List<Trabajo> tListEnviados = this.uDAO.findAllTrabajosEnInvestigacionEnviados(u1.getId());
+//		assertEquals(tListEnviados.size(), 2);
+//
+//		assertTrue(this.uDAO.aceptarTrabajo(u2.getId(), t1.getId()));
+//		assertTrue(this.uDAO.aceptarTrabajo(u2.getId(), t3.getId()));
+//
+//		//		for(Trabajo t: tListEnviados) {
+//		//			System.out.println(t.toString());
+//		//		}
+//	}
+//
+//	/**
+//	 * e) consultar trabajos de investigacion y sus propiedades
+//	 */
+//	@Test(priority=16)
+//	public void CheckTrabajoConPropiedades() {
+//		Trabajo t = this.tDAO.getTrabajoConPropiedades(1);
+//		String data = t.toString();
+//
+//		Usuario u1 = this.uDAO.findById(1);
+//
+//		assertNotNull(this.uDAO.findAllTrabajosEnInvestigacion(u1.getId()));
+//	}
+//
+//	/**
+//	 * f) Dado un autor y un revisor, devuelve trabajos de investigacion (ya enviados y aceptados) en una determinada area de investigacion dada por la palabra clave del trabajo
+//	 * basicamente, un filtro de trabajos por palabra clave.
+//	 * 
+//	 * g) la base de datos se dropea y re-crea en cada inicializacion (especificado en el persistence.xml)
+//	 */
+//	@Test(priority=17)
+//	public void getTrabajosInvestigacionByArea() {
+//		/* 
+//		 * usuario 1 tiene los trabajos: 1, 2, 4
+//		 * usuario 2 revisa los trabajos 1 y 4
+//		 * trabajo1 tiene palabra clave 1 y 2
+//		 * trabajo2 y trabajo4 tienen palabra clave 2 unicamente
+//		 */
+//		Usuario u1 = this.uDAO.findById(1);
+//		Usuario u2 = this.uDAO.findById(6);
+//
+//		PalabrasClave pc = this.pcDAO.findById(1);
+//
+//		List<Trabajo> tList = this.uDAO.findTrabajosInvestigacionByAreaInvestigacion(u1.getId(), u2.getId(), pc.getId());
+//
+//
+//		//el resultado del size sera = 1 para el caso de palabra clave 1 (primer parametro) y sería = 2 para el caso de palabra clave con id 2
+//		assertEquals(1, tList.size());
+//
+//		
+//	}
 }

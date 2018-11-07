@@ -2,12 +2,10 @@ package Dao;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import Entity.Calificacion;
 import Entity.LugarTrabajo;
 import Entity.PalabrasClave;
 import Entity.Trabajo;
@@ -35,12 +33,15 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	}
 
 	public boolean asignarPalabraClave(Integer id_usuario, Integer id_palabraClave) {
-		PalabrasClave palabraClave = PalabrasClaveDAO.getInstance().findById(id_palabraClave);
-		if(palabraClave == null) 
-			throw new IllegalArgumentException("la palabra clave no existe");
-
 		EntityManager entityManager=EMF.createEntityManager();
 		Usuario user = entityManager.find(Usuario.class, id_usuario);
+		PalabrasClave palabraClave = entityManager.find(PalabrasClave.class,id_palabraClave);
+
+		if(palabraClave == null) {
+			entityManager.close();
+			throw new IllegalArgumentException("la palabra clave no existe");
+		}
+		
 		if(user == null) {
 			entityManager.close();
 			throw new IllegalArgumentException("el usuario no existe");			
@@ -181,14 +182,14 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	}
 
 	public boolean setLugarTrabajo(Integer id_usuario, Integer id_lugarTrabajo) {
-		LugarTrabajo lugarTrabajo = LugarTrabajoDAO.getInstance().findById(id_lugarTrabajo);
-
-		if(lugarTrabajo == null) {
-			throw new IllegalArgumentException("el lugar de trabajo no existe");
-		}	
-
 		EntityManager entityManager=EMF.createEntityManager();
 		Usuario usuario = entityManager.find(Usuario.class, id_usuario);
+		LugarTrabajo lugarTrabajo = entityManager.find(LugarTrabajo.class,id_lugarTrabajo);
+
+		if(lugarTrabajo == null) {
+			entityManager.close();
+			throw new IllegalArgumentException("el lugar de trabajo no existe");
+		}
 
 		if(usuario == null) {
 			entityManager.close();
@@ -204,14 +205,14 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	}
 
 	public boolean addTrabajoInvestigacion(Integer id_usuario, Integer id_trabajo) {
-		Trabajo trabajo = TrabajoDAO.getInstance().findById(id_trabajo);
-
-		if(trabajo == null) {
-			throw new IllegalArgumentException("el trabajo no existe");
-		}	
-
 		EntityManager entityManager=EMF.createEntityManager();
 		Usuario usuario = entityManager.find(Usuario.class, id_usuario);
+		Trabajo trabajo = entityManager.find(Trabajo.class,id_trabajo);
+
+		if(trabajo == null) {
+			entityManager.close();
+			throw new IllegalArgumentException("el trabajo no existe");
+		}
 
 		if(usuario == null) {
 			entityManager.close();
@@ -232,15 +233,12 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	}	
 
 	public boolean addTrabajoPendiente(Integer id_usuario, Integer id_trabajo) {
-//		Trabajo trabajo = TrabajoDAO.getInstance().findById(id_trabajo);
-
-		
-
 		EntityManager entityManager=EMF.createEntityManager();
 		Usuario usuario = entityManager.find(Usuario.class, id_usuario);
 		Trabajo trabajo = entityManager.find(Trabajo.class,id_trabajo);
-		
+
 		if(trabajo == null) {
+			entityManager.close();
 			throw new IllegalArgumentException("el trabajo no existe");
 		}	
 
@@ -278,14 +276,14 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	}
 
 	public boolean aceptarTrabajo(Integer id_usuario, Integer id_trabajo) {
-		Trabajo trabajo = TrabajoDAO.getInstance().findById(id_trabajo);
-
-		if(trabajo == null) {
-			throw new IllegalArgumentException("el trabajo no existe");
-		}	
-
 		EntityManager entityManager=EMF.createEntityManager();
 		Usuario usuario = entityManager.find(Usuario.class, id_usuario);
+		Trabajo trabajo = entityManager.find(Trabajo.class,id_trabajo);
+
+		if(trabajo == null) {
+			entityManager.close();
+			throw new IllegalArgumentException("el trabajo no existe");
+		}
 
 		if(usuario == null) {
 			entityManager.close();
@@ -301,14 +299,14 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	}
 
 	public boolean rechazarTrabajo(Integer id_usuario, Integer id_trabajo) {
-		Trabajo trabajo = TrabajoDAO.getInstance().findById(id_trabajo);
-
-		if(trabajo == null) {
-			throw new IllegalArgumentException("el trabajo no existe");
-		}	
-
 		EntityManager entityManager=EMF.createEntityManager();
 		Usuario usuario = entityManager.find(Usuario.class, id_usuario);
+		Trabajo trabajo = entityManager.find(Trabajo.class,id_trabajo);
+
+		if(trabajo == null) {
+			entityManager.close();
+			throw new IllegalArgumentException("el trabajo no existe");
+		}
 
 		if(usuario == null) {
 			entityManager.close();
