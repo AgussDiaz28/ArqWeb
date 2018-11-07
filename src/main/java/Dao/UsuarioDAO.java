@@ -232,14 +232,17 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	}	
 
 	public boolean addTrabajoPendiente(Integer id_usuario, Integer id_trabajo) {
-		Trabajo trabajo = TrabajoDAO.getInstance().findById(id_trabajo);
+//		Trabajo trabajo = TrabajoDAO.getInstance().findById(id_trabajo);
 
-		if(trabajo == null) {
-			throw new IllegalArgumentException("el trabajo no existe");
-		}	
+		
 
 		EntityManager entityManager=EMF.createEntityManager();
 		Usuario usuario = entityManager.find(Usuario.class, id_usuario);
+		Trabajo trabajo = entityManager.find(Trabajo.class,id_trabajo);
+		
+		if(trabajo == null) {
+			throw new IllegalArgumentException("el trabajo no existe");
+		}	
 
 		if(usuario == null) {
 			entityManager.close();
