@@ -4,14 +4,11 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import Entity.PalabrasClave;
 import Entity.TipoTrabajo;
 import Entity.Trabajo;
-import Entity.Usuario;
 
 public class TrabajoDAO implements DAO<Trabajo,Integer>{
 
@@ -93,7 +90,7 @@ public class TrabajoDAO implements DAO<Trabajo,Integer>{
 
 	public Trabajo getTrabajoConPropiedades(Integer trabajoId) {
 		EntityManager entityManager=EMF.createEntityManager();
-		Query query = entityManager.createNativeQuery("SELECT * FROM trabajo WHERE id = :trabajoId",Trabajo.class);
+		Query query = entityManager.createQuery("SELECT t FROM Trabajo t WHERE t.id = :trabajoId");
 		query.setParameter("trabajoId", trabajoId);
 		entityManager.close();
 		return (Trabajo) query.getSingleResult();
@@ -101,7 +98,7 @@ public class TrabajoDAO implements DAO<Trabajo,Integer>{
 
 	public List<Trabajo> getTrabajoConMismasPalabrasClave(Integer palabraClaveId) {
 		EntityManager entityManager=EMF.createEntityManager();
-		Query query = entityManager.createNativeQuery("SELECT t.* FROM trabajo t JOIN trabajo_palabraClave tp ON t.id = tp.trabajo_id WHERE tp.palabraClave_id = :palabraClaveId",Trabajo.class);
+		Query query = entityManager.createQuery("SELECT t FROM Trabajo t JOIN t.palabrasClave tp WHERE tp.id = :palabraClaveId");
 		query.setParameter("palabraClaveId", palabraClaveId);
 		entityManager.close();
 		return query.getResultList();
@@ -109,7 +106,7 @@ public class TrabajoDAO implements DAO<Trabajo,Integer>{
 
 	public List<Trabajo> findAll() {
 		EntityManager entityManager=EMF.createEntityManager();
-		Query query = entityManager.createNativeQuery("SELECT * FROM trabajo",Trabajo.class);
+		Query query = entityManager.createQuery("SELECT t FROM Trabajo t");
 		entityManager.close();
 		return query.getResultList();
 	}

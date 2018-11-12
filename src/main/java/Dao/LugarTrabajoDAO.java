@@ -3,12 +3,7 @@ package Dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
-import Entity.Calificacion;
 import Entity.LugarTrabajo;
-import Entity.TipoTrabajo;
 
 public class LugarTrabajoDAO implements DAO<LugarTrabajo,Integer>{
 	

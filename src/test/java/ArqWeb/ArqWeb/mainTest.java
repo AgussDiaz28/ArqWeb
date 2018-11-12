@@ -7,8 +7,6 @@ import static org.testng.Assert.assertTrue;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
@@ -37,7 +35,7 @@ public class mainTest {
 	 * 	2- para cargar los datos
 	 * 	3- funciona a partir dela tercera ejecucion 
 	 */
-	@BeforeSuite
+	@Test
 	public void init() {
 		this.pcDAO = PalabrasClaveDAO.getInstance();	
 		this.uDAO = UsuarioDAO.getInstance();
@@ -46,7 +44,7 @@ public class mainTest {
 		this.ltDAO = LugarTrabajoDAO.getInstance();
 	}
 
-	@Test(priority=1)
+	@Test(dependsOnMethods= {"init"})
 	public void crearTipoTrabajos() {
 		TipoTrabajo typeT1 = new TipoTrabajo();
 		typeT1.setTipo("articulo");
@@ -63,7 +61,7 @@ public class mainTest {
 		assertEquals(typeT2,this.ttDAO.findById(typeT2.getId()));
 	}
 
-	@Test(priority=2)
+	@Test(dependsOnMethods= {"crearTipoTrabajos"})
 	public void crearLugarTrabajo() {
 		LugarTrabajo lt = new LugarTrabajo();
 		lt.setNombre("qwavee");
@@ -72,7 +70,7 @@ public class mainTest {
 		assertEquals(lt,this.ltDAO.findById(lt.getId()));
 	}
 
-	@Test(priority=3)
+	@Test(dependsOnMethods= {"crearLugarTrabajo"})
 	public void crearPalabrasClaves() {
 		PalabrasClave pc1 = new PalabrasClave();
 		pc1.setEsExperto(true);
@@ -98,7 +96,7 @@ public class mainTest {
 	 * Queda implicito que el c-i) funciona. EL toString de usuario solo muestra id, nombre y apellido por simplicidad
 	 * cuando hay que listar todos los trabajos con sus propiedades (todos sus autores y evaluadores)
 	 */
-	@Test(priority=4)
+	@Test(dependsOnMethods= {"crearPalabrasClaves"})
 	public void crearUsuarios() {
 		Usuario u1 = new Usuario();
 		u1.setNombre("aaa");
@@ -166,7 +164,7 @@ public class mainTest {
 	/**
 	 * c) Crear 10 trabajos
 	 */
-	@Test(priority=5)
+	@Test(dependsOnMethods= {"crearUsuarios"})
 	public void crearTrabajos() {
 
 		Trabajo t1 = new Trabajo();
@@ -203,7 +201,7 @@ public class mainTest {
 		assertEquals(t10,tDAO.findById(t10.getId()));
 	}
 
-	@Test(priority=6)
+	@Test(dependsOnMethods= {"crearTrabajos"})
 	public void setPalabrasClaveUsuarios() {
 		Usuario u1 = this.uDAO.findById(1);
 		Usuario u2 = this.uDAO.findById(2);
@@ -234,7 +232,7 @@ public class mainTest {
 		assertTrue(this.uDAO.asignarPalabraClave(u10.getId(),pc2.getId()));
 	}
 
-	@Test(priority=7)
+	@Test(dependsOnMethods= {"setPalabrasClaveUsuarios"})
 	public void setTipoTrabajos() {
 		Trabajo t1 = this.tDAO.findById(1);
 		Trabajo t2 = this.tDAO.findById(2);
@@ -273,7 +271,7 @@ public class mainTest {
 		assertEquals(this.tDAO.findById(10).getTipoTrabajo(),this.ttDAO.findById(2));
 	}
 
-	@Test(priority=8)
+	@Test(dependsOnMethods= {"setTipoTrabajos"})
 	public void setPalabrasClaveTrabajos() {
 		Trabajo t1 = this.tDAO.findById(1);
 		Trabajo t2 = this.tDAO.findById(2);
@@ -305,7 +303,7 @@ public class mainTest {
 	}
 
 	//no evalua trabajos con compañeros en mismo lugar de trabajo
-	@Test(priority=9, expectedExceptions = {IllegalArgumentException.class, UnsupportedOperationException.class})
+	@Test(dependsOnMethods= {"setPalabrasClaveTrabajos"}, expectedExceptions = {IllegalArgumentException.class, UnsupportedOperationException.class})
 	public void checkEvaluadorNoApto() {
 		Usuario u1 = this.uDAO.findById(1);
 		Usuario u2 = this.uDAO.findById(3);
@@ -321,7 +319,7 @@ public class mainTest {
 		this.uDAO.addTrabajoPendiente(u2.getId(),t1.getId());
 	}
 	
-	@Test(priority=10)
+	@Test(dependsOnMethods= {"checkEvaluadorNoApto"})
 	public void checkEvaluadorApto() {
 		Usuario u1 = this.uDAO.findById(1);
 		Usuario u2 = this.uDAO.findById(3);
@@ -332,7 +330,7 @@ public class mainTest {
 		assertTrue(this.uDAO.addTrabajoPendiente(u2.getId(),t1.getId()));
 	}
 	
-	@Test(priority=11, expectedExceptions = {IllegalArgumentException.class, UnsupportedOperationException.class})
+	@Test(dependsOnMethods= {"checkEvaluadorApto"}, expectedExceptions = {IllegalArgumentException.class, UnsupportedOperationException.class})
 	public void checkAutorNoEvaluaSuTrabajo() {
 		Usuario u = this.uDAO.findById(1);
 		Trabajo t = this.tDAO.findById(1);
@@ -341,7 +339,7 @@ public class mainTest {
 		this.uDAO.addTrabajoPendiente(u.getId(),t.getId());
 	}
 	
-	@Test(priority=12)
+	@Test(dependsOnMethods= {"checkAutorNoEvaluaSuTrabajo"})
 	public void checkEvaluarMaximoTres() {
 		Usuario u = this.uDAO.findById(6);
 
@@ -358,7 +356,7 @@ public class mainTest {
 		assertTrue(this.uDAO.aceptarTrabajo(u.getId(), t3.getId()));
 	}
 
-	@Test(priority=13, expectedExceptions = {IllegalArgumentException.class, UnsupportedOperationException.class})
+	@Test(dependsOnMethods= {"checkEvaluarMaximoTres"}, expectedExceptions = {IllegalArgumentException.class, UnsupportedOperationException.class})
 	public void checkEvaluarCuartoTrabajo() {
 		Usuario u = this.uDAO.findById(6);
 		
@@ -374,7 +372,7 @@ public class mainTest {
 	 * 
 	 * en el test anterior se asignaron 4 trabajos al usuario con id: 3 y acepto 3 de estos (el maximo que puede aceptar)
 	 */
-	@Test(priority=14)
+	@Test(dependsOnMethods= {"checkEvaluarCuartoTrabajo"})
 	public void getAllTrabajosEvaluacion() {
 		Usuario u = this.uDAO.findById(6);
 		List<Trabajo> tList = this.uDAO.findAllTrabajosEnEvaluacion(u.getId());
@@ -392,7 +390,7 @@ public class mainTest {
 	 * 
 	 * devuelve solo el trabajo 1 y 3
 	 */
-	@Test(priority=15)
+	@Test(dependsOnMethods= {"getAllTrabajosEvaluacion"})
 	public void getAllTrabajosEnRangoFecha() {
 		Usuario u = this.uDAO.findById(6);
 
@@ -430,7 +428,7 @@ public class mainTest {
 	 * d-iv) devuelve los trabajos de investigacion enviados. Puede ser autor de muchos trabajos pero solo haber enviado
 	 * algunos para revision. ESOS son los trabajos que devuelve
 	 */
-	@Test(priority=16)
+	@Test(dependsOnMethods= {"getAllTrabajosEnRangoFecha"})
 	public void getAllTrabajosEnviados() {
 		Usuario u1 = this.uDAO.findById(1);
 		Usuario u2 = this.uDAO.findById(9);
@@ -465,7 +463,7 @@ public class mainTest {
 	/**
 	 * e) consultar trabajos de investigacion y sus propiedades
 	 */
-	@Test(priority=17)
+	@Test(dependsOnMethods= {"getAllTrabajosEnviados"})
 	public void CheckTrabajoConPropiedades() {
 //		Trabajo t = this.tDAO.getTrabajoConPropiedades(1);
 //		String data = t.toString();
@@ -481,7 +479,7 @@ public class mainTest {
 	 * 
 	 * g) la base de datos se dropea y re-crea en cada inicializacion (especificado en el persistence.xml)
 	 */
-	@Test(priority=18)
+	@Test(dependsOnMethods= {"CheckTrabajoConPropiedades"})
 	public void getTrabajosInvestigacionByArea() {
 		/* 
 		 * usuario 1 tiene los trabajos: 1, 2, 4
@@ -498,8 +496,6 @@ public class mainTest {
 
 
 		//el resultado del size sera = 1 para el caso de palabra clave 1 (primer parametro) y sería = 2 para el caso de palabra clave con id 2
-		assertEquals(tList.size(),2);
-
-		
+		assertEquals(tList.size(),2);		
 	}
 }
