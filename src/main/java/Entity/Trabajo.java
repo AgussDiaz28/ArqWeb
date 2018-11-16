@@ -8,12 +8,14 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -26,13 +28,16 @@ public class Trabajo {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-	@ManyToMany(mappedBy="trabajosEnInvestigacion")	
+	@OneToMany( fetch = FetchType.LAZY)	
+	@Column(nullable = true)
 	private Set<Usuario> autores;
 	
-	@ManyToMany(mappedBy="trabajosEnEvaluacion")	
+	@OneToMany(fetch = FetchType.LAZY)	
+	@Column(nullable = true)
 	private Set<Usuario> evaluadores;
 	
-	@ManyToMany
+	@OneToMany (fetch = FetchType.LAZY)
+	@Column(nullable = true)
 	@JoinTable(
 			name = "trabajo_palabraClave",
 			joinColumns = { @JoinColumn(name = "trabajo_id") },

@@ -5,12 +5,14 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -37,7 +39,8 @@ public class Usuario {
 	@OneToOne
 	private LugarTrabajo lugarTrabajo;
 
-	@ManyToMany
+	@OneToMany (fetch = FetchType.LAZY)
+	@Column(nullable = true)
 	@JoinTable(
 			name = "usuario_palabraClave",
 			joinColumns = { @JoinColumn(name = "usuario_id") },
@@ -58,7 +61,9 @@ public class Usuario {
 	 * hay que revisar el resto y emprolijarlo para que nos cree la base de datos
 	 * como nosotros lo queremos
 	 */
-	@ManyToMany 
+	
+	@OneToMany (fetch = FetchType.LAZY)
+	@Column(nullable = true)
 	@JoinTable(
 			name = "autor_trabajo",
 			joinColumns = { @JoinColumn(name = "autor_id") },
@@ -66,7 +71,8 @@ public class Usuario {
 			)
 	private Set<Trabajo> trabajosEnInvestigacion;
 
-	@ManyToMany
+	@OneToMany (fetch = FetchType.LAZY)
+	@Column(nullable = true)
 	@JoinTable(
 			name = "evaluador_trabajo",
 			joinColumns = { @JoinColumn(name = "evaluador_id") },
@@ -74,7 +80,8 @@ public class Usuario {
 			)
 	private Set<Trabajo> trabajosEnEvaluacion;
 
-	@ManyToMany
+	@OneToMany (fetch = FetchType.LAZY)
+	@Column(nullable = true)
 	@JoinTable(
 			name = "evaluador_trabajoPendiente",
 			joinColumns = { @JoinColumn(name = "evaluador_id") },

@@ -1,21 +1,5 @@
 package ArqWeb.ArqWeb;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import Dao.CalificacionDAO;
-import Dao.PalabrasClaveDAO;
-import Dao.TipoTrabajoDAO;
-import Dao.TrabajoDAO;
-import Dao.UsuarioDAO;
-import Entity.Calificacion;
-import Entity.PalabrasClave;
-import Entity.TipoTrabajo;
-import Entity.Trabajo;
-import Entity.Usuario;
-
 public class Main {
 	public static void main(String[] args) {
 //		ArrayList<Usuario> Usuarios = cargarUsuarios();

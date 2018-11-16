@@ -3,10 +3,6 @@ package Dao;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
-import Entity.TipoTrabajo;
-
 public interface DAO<E, ID extends Serializable> {
 
 	

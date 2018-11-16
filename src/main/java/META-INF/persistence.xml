@@ -16,10 +16,10 @@
 		<class>Entity.Trabajo</class>
 		<class>Entity.Usuario</class>
 		<class>Entity.Calificacion</class>
-		<class>Entity.LugarTrabajo</class>
+		<class>Entity.LugarTrabajo </class>
 
 		<properties>
-
+			<property name="hibernate.enable_lazy_load_no_trans" value="true" />
 			<!-- Propieadades de configuracion de JDBC para MySQL -->
 			<property name="javax.persistence.jdbc.driver"
 				value="com.mysql.jdbc.Driver" />

@@ -7,7 +7,6 @@ import static org.testng.Assert.assertTrue;
 import java.util.Calendar;
 import java.util.List;
 
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import Dao.LugarTrabajoDAO;
