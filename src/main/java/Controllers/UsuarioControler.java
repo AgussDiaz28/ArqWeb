@@ -1,5 +1,9 @@
 package Controllers;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -24,14 +28,18 @@ public class UsuarioControler {
 	public UsuarioControler(){
 	}
 	
-	@GET @Path("/{id}") @Produces(MediaType.APPLICATION_JSON)
+	@GET 
+	@Path("/{id}") 
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUserById(@PathParam("id") String msg) {
 		int id = Integer.valueOf(msg);
 		Usuario usuario = UsuarioDAO.getInstance().findById(id);
 		return Response.status(201).entity(usuario).build();
 	}
 	
-	@GET @Path("/trabajosEnviados/{id}") @Produces(MediaType.APPLICATION_JSON)
+	@GET 
+	@Path("/trabajosEnviados/{id}") 
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getTrabajosEnviadosById(@PathParam("id") String msg) {
 		int id = Integer.valueOf(msg);
 		List<Trabajo> trabajos = UsuarioDAO.getInstance().findAllTrabajosEnInvestigacionEnviados(id);
@@ -91,10 +99,35 @@ public class UsuarioControler {
 		throw new Exception("Ocurrio un problema al aceptar el Trabajo con id:"+pidTrabajo+" al usuario con id: "+pidUsuario);
 	}
 	
-	@GET @Path("/trabajosRevisados/{id}") @Produces(MediaType.APPLICATION_JSON)
+	@GET 
+	@Path("/trabajosRevisados/{id}") 
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getTrabajosRevisadosById(@PathParam("id") String msg) {
 		int id=Integer.valueOf(msg);
 		List<Trabajo> trabajos = UsuarioDAO.getInstance().findAllTrabajosEnEvaluacion(id);
+		return Response.status(201).entity(trabajos).build();
+	}
+	
+	protected Date formatDateFromString(String fecha) throws ParseException {
+		String pattern = "dd-MM-yyyy";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		return simpleDateFormat.parse(fecha);
+	}
+	
+	@GET 
+	@Path("/trabajosRevisados/{id}/{fechaInicio}/{fechaFin}") 
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getTrabajosRevisadosByFecha(@PathParam("id") String msg,
+												@PathParam("fechaInicio") String pfechaInicio,
+												@PathParam("fechaFin") String pfechaFin) throws ParseException {
+		int id = Integer.valueOf(msg);
+		
+		Calendar fechaInicio = Calendar.getInstance();
+		Calendar fechaFin = Calendar.getInstance();
+		fechaInicio.setTime(this.formatDateFromString(pfechaInicio));
+		fechaFin.setTime(this.formatDateFromString(pfechaFin));
+		
+		List<Trabajo> trabajos = UsuarioDAO.getInstance().findTrabajosEnEvaluacionEnRango(id,fechaInicio,fechaFin);
 		return Response.status(201).entity(trabajos).build();
 	}
 	

@@ -148,7 +148,18 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 			throw new IllegalArgumentException("el autor no existe");
 		}
 
-		Query query = entityManager.createQuery("SELECT DISTINCT(t) FROM Trabajo t, Usuario u JOIN t.autores at WHERE at.id = :id AND t MEMBER OF u.trabajosPendientes OR t MEMBER OF u.trabajosEnEvaluacion ");
+//TO BE IMPLEMENTED IN JPQL
+//		Query query = entityManager.createQuery("SELECT DISTINCT(t) FROM Trabajo t, Usuario u "
+//				+ "JOIN u.trabajosEnInvestigacion ti "
+//				+ "LEFT JOIN u.trabajosEnEvaluacion te "
+//				+ "LEFT JOIN u.trabajosPendientes tp "
+//				+ "WHERE u.id = :id");
+		
+		Query query = entityManager.createNativeQuery("SELECT DISTINCT(t.id ),t.* from trabajo t "
+				+ "join autor_trabajo sat on (t.id = sat.trabajo_id and sat.autor_id = :id) "
+				+ "left join evaluador_trabajo et on (et.trabajo_id = t.id) "
+				+ "left join evaluador_trabajoPendiente etp on (etp.trabajoPendiente_id = t.id)",Trabajo.class);
+		
 		query.setParameter("id", id);
 		List<Trabajo> trabajos = query.getResultList();
 		entityManager.close();
