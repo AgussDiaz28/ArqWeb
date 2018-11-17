@@ -19,22 +19,25 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Table(name="trabajo")
 public class Trabajo {
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-	@ManyToMany(fetch = FetchType.EAGER,mappedBy="trabajosEnInvestigacion")	
+	@ManyToMany(mappedBy="trabajosEnInvestigacion")
+	@JsonIgnore
 	private Set<Usuario> autores;
 	
-	@ManyToMany(fetch = FetchType.EAGER,mappedBy="trabajosEnEvaluacion")
+	@ManyToMany(mappedBy="trabajosEnEvaluacion")
+	@JsonIgnore
 	private Set<Usuario> evaluadores;
 	
 	@ManyToMany(fetch = FetchType.LAZY)

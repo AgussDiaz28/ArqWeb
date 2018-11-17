@@ -13,11 +13,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Table(name="palabras_clave")
 public class PalabrasClave {
 	
@@ -30,10 +32,12 @@ public class PalabrasClave {
 	@Column(nullable = false)
 	private boolean esExperto; //experto o simple
 	
-	@ManyToMany(fetch = FetchType.EAGER,mappedBy="palabrasClave")
+	@ManyToMany(mappedBy="palabrasClave")
+	@JsonIgnore
 	private Set<Usuario> usuarios;
 	
-	@ManyToMany(fetch = FetchType.EAGER,mappedBy="palabrasClave")
+	@ManyToMany(mappedBy="palabrasClave")
+	@JsonIgnore
 	private Set<Trabajo> trabajos;
 	
 	//-----CONSTRUCTOR-----

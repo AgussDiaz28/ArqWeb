@@ -16,11 +16,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Table(name="usuario")
 public class Usuario {
 
@@ -50,19 +50,6 @@ public class Usuario {
 			)
 	private Set<PalabrasClave> palabrasClave;
 
-	/* Forma correcta de definir ManyToMany:
-	 * 
-	 * @ManyToMany
-	 * @JoinTable y asignas el nombre a la tabla
-	 * luego asignas nombres a las columnas
-	 * 
-	 * las columnas no hace falta pero es mas prolijo
-	 * si definimos tanto nombre de la tabla como de las columnas
-	 * en vez de dejarlo en manos de hibernate.
-	 * 
-	 * hay que revisar el resto y emprolijarlo para que nos cree la base de datos
-	 * como nosotros lo queremos
-	 */
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
 			name = "autor_trabajo",
