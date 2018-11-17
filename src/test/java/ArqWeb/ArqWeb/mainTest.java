@@ -464,7 +464,6 @@ public class mainTest {
 
 		List<Trabajo> tListEnviados = this.uDAO.findAllTrabajosEnInvestigacionEnviados(u1.getId());
 		
-		//uusuario 1 envio el trabajo 1 y 4 al usuario 9 pero en otro test envio el trabajo 4 al usuario 6
 		assertEquals(tListEnviados.size(), 3);
 
 		assertTrue(this.uDAO.aceptarTrabajo(u2.getId(), t1.getId()));

@@ -194,7 +194,7 @@ public class Usuario {
 	}
 	
 	public boolean esEvaluadorApto(Trabajo t) {
-		if	(!this.trabajosEnInvestigacion.contains(t)) {
+		if	(!this.trabajosEnInvestigacion.contains(t) && !this.trabajosEnEvaluacion.contains(t) ) {
 			boolean mismoLugarTrabajo = false;
 			for(Usuario u: t.getAutores()) {
 				if(u.getLugarTrabajo().equals(this.lugarTrabajo)) {

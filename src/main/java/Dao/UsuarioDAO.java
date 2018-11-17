@@ -31,6 +31,27 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 		entityManager.close();
 		return usuario;
 	}
+	
+	public Usuario update(Integer id, Usuario actual) {
+		EntityManager entityManager = EMF.createEntityManager();
+		Usuario usuario = entityManager.find(Usuario.class, id );
+		if(usuario == null) {
+			entityManager.close();
+			throw new IllegalArgumentException("el usuario no existe");			
+		}
+		entityManager.getTransaction().begin();
+		usuario.setApellido(actual.getApellido());
+		usuario.setNombre(actual.getNombre());
+		//Lugar de trabajo no se puede cambiar, como asi tampoco sus trabajos y sus palabras claves,
+		//las acciones se realizaran en tareas aparte
+		//usuario.setPalabraClave(palabrasClave);
+		//usuario.setArticulosPropios(actual.getArticulosPropios());
+		//usuario.setLugarTrabajo(actual.getLugarTrabajo());
+		entityManager.flush();
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return usuario;	
+	}
 
 	public boolean asignarPalabraClave(Integer id_usuario, Integer id_palabraClave) {
 		EntityManager entityManager=EMF.createEntityManager();
@@ -127,7 +148,7 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 			throw new IllegalArgumentException("el autor no existe");
 		}
 
-		Query query = entityManager.createQuery("SELECT t FROM Trabajo t, Usuario u JOIN t.autores at WHERE at.id = :id AND t MEMBER OF u.trabajosPendientes ");
+		Query query = entityManager.createQuery("SELECT DISTINCT(t) FROM Trabajo t, Usuario u JOIN t.autores at WHERE at.id = :id AND t MEMBER OF u.trabajosPendientes OR t MEMBER OF u.trabajosEnEvaluacion ");
 		query.setParameter("id", id);
 		List<Trabajo> trabajos = query.getResultList();
 		entityManager.close();
@@ -160,10 +181,6 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 	}
 
 	public List<Usuario> findAll() {
-		throw new UnsupportedOperationException();
-	}
-
-	public Usuario update(Integer id, Usuario entity) {
 		throw new UnsupportedOperationException();
 	}
 
