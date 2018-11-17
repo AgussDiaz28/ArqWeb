@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,7 +33,7 @@ public class Trabajo {
 	@ManyToMany(mappedBy="trabajosEnEvaluacion")	
 	private Set<Usuario> evaluadores;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
 			name = "trabajo_palabraClave",
 			joinColumns = { @JoinColumn(name = "trabajo_id") },
