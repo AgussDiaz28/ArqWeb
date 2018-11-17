@@ -12,8 +12,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 
 @Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Table(name="palabras_clave")
 public class PalabrasClave {
 	
@@ -26,10 +30,10 @@ public class PalabrasClave {
 	@Column(nullable = false)
 	private boolean esExperto; //experto o simple
 	
-	@ManyToMany(mappedBy="palabrasClave")
+	@ManyToMany(fetch = FetchType.EAGER,mappedBy="palabrasClave")
 	private Set<Usuario> usuarios;
 	
-	@ManyToMany(mappedBy="palabrasClave")
+	@ManyToMany(fetch = FetchType.EAGER,mappedBy="palabrasClave")
 	private Set<Trabajo> trabajos;
 	
 	//-----CONSTRUCTOR-----

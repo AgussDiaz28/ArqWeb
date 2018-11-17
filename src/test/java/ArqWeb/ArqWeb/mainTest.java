@@ -79,12 +79,18 @@ public class mainTest {
 		PalabrasClave pc2 = new PalabrasClave();
 		pc2.setEsExperto(false);
 		pc2.setPalabra("database");
+		
+		PalabrasClave pc3 = new PalabrasClave();
+		pc3.setEsExperto(true);
+		pc3.setPalabra("java");
 
 		this.pcDAO.persist(pc1);
 		this.pcDAO.persist(pc2);
+		this.pcDAO.persist(pc3);
 
 		assertEquals(pc1,this.pcDAO.findById(pc1.getId()));
 		assertEquals(pc2,this.pcDAO.findById(pc2.getId()));
+		assertEquals(pc3,this.pcDAO.findById(pc3.getId()));
 	}
 
 	/**
@@ -137,6 +143,10 @@ public class mainTest {
 		Usuario u10 = new Usuario();
 		u10.setNombre("jjj");
 		u10.setApellido("101010");
+		
+		Usuario u11 = new Usuario();
+		u11.setNombre("kkk");
+		u11.setApellido("111111");
 
 		uDAO.persist(u1);
 		uDAO.persist(u2);
@@ -148,6 +158,7 @@ public class mainTest {
 		uDAO.persist(u8);
 		uDAO.persist(u9);
 		uDAO.persist(u10);
+		uDAO.persist(u11);
 
 		assertEquals(u1,uDAO.findById(u1.getId()));
 		assertEquals(u2,uDAO.findById(u2.getId()));
@@ -159,6 +170,7 @@ public class mainTest {
 		assertEquals(u8,uDAO.findById(u8.getId()));
 		assertEquals(u9,uDAO.findById(u9.getId()));
 		assertEquals(u10,uDAO.findById(u10.getId()));
+		assertEquals(u11,uDAO.findById(u11.getId()));
 	}
 
 	/**
@@ -213,9 +225,11 @@ public class mainTest {
 		Usuario u8 = this.uDAO.findById(8);
 		Usuario u9 = this.uDAO.findById(9);
 		Usuario u10 = this.uDAO.findById(10);
+		Usuario u11 = this.uDAO.findById(11);
 
 		PalabrasClave pc1 = this.pcDAO.findById(1);
 		PalabrasClave pc2  = this.pcDAO.findById(2);
+		PalabrasClave pc3  = this.pcDAO.findById(3);
 
 		assertTrue(this.uDAO.asignarPalabraClave(u1.getId(),pc1.getId()));
 		assertTrue(this.uDAO.asignarPalabraClave(u2.getId(),pc1.getId()));
@@ -230,6 +244,7 @@ public class mainTest {
 		assertTrue(this.uDAO.asignarPalabraClave(u9.getId(),pc1.getId()));
 		assertTrue(this.uDAO.asignarPalabraClave(u9.getId(),pc2.getId()));
 		assertTrue(this.uDAO.asignarPalabraClave(u10.getId(),pc2.getId()));
+		assertTrue(this.uDAO.asignarPalabraClave(u11.getId(),pc3.getId()));
 	}
 
 	@Test(dependsOnMethods= {"setPalabrasClaveUsuarios"})

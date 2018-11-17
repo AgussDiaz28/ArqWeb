@@ -18,19 +18,23 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 
 
 @Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Table(name="trabajo")
 public class Trabajo {
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-	@ManyToMany(mappedBy="trabajosEnInvestigacion")	
+	@ManyToMany(fetch = FetchType.EAGER,mappedBy="trabajosEnInvestigacion")	
 	private Set<Usuario> autores;
 	
-	@ManyToMany(mappedBy="trabajosEnEvaluacion")	
+	@ManyToMany(fetch = FetchType.EAGER,mappedBy="trabajosEnEvaluacion")
 	private Set<Usuario> evaluadores;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
