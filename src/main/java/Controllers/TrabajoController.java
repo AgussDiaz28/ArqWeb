@@ -1,5 +1,7 @@
 package Controllers;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -17,6 +19,12 @@ import WebExceptions.RecursoDuplicado;
 
 @Path("/trabajo")
 public class TrabajoController {
+	
+	@GET @Produces(MediaType.APPLICATION_JSON)
+	public Response getTrabajoById() {
+		List<Trabajo> trabajo = TrabajoDAO.getInstance().findAll();
+		return Response.status(201).entity(trabajo).build();
+	}	
 	
 	@GET @Path("/{id}") @Produces(MediaType.APPLICATION_JSON)
 	public Response getTrabajoById(@PathParam("id") String msg) {
