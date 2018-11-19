@@ -54,13 +54,14 @@ public class restTest {
 //		this.nuevosTrabajos("CRM", "Customer-relationship management");
 //		this.nuevosTrabajos("MRP", "Material requirements planning");
 	}
-
+	
+	//esto no va, no lo piden
 	public void nuevasPalabrasClave(String palabra, Boolean esExperto ) throws ClientProtocolException, IOException {
 		String url = this.BASE_URL + "/palabraClave";
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode jsonObject = mapper.createObjectNode();
 		jsonObject.put("palabra", palabra);
-		jsonObject.put("esExperto", esExperto);
+		jsonObject.put("es_experto", esExperto);
 		String jsonString = jsonObject.toString();
 		HttpPost post = new HttpPost(url);
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
@@ -68,12 +69,13 @@ public class restTest {
 		assertEquals(response.getStatusLine().getStatusCode(),this.OK);
 	}
 	
+	//este es el que va y el de usuario junto con asignar trabajos, etc.. en fin, lo que nos piden en la segunda entrega
 	public void nuevosTrabajos(String titulo, String descripcion ) throws ClientProtocolException, IOException {
 		String url = this.BASE_URL + "/trabajo";
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode jsonObject = mapper.createObjectNode();
-		jsonObject.put("palabra", titulo);
-		jsonObject.put("esExperto", descripcion);
+		jsonObject.put("titulo", titulo);
+		jsonObject.put("descripcion", descripcion);
 		String jsonString = jsonObject.toString();
 		HttpPost post = new HttpPost(url);
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
