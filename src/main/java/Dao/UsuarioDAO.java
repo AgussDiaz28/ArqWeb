@@ -158,7 +158,7 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 		Query query = entityManager.createNativeQuery("SELECT DISTINCT(t.id ),t.* from trabajo t "
 				+ "join autor_trabajo sat on (t.id = sat.trabajo_id and sat.autor_id = :id) "
 				+ "left join evaluador_trabajo et on (et.trabajo_id = t.id) "
-				+ "left join evaluador_trabajoPendiente etp on (etp.trabajoPendiente_id = t.id)",Trabajo.class);
+				+ "left join evaluador_trabajo_pendiente etp on (etp.trabajo_pendiente_id = t.id)",Trabajo.class);
 		
 		query.setParameter("id", id);
 		List<Trabajo> trabajos = query.getResultList();
@@ -182,7 +182,7 @@ public class UsuarioDAO implements DAO<Usuario,Integer>{
 			throw new IllegalArgumentException("el evaluador no existe");
 		}
 
-		Query query = entityManager.createQuery("SELECT t FROM Trabajo t JOIN t.autores at JOIN t.evaluadores et JOIN t.palabrasClave tpc WHERE at.id = :autor_id AND et.id = :evaluador_id AND tpc.id = :pc_id");
+		Query query = entityManager.createQuery("SELECT t FROM Trabajo t JOIN t.autores at JOIN t.evaluadores et JOIN t.palabras_clave tpc WHERE at.id = :autor_id AND et.id = :evaluador_id AND tpc.id = :pc_id");
 		query.setParameter("autor_id", autor_id);
 		query.setParameter("evaluador_id", evaluador_id);
 		query.setParameter("pc_id", pc_id);

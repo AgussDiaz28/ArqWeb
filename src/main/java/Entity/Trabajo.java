@@ -42,17 +42,17 @@ public class Trabajo {
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
-			name = "trabajo_palabraClave",
+			name = "trabajo_palabra_clave",
 			joinColumns = { @JoinColumn(name = "trabajo_id") },
-			inverseJoinColumns = { @JoinColumn(name = "palabraClave_id") }
+			inverseJoinColumns = { @JoinColumn(name = "palabra_clave_id") }
 		)
-	private Set<PalabrasClave> palabrasClave;
+	private Set<PalabrasClave> palabras_clave;
 	
 	@Column(nullable = false)
-	private boolean esExperto;
+	private boolean es_experto;
 	
 	@OneToOne
-	private TipoTrabajo tipoTrabajo;
+	private TipoTrabajo tipo_trabajo;
 	
 	@Column
 	private String titulo;
@@ -68,8 +68,8 @@ public class Trabajo {
 	public Trabajo() {
 		this.autores = new HashSet<Usuario>();
 		this.evaluadores = new HashSet<Usuario>();
-		this.palabrasClave = new HashSet<PalabrasClave>();
-		this.esExperto = false;
+		this.palabras_clave = new HashSet<PalabrasClave>();
+		this.es_experto = false;
 	}
 	
 	//-----GETTERS & SETTERS-----
@@ -99,7 +99,7 @@ public class Trabajo {
 	}
 	
 	public TipoTrabajo getTipoTrabajo() {
-		return tipoTrabajo;
+		return tipo_trabajo;
 	}
 	
 	public Calendar getFecha() {
@@ -111,7 +111,7 @@ public class Trabajo {
 	}
 
 	public void setTipoTrabajo(TipoTrabajo tipoTrabajo) {
-		this.tipoTrabajo = tipoTrabajo;
+		this.tipo_trabajo = tipoTrabajo;
 	}
 
 	public void setAutor(Usuario autor) {
@@ -127,18 +127,18 @@ public class Trabajo {
 	}
 
 	public boolean isExperto() {
-		return esExperto;
+		return es_experto;
 	}
 	
 	public Set<PalabrasClave> getPalabrasClave() {
-		return palabrasClave;
+		return palabras_clave;
 	}
 
 	public void setPalabraClave(PalabrasClave palabraClave) {
-		this.palabrasClave.add(palabraClave);
+		this.palabras_clave.add(palabraClave);
 		
 		if(palabraClave.isExperto()) {
-			this.esExperto = true;
+			this.es_experto = true;
 		}
 	}
 	
@@ -151,7 +151,7 @@ public class Trabajo {
 			result += "null";
 		}
 		result += "; palabras clave: ";
-		Iterator<PalabrasClave> it = this.palabrasClave.iterator();
+		Iterator<PalabrasClave> it = this.palabras_clave.iterator();
 		while(it.hasNext()) {
 			PalabrasClave pc = it.next();
 			result += pc.getPalabra()+" ";

@@ -15,10 +15,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 
 @Entity
 @Table(name="usuario")
@@ -34,21 +30,21 @@ public class Usuario {
 	private String apellido;
 
 	@Column(nullable = false)
-	private boolean esAutor;
+	private boolean es_autor;
 
 	@Column(nullable = false)
-	private boolean esEvaluador;
+	private boolean es_evaluador;
 
 	@OneToOne
-	private LugarTrabajo lugarTrabajo;
+	private LugarTrabajo lugar_trabajo;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
-			name = "usuario_palabraClave",
+			name = "usuario_palabra_clave",
 			joinColumns = { @JoinColumn(name = "usuario_id") },
-			inverseJoinColumns = { @JoinColumn(name = "palabraClave_id") }
+			inverseJoinColumns = { @JoinColumn(name = "palabra_clave_id") }
 			)
-	private Set<PalabrasClave> palabrasClave;
+	private Set<PalabrasClave> palabras_clave;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
@@ -68,32 +64,32 @@ public class Usuario {
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
-			name = "evaluador_trabajoPendiente",
+			name = "evaluador_trabajo_pendiente",
 			joinColumns = { @JoinColumn(name = "evaluador_id") },
-			inverseJoinColumns = { @JoinColumn(name = "trabajoPendiente_id") }
+			inverseJoinColumns = { @JoinColumn(name = "trabajo_pendiente_id") }
 			)
 	private Set<Trabajo> trabajosPendientes;	
 
 	@Column(nullable = false)
-	private boolean esExperto;
+	private boolean es_experto;
 
 	//-----CONSTRUCTOR-----
 
 	public Usuario() {
-		this.palabrasClave = new HashSet<PalabrasClave>();
+		this.palabras_clave = new HashSet<PalabrasClave>();
 		this.trabajosEnInvestigacion = new HashSet<Trabajo>();
 		this.trabajosEnEvaluacion = new HashSet<Trabajo>();
 		this.trabajosPendientes = new HashSet<Trabajo>();
-		this.esExperto = false;
-		this.esEvaluador = false;
-		this.esAutor = false;
+		this.es_experto = false;
+		this.es_evaluador = false;
+		this.es_autor = false;
 	}
 
 	public Usuario(String nombre, String apellido, Set<PalabrasClave> palabrasClave) {
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.palabrasClave = palabrasClave;
-		this.palabrasClave = new HashSet<PalabrasClave>();
+		this.palabras_clave = palabrasClave;
+		this.palabras_clave = new HashSet<PalabrasClave>();
 		this.trabajosEnInvestigacion = new HashSet<Trabajo>();
 		this.trabajosEnEvaluacion = new HashSet<Trabajo>();
 		this.trabajosPendientes = new HashSet<Trabajo>();
@@ -118,22 +114,22 @@ public class Usuario {
 	}
 
 	public boolean isAutor() {
-		return esAutor;
+		return es_autor;
 	}
 
 	public boolean isEvaluador() {
-		return esEvaluador;
+		return es_evaluador;
 	}
 
 	public Set<PalabrasClave> getPalabrasClave() {
-		return palabrasClave;
+		return palabras_clave;
 	}
 
 	public void setPalabraClave(PalabrasClave palabrasClave) {
-		this.palabrasClave.add(palabrasClave);
+		this.palabras_clave.add(palabrasClave);
 
 		if(palabrasClave.isExperto()) {
-			this.esExperto = true;
+			this.es_experto = true;
 		}
 	}
 
@@ -154,7 +150,7 @@ public class Usuario {
 	}
 
 	public boolean isExperto() {
-		return esExperto;
+		return es_experto;
 	}
 
 	public int getId() {
@@ -162,11 +158,11 @@ public class Usuario {
 	}
 
 	public LugarTrabajo getLugarTrabajo() {
-		return this.lugarTrabajo;
+		return this.lugar_trabajo;
 	}
 
 	public void setLugarTrabajo(LugarTrabajo lt) {
-		this.lugarTrabajo = lt;
+		this.lugar_trabajo = lt;
 	}
 	
 	public void setTrabajoEnInvestigacion(Trabajo trabajo){
@@ -178,11 +174,11 @@ public class Usuario {
 	}
 	
 	public void setEsEvaluador(boolean valor) {
-		this.esEvaluador = valor;
+		this.es_evaluador = valor;
 	}
 	
 	public void setEsAutor(boolean valor) {
-		this.esAutor = valor;
+		this.es_autor = valor;
 	}
 	
 	public void removeTrabajoPendiente(Trabajo trabajo) {
@@ -197,17 +193,17 @@ public class Usuario {
 		if	(!this.trabajosEnInvestigacion.contains(t) && !this.trabajosEnEvaluacion.contains(t) ) {
 			boolean mismoLugarTrabajo = false;
 			for(Usuario u: t.getAutores()) {
-				if(u.getLugarTrabajo().equals(this.lugarTrabajo)) {
+				if(u.getLugarTrabajo().equals(this.lugar_trabajo)) {
 					mismoLugarTrabajo = true;
 				}
 			}
 			if(!mismoLugarTrabajo) {
 				Set<PalabrasClave> clavesTrabajo = t.getPalabrasClave();
 				if(t.getTipoTrabajo().isFullCheckNeeded()) {
-					return this.palabrasClave.containsAll(clavesTrabajo);
+					return this.palabras_clave.containsAll(clavesTrabajo);
 				}else {
 					for(PalabrasClave e: clavesTrabajo) {
-						if(this.palabrasClave.contains(e)) {
+						if(this.palabras_clave.contains(e)) {
 							return true;
 						}
 					}

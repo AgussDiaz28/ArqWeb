@@ -30,13 +30,13 @@ public class PalabrasClave {
 	private String palabra;
 	
 	@Column(nullable = false)
-	private boolean esExperto; //experto o simple
+	private boolean es_experto; //experto o simple
 	
-	@ManyToMany(mappedBy="palabrasClave")
+	@ManyToMany(mappedBy="palabras_clave")
 	@JsonIgnore
 	private Set<Usuario> usuarios;
 	
-	@ManyToMany(mappedBy="palabrasClave")
+	@ManyToMany(mappedBy="palabras_clave")
 	@JsonIgnore
 	private Set<Trabajo> trabajos;
 	
@@ -49,7 +49,7 @@ public class PalabrasClave {
 	
 	public PalabrasClave(String palabra, boolean esExperto) {
 		this.palabra = palabra;
-		this.esExperto = esExperto;
+		this.es_experto = esExperto;
 	}
 
 	//-----GETTERS & SETTERS-----
@@ -63,7 +63,7 @@ public class PalabrasClave {
 	}
 
 	public boolean isExperto() {
-		return esExperto;
+		return es_experto;
 	}	
 	
 	public Set<Trabajo> getTrabajos() {
@@ -83,7 +83,7 @@ public class PalabrasClave {
 	}
 
 	public void setEsExperto(boolean esExperto) {
-		this.esExperto = esExperto;
+		this.es_experto = esExperto;
 	}
 	
 	public int getId() {

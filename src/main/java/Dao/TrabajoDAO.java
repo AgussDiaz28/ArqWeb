@@ -98,7 +98,7 @@ public class TrabajoDAO implements DAO<Trabajo,Integer>{
 
 	public List<Trabajo> getTrabajoConMismasPalabrasClave(Integer palabraClaveId) {
 		EntityManager entityManager=EMF.createEntityManager();
-		Query query = entityManager.createQuery("SELECT t FROM Trabajo t JOIN t.palabrasClave tp WHERE tp.id = :palabraClaveId");
+		Query query = entityManager.createQuery("SELECT t FROM Trabajo t JOIN t.palabras_clave tp WHERE tp.id = :palabraClaveId");
 		query.setParameter("palabraClaveId", palabraClaveId);
 		entityManager.close();
 		return query.getResultList();
