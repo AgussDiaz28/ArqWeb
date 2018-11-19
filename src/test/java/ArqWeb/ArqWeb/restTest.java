@@ -1,13 +1,10 @@
 package ArqWeb.ArqWeb;
 
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import Dao.TrabajoDAO;
 
 import static org.testng.Assert.assertEquals;
 
@@ -18,6 +15,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -30,12 +28,12 @@ public class restTest {
 
 	private final HttpClient client = HttpClientBuilder.create().build();
 	
-	@BeforeClass
+	@BeforeTest
     public void testInit(){
 		System.out.println("restTest");
     }
 	
-	@BeforeTest
+	@Test
 	public void serverIsUp() throws ClientProtocolException, IOException {
 		System.out.println("serverIsUp");
 		String url = this.BASE_URL + "/palabraClave/1";
@@ -44,24 +42,85 @@ public class restTest {
 		assertEquals(this.OK,response.getStatusLine().getStatusCode());
 	}
 	
-	@Test
-	public void testPalabrasClaves() throws ClientProtocolException, IOException {
+//	@Test(dependsOnMethods= {"serverIsUp"})
+//	public void testPalabrasClaves() throws ClientProtocolException, IOException {
+//		System.out.println("testPalabrasClaves");
 //		this.nuevasPalabrasClave("Ruby",false);
-//		this.nuevasPalabrasClave("API",false);
-//		this.nuevasPalabrasClave("VUE",true);
-//		this.nuevasPalabrasClave("Angular",false);
-		this.nuevosTrabajos("ERP", "Enterprise resource planning");
-//		this.nuevosTrabajos("CRM", "Customer-relationship management");
+//	}
+	
+//	@Test(dependsOnMethods= {"serverIsUp"})
+//	public void testTrabajos() throws ClientProtocolException, IOException {
+//		this.nuevosTrabajos("ERP", "Enterprise resource planning");
+//		this.nuevosTrabajos("CRM", "Customer relationship management");
 //		this.nuevosTrabajos("MRP", "Material requirements planning");
+//	}
+	
+	@Test(dependsOnMethods= {"serverIsUp"})
+	public void testNewUser() throws ClientProtocolException, IOException {
+		System.out.println("testNewUser");
+		this.newUser("Agustin", "Diaz");
 	}
 	
-	//esto no va, no lo piden
-	public void nuevasPalabrasClave(String palabra, Boolean esExperto ) throws ClientProtocolException, IOException {
-		String url = this.BASE_URL + "/palabraClave";
+	@Test(dependsOnMethods= {"testNewUser"})
+	public void testEditUser() throws ClientProtocolException, IOException {
+		System.out.println("testEditUser");
+		this.editUser("Joaquin", "Lardapide","1");
+	}
+	
+//	@Test(dependsOnMethods= {"testEditUser"})
+//	public void testAsignarTrabajo() throws ClientProtocolException, IOException {
+//		System.out.println("testAsignarTrabajo");
+//		this.asignarTrabajo("1","1");
+//	}
+	
+//	@Test(dependsOnMethods= {"testEditUser"})
+//	public void testGetTrabajosEnviados() throws ClientProtocolException, IOException {
+//		System.out.println("testGetTrabajosEnviados");
+//		this.getTrabajosEnviados("1");
+//	}
+	
+//	@Test(dependsOnMethods= {"testEditUser"})
+//	public void testGetTrabajosRevisadosEnRango() throws ClientProtocolException, IOException {
+//		System.out.println("testGetTrabajosRevisadosEnRango");
+//		this.getTrabajosRevisados("1","05-06-2018","22-12-2018");
+//	}
+	
+	private void getTrabajosEnviados(String id) throws ClientProtocolException, IOException {
+		String url = this.BASE_URL + "/usuario/trabajosEnviados/"+id;
+		HttpGet get = new HttpGet(url);
+		HttpResponse response = this.client.execute(get);
+		assertEquals(response.getStatusLine().getStatusCode(),this.OK);
+	}
+	
+	private void getTrabajosRevisados(String id,String fecha_inicio,String fecha_fin) throws ClientProtocolException, IOException {
+		String url = this.BASE_URL + "/usuario/trabajosRevisados/"+id+"/"+fecha_inicio+"/"+fecha_fin;
+		HttpGet get = new HttpGet(url);
+		HttpResponse response = this.client.execute(get);
+		assertEquals(response.getStatusLine().getStatusCode(),this.OK);
+	}
+	
+	private void aceptarTrabajo(String usuario_id, String trabajo_id) throws ClientProtocolException, IOException {
+		String url = this.BASE_URL + "/usuario/aceptar/"+usuario_id+"/"+trabajo_id;
+		HttpPost post = new HttpPost(url);
+		HttpResponse response = this.client.execute(post);
+		assertEquals(response.getStatusLine().getStatusCode(),this.OK);
+	}
+	
+	private void asignarTrabajo(String usuario_id, String trabajo_id) throws ClientProtocolException, IOException {
+		String url = this.BASE_URL + "/usuario/asignar/"+usuario_id+"/"+trabajo_id;
+		HttpPost post = new HttpPost(url);
+		post.setEntity(new StringEntity("", ContentType.APPLICATION_JSON));
+		HttpResponse response = this.client.execute(post);
+		assertEquals(response.getStatusLine().getStatusCode(),this.OK);
+		this.aceptarTrabajo(usuario_id,trabajo_id);
+	}
+	
+	private void newUser(String nombre, String apellido) throws ClientProtocolException, IOException {
+		String url = this.BASE_URL + "/usuario/";
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode jsonObject = mapper.createObjectNode();
-		jsonObject.put("palabra", palabra);
-		jsonObject.put("es_experto", esExperto);
+		jsonObject.put("nombre", nombre);
+		jsonObject.put("apellido", apellido);
 		String jsonString = jsonObject.toString();
 		HttpPost post = new HttpPost(url);
 		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
@@ -69,9 +128,35 @@ public class restTest {
 		assertEquals(response.getStatusLine().getStatusCode(),this.OK);
 	}
 	
-	//este es el que va y el de usuario junto con asignar trabajos, etc.. en fin, lo que nos piden en la segunda entrega
+	private void editUser(String nombre, String apellido, String id) throws ClientProtocolException, IOException {
+		String url = this.BASE_URL + "/usuario/"+id;
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode jsonObject = mapper.createObjectNode();
+		jsonObject.put("nombre", nombre);
+		jsonObject.put("apellido", apellido);
+		String jsonString = jsonObject.toString();
+		HttpPut put = new HttpPut(url);
+		put.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		HttpResponse response = this.client.execute(put);
+		assertEquals(response.getStatusLine().getStatusCode(),this.OK);
+	}
+	
+	public void nuevasPalabrasClave(String palabra, Boolean esExperto ) throws ClientProtocolException, IOException {
+		String url = this.BASE_URL + "/palabraClave";
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode jsonObject = mapper.createObjectNode();
+		jsonObject.put("palabra", palabra);
+		jsonObject.put("esExperto", esExperto);
+		String jsonString = jsonObject.toString();
+		HttpPost post = new HttpPost(url);
+		post.setEntity(new StringEntity(jsonString, ContentType.APPLICATION_JSON));
+		HttpResponse response = this.client.execute(post);
+		assertEquals(response.getStatusLine().getStatusCode(),this.OK);
+	}
+	
 	public void nuevosTrabajos(String titulo, String descripcion ) throws ClientProtocolException, IOException {
 		String url = this.BASE_URL + "/trabajo";
+		System.out.println(titulo+" "+descripcion);
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode jsonObject = mapper.createObjectNode();
 		jsonObject.put("titulo", titulo);
@@ -82,4 +167,5 @@ public class restTest {
 		HttpResponse response = this.client.execute(post);
 		assertEquals(response.getStatusLine().getStatusCode(),this.OK);
 	}
+
 }
