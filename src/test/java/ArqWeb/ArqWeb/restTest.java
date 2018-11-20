@@ -25,8 +25,13 @@ public class restTest {
 	private final String BASE_URL="http://localhost:8080/ArqWeb/api";
 	
 	private final int OK = 201;
+	private final int FAIL = 500;
 
-	private final HttpClient client = HttpClientBuilder.create().build();
+	private HttpClient client = HttpClientBuilder.create().build();
+	
+	private void resetHttpClient() {
+		this.client = HttpClientBuilder.create().build();
+	}
 	
 	@BeforeTest
     public void testInit(){
@@ -42,48 +47,67 @@ public class restTest {
 		assertEquals(this.OK,response.getStatusLine().getStatusCode());
 	}
 	
-//	@Test(dependsOnMethods= {"serverIsUp"})
-//	public void testPalabrasClaves() throws ClientProtocolException, IOException {
-//		System.out.println("testPalabrasClaves");
-//		this.nuevasPalabrasClave("Ruby",false);
-//	}
+	@Test(dependsOnMethods= {"serverIsUp"})
+	public void testPalabrasClaves() throws ClientProtocolException, IOException {
+		System.out.println("testPalabrasClaves");
+		this.nuevasPalabrasClave("Ruby",false);
+	}
 	
-//	@Test(dependsOnMethods= {"serverIsUp"})
-//	public void testTrabajos() throws ClientProtocolException, IOException {
-//		this.nuevosTrabajos("ERP", "Enterprise resource planning");
-//		this.nuevosTrabajos("CRM", "Customer relationship management");
-//		this.nuevosTrabajos("MRP", "Material requirements planning");
-//	}
+	@Test(dependsOnMethods= {"testPalabrasClaves"})
+	public void testTrabajos() throws ClientProtocolException, IOException {
+		System.out.println("testTrabajos");
+		this.resetHttpClient();
+		this.nuevosTrabajos("ERP", "Enterprise resource planning");
+		this.resetHttpClient();
+		this.nuevosTrabajos("CRM", "Customer relationship management");
+		this.resetHttpClient();
+		this.nuevosTrabajos("MRP", "Material requirements planning");
+	}
 	
 	@Test(dependsOnMethods= {"serverIsUp"})
 	public void testNewUser() throws ClientProtocolException, IOException {
 		System.out.println("testNewUser");
+		this.resetHttpClient();
 		this.newUser("Agustin", "Diaz");
 	}
 	
 	@Test(dependsOnMethods= {"testNewUser"})
 	public void testEditUser() throws ClientProtocolException, IOException {
 		System.out.println("testEditUser");
+		this.resetHttpClient();
 		this.editUser("Joaquin", "Lardapide","1");
 	}
 	
-//	@Test(dependsOnMethods= {"testEditUser"})
-//	public void testAsignarTrabajo() throws ClientProtocolException, IOException {
-//		System.out.println("testAsignarTrabajo");
-//		this.asignarTrabajo("1","1");
-//	}
+	@Test(dependsOnMethods= {"testEditUser"})
+	public void testAsignarTrabajo() throws ClientProtocolException, IOException {
+		System.out.println("testAsignarTrabajo");
+		this.resetHttpClient();
+		this.asignarTrabajo("9","3");
+		this.resetHttpClient();
+		this.asignarTrabajoInvalido("1","1");
+	}
 	
-//	@Test(dependsOnMethods= {"testEditUser"})
-//	public void testGetTrabajosEnviados() throws ClientProtocolException, IOException {
-//		System.out.println("testGetTrabajosEnviados");
-//		this.getTrabajosEnviados("1");
-//	}
+	@Test(dependsOnMethods= {"testAsignarTrabajo"})
+	public void testGetTrabajosEnviados() throws ClientProtocolException, IOException {
+		System.out.println("testGetTrabajosEnviados");
+		this.resetHttpClient();
+		this.getTrabajosEnviados("1");
+	}
 	
-//	@Test(dependsOnMethods= {"testEditUser"})
-//	public void testGetTrabajosRevisadosEnRango() throws ClientProtocolException, IOException {
-//		System.out.println("testGetTrabajosRevisadosEnRango");
-//		this.getTrabajosRevisados("1","05-06-2018","22-12-2018");
-//	}
+	@Test(dependsOnMethods= {"testGetTrabajosEnviados"})
+	public void testGetTrabajosRevisadosEnRango() throws ClientProtocolException, IOException {
+		System.out.println("testGetTrabajosRevisadosEnRango");
+		this.resetHttpClient();
+		this.getTrabajosRevisados("6","05-06-2018","22-12-2018");
+	}
+	
+	private void asignarTrabajoInvalido(String usuario_id, String trabajo_id ) throws ClientProtocolException, IOException {
+		String url = this.BASE_URL + "/usuario/asignar/"+usuario_id+"/"+trabajo_id;
+		HttpPost post = new HttpPost(url);
+		post.setEntity(new StringEntity("", ContentType.APPLICATION_JSON));
+		HttpResponse response = this.client.execute(post);
+		assertEquals(response.getStatusLine().getStatusCode(),this.FAIL);
+	}
 	
 	private void getTrabajosEnviados(String id) throws ClientProtocolException, IOException {
 		String url = this.BASE_URL + "/usuario/trabajosEnviados/"+id;

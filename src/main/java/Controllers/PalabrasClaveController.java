@@ -36,7 +36,7 @@ public class PalabrasClaveController {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createTrabajo(PalabrasClave pc) {
+	public Response createPalabraClave(PalabrasClave pc) {
 		PalabrasClave result= PalabrasClaveDAO.getInstance().persist(pc);
 		if(result == null) {
 			throw new RecursoDuplicado(pc.getId());
