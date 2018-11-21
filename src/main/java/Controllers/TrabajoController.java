@@ -12,9 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import Dao.TrabajoDAO;
-import Dao.UsuarioDAO;
 import Entity.Trabajo;
-import Entity.Usuario;
 import WebExceptions.RecursoDuplicado;
 
 @Path("/trabajo")

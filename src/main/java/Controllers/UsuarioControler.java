@@ -67,7 +67,7 @@ public class UsuarioControler {
 		if(result==null) {
 			throw new RecursoNoExiste(id);
 		}else {
-			return Response.status(200).entity(usuario).build();
+			return Response.status(201).entity(usuario).build();
 		}
 	}
 	
